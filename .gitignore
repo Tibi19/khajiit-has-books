@@ -50,6 +50,7 @@ captures/
 .idea/modules.xml
 .idea/misc.xml
 .idea/deploymentTargetDropDown.xml
+.idea/inspectionProfiles/Project_Default.xml
 
 # Comment next line if keeping position of elements in Navigation Editor is relevant for you
 .idea/navEditor.xml
