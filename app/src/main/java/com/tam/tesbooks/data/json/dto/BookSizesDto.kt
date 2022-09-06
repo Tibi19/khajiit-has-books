@@ -1,4 +1,5 @@
 package com.tam.tesbooks.data.json.dto
 
-class BookSizesDto {
-}
+data class BookSizesDto(
+    val bookSizes: List<BookSizeDto>
+)

@@ -1,4 +1,9 @@
 package com.tam.tesbooks.data.json.dto
 
-class BookSizeDto {
-}
+import com.squareup.moshi.Json
+
+data class BookSizeDto(
+    val id: Int,
+    @field:Json(name = "book_size")
+    val bookSize: Int
+)
