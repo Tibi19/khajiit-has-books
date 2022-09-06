@@ -1,4 +1,7 @@
 package com.tam.tesbooks.data.json.dto
 
-class BooksMetadataDto {
-}
+import com.tam.tesbooks.domain.model.metadata.BookMetadata
+
+data class BooksMetadataDto(
+    val booksMetadata: List<BookMetadata>
+)

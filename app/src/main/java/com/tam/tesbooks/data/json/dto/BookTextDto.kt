@@ -1,4 +1,6 @@
 package com.tam.tesbooks.data.json.dto
 
-class BookTextDto {
-}
+data class BookTextDto(
+    val id: Int,
+    val paragraphs: List<String>
+)
