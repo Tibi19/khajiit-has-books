@@ -3,4 +3,6 @@ package com.tam.tesbooks.data.json.dto
 import com.squareup.moshi.JsonClass
 
 @JsonClass(generateAdapter = true)
-class TagsDto : ArrayList<String>()
+data class TagsDto(
+    val tags: List<String>
+)
