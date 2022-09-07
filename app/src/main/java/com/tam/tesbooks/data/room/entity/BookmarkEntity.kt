@@ -8,6 +8,6 @@ import com.tam.tesbooks.util.TABLE_BOOKMARK
 data class BookmarkEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
-    val bookId: String,
+    val bookId: Int,
     val paragraphPosition: Int
 )

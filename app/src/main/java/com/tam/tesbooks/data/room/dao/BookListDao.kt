@@ -26,6 +26,6 @@ interface BookListDao {
     @Query("SELECT * FROM table_book_list INNER JOIN table_book_save " +
             "ON table_book_list.id = table_book_save.bookListId " +
             "WHERE table_book_save.bookId = :bookId")
-    suspend fun getBookListsOfBookId(bookId: String): List<BookListEntity>
+    suspend fun getBookListsOfBookId(bookId: Int): List<BookListEntity>
 
 }

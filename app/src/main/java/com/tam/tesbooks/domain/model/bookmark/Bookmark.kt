@@ -4,7 +4,7 @@ import com.tam.tesbooks.domain.model.book.BookParagraph
 
 data class Bookmark(
     val id: Int,
-    val bookId: String,
+    val bookId: Int,
     val paragraphPosition: Int,
     val paragraph: BookParagraph
 )

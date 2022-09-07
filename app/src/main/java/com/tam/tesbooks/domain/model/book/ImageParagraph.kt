@@ -1,6 +1,6 @@
 package com.tam.tesbooks.domain.model.book
 
-class ImageParagraph(bookId: String, position: Int, content: String) : BookParagraph(bookId, position, content) {
+class ImageParagraph(bookId: Int, position: Int, content: String) : BookParagraph(bookId, position, content) {
 
     lateinit var imageUrl: String
         private set

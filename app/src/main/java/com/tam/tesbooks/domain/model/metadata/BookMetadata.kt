@@ -1,7 +1,7 @@
 package com.tam.tesbooks.domain.model.metadata
 
 data class BookMetadata(
-    val id: String,
+    val id: Int,
     val title: String,
     val author: String,
     val description: String,

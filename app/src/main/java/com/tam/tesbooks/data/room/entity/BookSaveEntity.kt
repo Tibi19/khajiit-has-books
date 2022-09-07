@@ -8,6 +8,6 @@ import com.tam.tesbooks.util.TABLE_BOOK_SAVE
     primaryKeys = ["bookId", "bookListId"]
 )
 data class BookSaveEntity(
-    val bookId: String,
+    val bookId: Int,
     val bookListId: Int
 )
