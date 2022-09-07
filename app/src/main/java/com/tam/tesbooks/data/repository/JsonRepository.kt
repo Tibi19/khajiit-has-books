@@ -1,4 +1,4 @@
 package com.tam.tesbooks.data.repository
 
-class JsonRepository {
+interface JsonRepository {
 }
