@@ -10,5 +10,6 @@ data class BookMetadataDto(
     val description: String,
     val tags: List<String>,
     val category: String,
-    val fileName: String
+    val fileName: String,
+    val textSize: Int
 )

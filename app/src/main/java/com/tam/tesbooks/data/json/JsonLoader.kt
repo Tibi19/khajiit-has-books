@@ -4,14 +4,12 @@ import com.tam.tesbooks.data.json.dto.*
 
 interface JsonLoader {
 
-    suspend fun getBooksMetadataDto(): BooksMetadataDto
+    suspend fun getBooksMetadataDto(): BooksMetadataDto?
 
-    suspend fun getBookSizesDto(): BookSizesDto
+    suspend fun getCategoriesDto(): CategoriesDto?
 
-    suspend fun getBookTextDto(): BookTextDto
+    suspend fun getTagsDto(): TagsDto?
 
-    suspend fun getCategoriesDto(): CategoriesDto
-
-    suspend fun getTagsDto(): TagsDto
+    suspend fun getBookText(fileName: String): BookTextDto?
 
 }
