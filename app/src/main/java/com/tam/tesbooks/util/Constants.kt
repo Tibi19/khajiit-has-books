@@ -8,3 +8,8 @@ const val TABLE_BOOKMARK = "table_bookmark"
 const val INSTANCE_IO_DISPATCHER = "io_dispatcher"
 const val INSTANCE_DEFAULT_DISPATCHER = "default_dispatcher"
 const val INSTANCE_APPLICATION_SCOPE = "application_scope"
+
+const val PATH_BOOKS_METADATA = "books_metadata.json"
+const val PATH_BOOKS_CATEGORIES = "books_categories.json"
+const val PATH_BOOKS_TAGS = "books_tags.json"
+const val PATH_BOOK_TEXTS_FOLDER = "book_texts/"
