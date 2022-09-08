@@ -17,9 +17,9 @@ class TestViewModel @Inject constructor(
     fun showTest() {
         printTest("")
         //testBookText()
-        viewModelScope.launch {
-            repository.testTagsAndCategories()
-        }
+//        viewModelScope.launch {
+//            repository.testTagsAndCategories()
+//        }
         testBooksMetadata()
     }
 

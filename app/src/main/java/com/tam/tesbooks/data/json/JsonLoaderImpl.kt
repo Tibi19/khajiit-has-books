@@ -18,20 +18,20 @@ class JsonLoaderImpl @Inject constructor(
     @Named(INSTANCE_APPLICATION_SCOPE) private val applicationScope: CoroutineScope
 ): JsonLoader {
 
-    private val booksMetadataAsync: Deferred<BooksMetadataDto?> =
-        applicationScope.async(ioDispatcher) {
-//            getDtoFromJsonFile(BooksMetadataDto::class.java, PATH_BOOKS_METADATA)
-            getDtoWithTimeTest(BooksMetadataDto::class.java, PATH_BOOKS_METADATA, "Loaded books metadata")
-        }
+//    private val booksMetadataAsync: Deferred<BooksMetadataDto?> =
+//        applicationScope.async(ioDispatcher) {
+////            getDtoFromJsonFile(BooksMetadataDto::class.java, PATH_BOOKS_METADATA)
+//            getDtoWithTimeTest(BooksMetadataDto::class.java, PATH_BOOKS_METADATA, "Loaded books metadata")
+//        }
 
     private val categoriesAsync: Deferred<CategoriesDto?> =
         applicationScope.async(ioDispatcher) {
-            getDtoWithTimeTest(CategoriesDto::class.java, PATH_BOOK_SIZES, "Loaded categories")
+            getDtoWithTimeTest(CategoriesDto::class.java, PATH_BOOKS_CATEGORIES, "Loaded categories")
         }
 
     private val tagsAsync: Deferred<TagsDto?> =
         applicationScope.async(ioDispatcher) {
-            getDtoWithTimeTest(TagsDto::class.java, PATH_BOOK_SIZES, "Loaded tags")
+            getDtoWithTimeTest(TagsDto::class.java, PATH_BOOKS_TAGS, "Loaded tags")
         }
 
     private suspend fun getBooksMetadataAsync(): Deferred<BooksMetadataDto?> =
@@ -41,12 +41,12 @@ class JsonLoaderImpl @Inject constructor(
 
     private suspend fun getCategoriesAsync(): Deferred<CategoriesDto?> =
         applicationScope.async(ioDispatcher) {
-            getDtoWithTimeTest(CategoriesDto::class.java, PATH_BOOK_SIZES, "Loaded categories")
+            getDtoWithTimeTest(CategoriesDto::class.java, PATH_BOOKS_CATEGORIES, "Loaded categories")
         }
 
     private suspend fun getTagsAsync(): Deferred<TagsDto?> =
         applicationScope.async(ioDispatcher) {
-            getDtoWithTimeTest(TagsDto::class.java, PATH_BOOK_SIZES, "Loaded tags")
+            getDtoWithTimeTest(TagsDto::class.java, PATH_BOOKS_TAGS, "Loaded tags")
         }
 
     private suspend fun <T> getDtoWithTimeTest(dtoClass: Class<T>, pathToJson: String, message: String): T? {
@@ -72,7 +72,7 @@ class JsonLoaderImpl @Inject constructor(
             null
         }
 
-    override suspend fun getBooksMetadataDto(): BooksMetadataDto? = booksMetadataAsync.await()
+    override suspend fun getBooksMetadataDto(): BooksMetadataDto? = getBooksMetadataAsync().await()
 
     override suspend fun getCategoriesDto(): CategoriesDto? = getCategoriesAsync().await()
 

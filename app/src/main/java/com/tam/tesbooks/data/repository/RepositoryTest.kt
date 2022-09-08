@@ -36,13 +36,12 @@ class RepositoryTest @Inject constructor(
     }
 
     suspend fun testTagsAndCategories() {
-//        val time = measureTimeMillis {
-//            jsonLoader.getTagsDto()
-//            jsonLoader.getCategoriesDto()
-//            jsonLoader.getBooksMetadataDto()
-//            jsonLoader.getBookSizesDto()
-//        }
-//        printTest("Loaded all in $time")
+        val time = measureTimeMillis {
+            jsonLoader.getTagsDto()
+            jsonLoader.getCategoriesDto()
+            jsonLoader.getBooksMetadataDto()
+        }
+        printTest("Loaded all in $time")
     }
 
 }
