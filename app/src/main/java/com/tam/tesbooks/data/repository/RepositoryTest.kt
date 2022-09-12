@@ -2,14 +2,12 @@ package com.tam.tesbooks.data.repository
 
 import com.tam.tesbooks.data.json.JsonLoader
 import com.tam.tesbooks.data.json.dto.BookTextDto
-import com.tam.tesbooks.data.json.dto.BooksMetadataDto
+import com.tam.tesbooks.data.mapper.toEntities
 import com.tam.tesbooks.data.room.database.BookInfoDatabase
-import com.tam.tesbooks.domain.model.book_list.BookList
-import com.tam.tesbooks.domain.model.metadata.BooksMetadata
-import com.tam.tesbooks.util.printTest
+import com.tam.tesbooks.util.SIZE_BOOK_METADATAS
+import com.tam.tesbooks.util.getEmptyBookTextDto
 import javax.inject.Inject
 import javax.inject.Singleton
-import kotlin.system.measureTimeMillis
 
 @Singleton
 class RepositoryTest @Inject constructor(
@@ -20,28 +18,17 @@ class RepositoryTest @Inject constructor(
     private val bookListDao = database.bookListDao
     private val bookmarkDao = database.bookmarkDao
     private val bookSaveDao = database.bookSaveDao
+    private val bookMetadataDao = database.bookMetadataDao
 
-    fun testList(): BookList {
-        return BookList(15, "Test List", true)
+    suspend fun saveMetadatas() {
+        val metadatasCount = bookMetadataDao.getMetadatasCount()
+        if(metadatasCount >= SIZE_BOOK_METADATAS) return
+
+        val metadatas = jsonLoader.getBooksMetadataDto()?.toEntities() ?: return
+        bookMetadataDao.insertAllMetadatas(metadatas)
     }
 
-    suspend fun testTags(): List<String> = jsonLoader.getTagsDto()?.tags ?: listOf()
-
-    suspend fun testBooksMetadata(): BooksMetadataDto? {
-        return jsonLoader.getBooksMetadataDto()
-    }
-
-    suspend fun testBookText(fileName: String): BookTextDto? {
-        return jsonLoader.getBookText(fileName)
-    }
-
-    suspend fun testTagsAndCategories() {
-        val time = measureTimeMillis {
-            jsonLoader.getTagsDto()
-            jsonLoader.getCategoriesDto()
-            jsonLoader.getBooksMetadataDto()
-        }
-        printTest("Loaded all in $time")
-    }
+    suspend fun getBookText(fileName: String): BookTextDto =
+        jsonLoader.getBookText(fileName) ?: getEmptyBookTextDto()
 
 }
