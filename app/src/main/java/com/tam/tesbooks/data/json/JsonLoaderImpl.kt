@@ -18,45 +18,15 @@ class JsonLoaderImpl @Inject constructor(
     @Named(INSTANCE_APPLICATION_SCOPE) private val applicationScope: CoroutineScope
 ): JsonLoader {
 
-//    private val booksMetadataAsync: Deferred<BooksMetadataDto?> =
-//        applicationScope.async(ioDispatcher) {
-////            getDtoFromJsonFile(BooksMetadataDto::class.java, PATH_BOOKS_METADATA)
-//            getDtoWithTimeTest(BooksMetadataDto::class.java, PATH_BOOKS_METADATA, "Loaded books metadata")
-//        }
-
     private val categoriesAsync: Deferred<CategoriesDto?> =
         applicationScope.async(ioDispatcher) {
-            getDtoWithTimeTest(CategoriesDto::class.java, PATH_BOOKS_CATEGORIES, "Loaded categories")
+            getDtoFromJsonFile(CategoriesDto::class.java, PATH_BOOKS_CATEGORIES)
         }
 
     private val tagsAsync: Deferred<TagsDto?> =
         applicationScope.async(ioDispatcher) {
-            getDtoWithTimeTest(TagsDto::class.java, PATH_BOOKS_TAGS, "Loaded tags")
+            getDtoFromJsonFile(TagsDto::class.java, PATH_BOOKS_TAGS)
         }
-
-    private suspend fun getBooksMetadataAsync(): Deferred<BooksMetadataDto?> =
-        applicationScope.async(ioDispatcher) {
-            getDtoWithTimeTest(BooksMetadataDto::class.java, PATH_BOOKS_METADATA, "Loaded books metadata")
-        }
-
-    private suspend fun getCategoriesAsync(): Deferred<CategoriesDto?> =
-        applicationScope.async(ioDispatcher) {
-            getDtoWithTimeTest(CategoriesDto::class.java, PATH_BOOKS_CATEGORIES, "Loaded categories")
-        }
-
-    private suspend fun getTagsAsync(): Deferred<TagsDto?> =
-        applicationScope.async(ioDispatcher) {
-            getDtoWithTimeTest(TagsDto::class.java, PATH_BOOKS_TAGS, "Loaded tags")
-        }
-
-    private suspend fun <T> getDtoWithTimeTest(dtoClass: Class<T>, pathToJson: String, message: String): T? {
-        var tDto: T?
-        val time = measureTimeMillis {
-            tDto = getDtoFromJsonFile(dtoClass, pathToJson)
-        }
-        printTest("$message in $time")
-        return tDto
-    }
 
     private suspend fun <T> getDtoFromJsonFile(dtoClass: Class<T>, pathToJson: String): T? =
         try {
@@ -74,16 +44,20 @@ class JsonLoaderImpl @Inject constructor(
 
     override suspend fun getBooksMetadataDto(): BooksMetadataDto? = getBooksMetadataAsync().await()
 
-    override suspend fun getCategoriesDto(): CategoriesDto? = getCategoriesAsync().await()
+    private suspend fun getBooksMetadataAsync(): Deferred<BooksMetadataDto?> =
+        applicationScope.async(ioDispatcher) {
+            getDtoFromJsonFile(BooksMetadataDto::class.java, PATH_BOOKS_METADATA)
+        }
 
-    override suspend fun getTagsDto(): TagsDto? = getTagsAsync().await()
+    override suspend fun getCategoriesDto(): CategoriesDto? = categoriesAsync.await()
+
+    override suspend fun getTagsDto(): TagsDto? = tagsAsync.await()
 
     override suspend fun getBookText(fileName: String): BookTextDto? = getBookTextAsync(fileName).await()
 
     private suspend fun getBookTextAsync(fileName: String): Deferred<BookTextDto?> =
         applicationScope.async(ioDispatcher) {
             val pathToJson = "$PATH_BOOK_TEXTS_FOLDER$fileName"
-//            getDtoFromJsonFile(BookTextDto::class.java, pathToJson)
-            getDtoWithTimeTest(BookTextDto::class.java, pathToJson, "Loaded $fileName book text")
+            getDtoFromJsonFile(BookTextDto::class.java, pathToJson)
         }
 }
