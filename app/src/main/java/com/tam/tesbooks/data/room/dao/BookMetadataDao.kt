@@ -60,7 +60,7 @@ interface BookMetadataDao {
     @Query(
         """
             SELECT * FROM table_book_metadata 
-            WHERE textSize < :textSize 
+            WHERE textSize < :textSize
             ORDER BY textSize DESC 
             LIMIT :limit
         """
@@ -77,7 +77,7 @@ interface BookMetadataDao {
     )
     suspend fun getMetadatasAfterSize(textSize: Int, limit: Int = LIMIT_ROOM_QUERY_DEFAULT): List<BookMetadataEntity>
 
-//    @RawQuery(observedEntities = [BookMetadataEntity::class])
-//    suspend fun getWithQuery(query: SupportSQLiteQuery): List<BookMetadataEntity>
+    @RawQuery(observedEntities = [BookMetadataEntity::class])
+    suspend fun getWithQuery(query: SupportSQLiteQuery): List<BookMetadataEntity>
 
 }
