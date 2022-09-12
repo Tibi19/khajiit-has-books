@@ -42,7 +42,14 @@ class TestViewModel @Inject constructor(
 
     fun showTest() {
         printTest("")
+        showRawQuery()
     }
+
+    private fun showRawQuery() =
+        viewModelScope.launch {
+            val metadatas = repository.getWithRawQuery()
+            printMetadataTest(metadatas[0])
+        }
 
     private fun saveMetadatas() =
         viewModelScope.launch {
