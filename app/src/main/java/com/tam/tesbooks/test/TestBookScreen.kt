@@ -5,7 +5,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Divider
 import androidx.compose.material.OutlinedTextField
 import androidx.compose.material.Text
@@ -24,7 +26,8 @@ fun TestBookScreen(
     val bookTextState = viewModel.bookText.collectAsState()
     Column(
         modifier = Modifier
-            .padding(16.dp)
+            .padding(horizontal = 16.dp)
+            .padding(top = 16.dp)
             .fillMaxWidth()
     ) {
         OutlinedTextField(
@@ -42,16 +45,17 @@ fun TestBookScreen(
                 .padding(top = 16.dp)
                 .fillMaxSize()
         ) {
+            item {
+                if(metadataState.id < 0) return@item
+
+                Text("Title: ${metadataState.title}")
+                Text("Author: ${metadataState.author}")
+                Text("Description: ${metadataState.description}")
+                Text("Category: ${metadataState.category}")
+                Divider(modifier = Modifier.padding(10.dp))
+            }
+
             items(bookTextState.value.paragraphs.size) { i ->
-
-                if (i == 0) {
-                    Text("Title: ${metadataState.title}")
-                    Text("Author: ${metadataState.author}")
-                    Text("Description: ${metadataState.description}")
-                    Text("Category: ${metadataState.category}")
-                    Divider(modifier = Modifier.padding(10.dp))
-                }
-
                 val paragraph = bookTextState.value.paragraphs[i]
                 Text(
                     text = paragraph,
