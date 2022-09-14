@@ -4,6 +4,5 @@ enum class Order {
     TITLE,
     CATEGORY,
     AUTHOR_NAME,
-    AUTHOR_COUNT,
     SIZE
 }
