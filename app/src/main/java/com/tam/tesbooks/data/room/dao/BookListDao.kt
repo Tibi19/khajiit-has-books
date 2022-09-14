@@ -28,4 +28,7 @@ interface BookListDao {
             "WHERE table_book_save.bookId = :bookId")
     suspend fun getBookListsOfBookId(bookId: Int): List<BookListEntity>
 
+    @Query("SELECT COUNT(id) FROM table_book_list WHERE isDefault = 1")
+    suspend fun getDefaultBookListsCount(): Int
+
 }

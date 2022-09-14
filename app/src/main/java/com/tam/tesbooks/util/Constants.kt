@@ -16,4 +16,9 @@ const val PATH_BOOKS_TAGS = "books_tags.json"
 const val PATH_BOOK_TEXTS_FOLDER = "book_texts/"
 
 const val SIZE_BOOK_METADATAS = 5395
+const val SIZE_DEFAULT_BOOK_LISTS = 3
 const val LIMIT_ROOM_QUERY_DEFAULT = 20
+
+const val DEFAULT_BOOK_LIST_READ = "Read"
+const val DEFAULT_BOOK_LIST_READ_LATER = "Read Later"
+const val DEFAULT_BOOK_LIST_FAVORITE = "Favorite"
