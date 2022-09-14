@@ -1,4 +1,4 @@
-package com.tam.tesbooks.data.room.raw_query
+package com.tam.tesbooks.data.room.query
 
 import androidx.sqlite.db.SimpleSQLiteQuery
 import androidx.sqlite.db.SupportSQLiteQuery
@@ -9,7 +9,7 @@ import com.tam.tesbooks.util.TABLE_BOOK_SAVE
 import java.time.LocalDateTime
 import java.time.ZoneId
 
-class BookMetadataQuery(val query: String) {
+class DynamicMetadataQuery(val query: String) {
 
     private constructor(builder: Builder): this(builder.query)
 
@@ -45,7 +45,7 @@ class BookMetadataQuery(val query: String) {
         private lateinit var comparator: String
         private lateinit var categoriesOrder: List<String>
 
-        fun build() = BookMetadataQuery(this)
+        fun build() = DynamicMetadataQuery(this)
 
         fun withCategories(categoriesOrder: List<String>) {
             this.categoriesOrder = categoriesOrder
@@ -72,7 +72,7 @@ class BookMetadataQuery(val query: String) {
          * Can be used in conjunction with ordering or sorting by size.
          * Otherwise use except(exceptIds) to omit elements that are not needed.
          */
-        fun after(value: Int) {
+        fun following(value: Int) {
             addNewWhereClause()
             where += "$column $comparator $value"
         }
@@ -81,7 +81,7 @@ class BookMetadataQuery(val query: String) {
          * Can be used in conjunction with ordering or sorting by title.
          * Otherwise use except(exceptIds) to omit elements that are not needed.
          */
-        fun after(value: String) {
+        fun following(value: String) {
             addNewWhereClause()
             where += "$column $comparator \"$value\""
         }
@@ -90,7 +90,7 @@ class BookMetadataQuery(val query: String) {
          * Can be used in conjunction with sorting by date added.
          * Otherwise use except(exceptIds) to omit elements that are not needed.
          */
-        fun after(date: LocalDateTime) {
+        fun following(date: LocalDateTime) {
             addNewWhereClause()
             val timestamp = date.atZone(ZoneId.systemDefault()).toEpochSecond()
             where += "$column $comparator $timestamp"
@@ -146,6 +146,8 @@ class BookMetadataQuery(val query: String) {
         }
 
         fun search(searchQuery: String) {
+            if(searchQuery.isEmpty()) return
+
             val likeQuery = "LIKE '%' || LOWER('$searchQuery') || '%'"
             addNewWhereClause()
             where += "(LOWER(title) $likeQuery OR "
