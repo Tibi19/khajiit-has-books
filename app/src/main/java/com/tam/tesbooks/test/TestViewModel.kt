@@ -26,6 +26,7 @@ class TestViewModel @Inject constructor(
 
     init {
         saveMetadatas()
+        saveDefaultBookLists()
     }
 
     fun search(query: String) {
@@ -48,12 +49,20 @@ class TestViewModel @Inject constructor(
     private fun showRawQuery() =
         viewModelScope.launch {
             val metadatas = repository.getWithRawQuery()
-            printMetadataTest(metadatas[0])
+            metadatas.forEach {
+                printMetadataTest(it)
+            }
+//            printMetadataTest(metadatas[0])
         }
 
     private fun saveMetadatas() =
         viewModelScope.launch {
             repository.saveMetadatas()
+        }
+
+    private fun saveDefaultBookLists() =
+        viewModelScope.launch {
+            repository.saveDefaultBookLists()
         }
 
 }

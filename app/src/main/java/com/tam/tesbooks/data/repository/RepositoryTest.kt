@@ -4,12 +4,14 @@ import com.tam.tesbooks.data.json.JsonLoader
 import com.tam.tesbooks.data.json.dto.BookTextDto
 import com.tam.tesbooks.data.mapper.toEntities
 import com.tam.tesbooks.data.room.database.BookInfoDatabase
+import com.tam.tesbooks.data.room.entity.BookListEntity
 import com.tam.tesbooks.data.room.entity.BookMetadataEntity
+import com.tam.tesbooks.data.room.entity.BookSaveEntity
 import com.tam.tesbooks.data.room.raw_query.BookMetadataQuery
-import com.tam.tesbooks.domain.model.listing_modifier.LibraryOrder
-import com.tam.tesbooks.domain.model.listing_modifier.Order
-import com.tam.tesbooks.util.SIZE_BOOK_METADATAS
-import com.tam.tesbooks.util.getEmptyBookTextDto
+import com.tam.tesbooks.domain.model.listing_modifier.*
+import com.tam.tesbooks.util.*
+import java.time.LocalDateTime
+import java.time.Month
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -32,20 +34,35 @@ class RepositoryTest @Inject constructor(
         bookMetadataDao.insertAllMetadatas(metadatas)
     }
 
+    suspend fun saveDefaultBookLists() {
+        val defaultBookListsCount = bookListDao.getDefaultBookListsCount()
+        if(defaultBookListsCount >= SIZE_DEFAULT_BOOK_LISTS) return
+
+        val defaultBookLists = listOf(
+            BookListEntity(0, DEFAULT_BOOK_LIST_READ, true),
+            BookListEntity(0, DEFAULT_BOOK_LIST_READ_LATER, true),
+            BookListEntity(0, DEFAULT_BOOK_LIST_FAVORITE, true)
+        )
+        defaultBookLists.forEach { bookListDao.insertBookList(it) }
+    }
+
     suspend fun getMetadataFromRoom(bookId: Int): BookMetadataEntity = bookMetadataDao.getMetadata(bookId)
 
     suspend fun getBookText(fileName: String): BookTextDto =
         jsonLoader.getBookText(fileName) ?: getEmptyBookTextDto()
 
     suspend fun getWithRawQuery(): List<BookMetadataEntity> {
-        val libraryOrder = LibraryOrder(Order.SIZE)
-        val query = BookMetadataQuery
+        val libraryOrder = LibraryOrder(Order.SIZE, isReversed = false)
+        val libraryFilter = LibraryFilter(categoryFilters = listOf("Pamphlets"))
+        val bookListSort = BookListSort(Sort.DATE_ADDED)
+        val bookMetadataQuery = BookMetadataQuery
             .build {
-                order(libraryOrder)
-                after(458707)
-                except(listOf(2112, 4604))
+                fromBookList(2)
+                sortList(bookListSort)
+                filter(libraryFilter)
             }
-        return bookMetadataDao.getWithQuery(query.rawQuery)
+        // wrap below with try catch
+        return bookMetadataDao.getMetadatasWithQuery(bookMetadataQuery.rawQuery)
     }
 
 }
