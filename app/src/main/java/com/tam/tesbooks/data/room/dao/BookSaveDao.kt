@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
 import com.tam.tesbooks.data.room.entity.BookSaveEntity
+import java.time.LocalDateTime
 
 @Dao
 interface BookSaveDao {
@@ -11,7 +12,10 @@ interface BookSaveDao {
     @Insert
     suspend fun insertBookSave(bookSaveEntity: BookSaveEntity)
 
-    @Query("DELETE FROM table_bookmark WHERE id = :bookSaveId")
-    suspend fun deleteBookSave(bookSaveId: Int)
+    @Query("DELETE FROM table_book_save WHERE bookId = :bookId AND bookListId = :bookListId")
+    suspend fun deleteBookSave(bookId: Int, bookListId: Int)
+
+    @Query("SELECT dateTimeSaved FROM table_book_save WHERE bookId = :bookId AND bookListId = :bookListId LIMIT 1")
+    suspend fun getDateTimeSaved(bookId: Int, bookListId: Int): LocalDateTime
 
 }
