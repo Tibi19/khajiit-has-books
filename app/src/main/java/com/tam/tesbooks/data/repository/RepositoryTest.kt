@@ -6,12 +6,9 @@ import com.tam.tesbooks.data.mapper.toEntities
 import com.tam.tesbooks.data.room.database.BookInfoDatabase
 import com.tam.tesbooks.data.room.entity.BookListEntity
 import com.tam.tesbooks.data.room.entity.BookMetadataEntity
-import com.tam.tesbooks.data.room.entity.BookSaveEntity
-import com.tam.tesbooks.data.room.raw_query.BookMetadataQuery
+import com.tam.tesbooks.data.room.query.DynamicMetadataQuery
 import com.tam.tesbooks.domain.model.listing_modifier.*
 import com.tam.tesbooks.util.*
-import java.time.LocalDateTime
-import java.time.Month
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -55,14 +52,14 @@ class RepositoryTest @Inject constructor(
         val libraryOrder = LibraryOrder(Order.SIZE, isReversed = false)
         val libraryFilter = LibraryFilter(categoryFilters = listOf("Pamphlets"))
         val bookListSort = BookListSort(Sort.DATE_ADDED)
-        val bookMetadataQuery = BookMetadataQuery
+        val dynamicMetadataQuery = DynamicMetadataQuery
             .build {
                 fromBookList(2)
                 sortList(bookListSort)
                 filter(libraryFilter)
             }
         // wrap below with try catch
-        return bookMetadataDao.getMetadatasWithQuery(bookMetadataQuery.rawQuery)
+        return bookMetadataDao.getMetadatasWithQuery(dynamicMetadataQuery.rawQuery)
     }
 
 }

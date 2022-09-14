@@ -5,6 +5,6 @@ import com.tam.tesbooks.domain.model.metadata.BookMetadata
 
 data class BookInfo(
     val bookId: Int,
-    val bookMetadata: BookMetadata,
+    val metadata: BookMetadata,
     val savedInBookLists: List<BookList>
 )
