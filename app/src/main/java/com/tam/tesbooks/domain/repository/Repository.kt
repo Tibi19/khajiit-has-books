@@ -7,27 +7,27 @@ import com.tam.tesbooks.domain.model.bookmark.Bookmark
 import com.tam.tesbooks.domain.model.listing_modifier.BookListSort
 import com.tam.tesbooks.domain.model.listing_modifier.LibraryFilter
 import com.tam.tesbooks.domain.model.listing_modifier.LibraryOrder
+import com.tam.tesbooks.util.Resource
+import kotlinx.coroutines.flow.Flow
 
 interface Repository {
 
-    suspend fun initializeDatabase()
+    suspend fun initializeDatabase(): Resource<Unit>
 
     suspend fun getBookInfos(
         libraryOrder: LibraryOrder,
         libraryFilter: LibraryFilter,
         alreadyLoadedInfos: List<BookInfo> = emptyList(),
         searchQuery: String = ""
-    ): List<BookInfo>?
+    ): Flow<Resource<List<BookInfo>>>
 
     suspend fun getBookInfosFromList(
         bookList: BookList,
         bookListSort: BookListSort,
         alreadyLoadedInfos: List<BookInfo> = emptyList(),
-    ): List<BookInfo>?
+    ): Flow<Resource<List<BookInfo>>>
 
-    suspend fun getBook(bookInfo: BookInfo): Book
-
-    suspend fun getBookLists(): List<BookList>
+    suspend fun getBookLists(): Resource<List<BookList>>
 
     suspend fun addBookList(bookList: BookList)
 
@@ -39,14 +39,16 @@ interface Repository {
 
     suspend fun removeBookFromList(bookInfo: BookInfo, bookList: BookList)
 
-    suspend fun getBookmarks(lastLoadedBookmark: Bookmark? = null): List<Bookmark>
+    suspend fun getBookmarks(lastLoadedBookmark: Bookmark? = null): Flow<Resource<List<Bookmark>>>
 
     suspend fun addBookmark(bookmark: Bookmark)
 
     suspend fun removeBookmark(bookmark: Bookmark)
 
-    suspend fun getCategories(): List<String>
+    suspend fun getBook(bookInfo: BookInfo): Resource<Book>
 
-    suspend fun getTags(): List<String>
+    suspend fun getCategories(): Resource<List<String>>
+
+    suspend fun getTags(): Resource<List<String>>
 
 }
