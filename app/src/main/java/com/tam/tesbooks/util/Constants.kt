@@ -22,3 +22,9 @@ const val LIMIT_ROOM_QUERY_DEFAULT = 20
 const val DEFAULT_BOOK_LIST_READ = "Read"
 const val DEFAULT_BOOK_LIST_READ_LATER = "Read Later"
 const val DEFAULT_BOOK_LIST_FAVORITE = "Favorite"
+
+const val ERROR_NO_DEFAULT_LISTS = "Default book lists have not been initialized"
+const val ERROR_LOAD_METADATAS = "Could not load books information from file"
+const val ERROR_LOAD_CATEGORIES = "Could not load categories from file"
+const val ERROR_LOAD_TAGS = "Could not load tags from file"
+const val FALLBACK_ERROR_BOOK_INFOS = "Could not load information about books"
