@@ -8,15 +8,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tam.tesbooks.data.repository.RepositoryTest
 import com.tam.tesbooks.domain.model.book.BookInfo
-import com.tam.tesbooks.domain.model.listing_modifier.LibraryFilter
-import com.tam.tesbooks.domain.model.listing_modifier.LibraryOrder
-import com.tam.tesbooks.domain.model.listing_modifier.Order
+import com.tam.tesbooks.domain.model.listing_modifier.*
 import com.tam.tesbooks.domain.repository.Repository
 import com.tam.tesbooks.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 import kotlin.system.measureTimeMillis
@@ -46,14 +45,30 @@ class TestViewModel @Inject constructor(
 
     fun showTest() {
         printTest("")
-        showBookInfos()
+//        showBookInfos()
+        showBookInfosFromList()
     }
+
+    private fun showBookInfosFromList() =
+        viewModelScope.launch {
+            delay(2000)
+            val bookListSort = BookListSort(Sort.TITLE, isReversed = true)
+            val bookList = repository.getBookLists().data?.get(1) ?: return@launch
+            repository.getBookInfosFromList(bookList, bookListSort)
+                .collect{ result ->
+                    result.onResource(
+                        { data -> data?.let { printBookInfosWithLists(data) } },
+                        { error -> error?.let { printTest(error) } },
+                        { isLoading -> printTest("Is loading book infos: $isLoading") }
+                    )
+                }
+        }
 
     private fun showBookInfos() =
         viewModelScope.launch {
             delay(3000)
             val libraryOrder = LibraryOrder(Order.CATEGORY)
-            val libraryFilter = LibraryFilter(isExcludingAnonymous = false)
+            val libraryFilter = LibraryFilter(isExcludingAnonymous = true)
             val alreadyLoaded = listOf<BookInfo>()
             val searchQuery = "argonian"
             val bookInfos = repository.getBookInfos(libraryOrder, libraryFilter, alreadyLoaded, searchQuery)
@@ -62,7 +77,7 @@ class TestViewModel @Inject constructor(
                 result.onResource(
                     { data -> data?.let { printBookInfosWithLists(data) } },
                     { error -> error?.let { printTest(error) } },
-                    { isLoading -> printTest("Is loading boon infos: $isLoading") }
+                    { isLoading -> printTest("Is loading book infos: $isLoading") }
                 )
             }
         }
@@ -81,18 +96,18 @@ class TestViewModel @Inject constructor(
 //            }
 //        }
 
-//    private suspend fun saveBooksTest(bookInfos: List<BookInfo>) {
-//        val bookLists = repository.getBookLists()
-//        repository.addBookToList(bookInfos[0], bookLists[0])
-//        repository.addBookToList(bookInfos[0], bookLists[1])
-//        repository.addBookToList(bookInfos[2], bookLists[2])
-//        repository.addBookToList(bookInfos[4], bookLists[0])
-//        repository.addBookToList(bookInfos[4], bookLists[2])
-//        repository.addBookToList(bookInfos[9], bookLists[0])
-//        repository.addBookToList(bookInfos[9], bookLists[1])
-//        repository.addBookToList(bookInfos[9], bookLists[2])
-//        printTest("Saved books")
-//    }
+    private suspend fun saveBooksTest(bookInfos: List<BookInfo>) {
+        val bookLists = repository.getBookLists().data ?: return
+        repository.addBookToList(bookInfos[0], bookLists[0])
+        repository.addBookToList(bookInfos[0], bookLists[1])
+        repository.addBookToList(bookInfos[2], bookLists[2])
+        repository.addBookToList(bookInfos[4], bookLists[0])
+        repository.addBookToList(bookInfos[4], bookLists[2])
+        repository.addBookToList(bookInfos[9], bookLists[0])
+        repository.addBookToList(bookInfos[9], bookLists[1])
+        repository.addBookToList(bookInfos[9], bookLists[2])
+        printTest("Saved books")
+    }
 
     fun search(query: String) {
         searchQuery = query
