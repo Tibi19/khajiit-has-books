@@ -6,6 +6,7 @@ import com.tam.tesbooks.data.json.dto.BookTextDto
 import com.tam.tesbooks.data.room.entity.BookMetadataEntity
 import com.tam.tesbooks.domain.model.book.BookInfo
 import com.tam.tesbooks.domain.model.metadata.BookMetadata
+import kotlin.system.measureTimeMillis
 
 const val TEST_TAG = "TEST_TES"
 
@@ -55,3 +56,12 @@ fun getEmptyBookTextDto() =
         id = -1,
         paragraphs = emptyList()
     )
+
+suspend inline fun <T> getMeasured(messageBeforeTime: String, get: suspend () -> T): T {
+    var value: T
+    val time = measureTimeMillis {
+        value = get()
+    }
+    printTest("$messageBeforeTime $time")
+    return value
+}
