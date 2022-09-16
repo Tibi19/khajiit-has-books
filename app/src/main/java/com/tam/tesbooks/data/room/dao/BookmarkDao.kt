@@ -25,4 +25,7 @@ interface BookmarkDao {
         limitElements: Int = LIMIT_ROOM_QUERY_DEFAULT
     ): List<BookmarkEntity>
 
+    @Query("SELECT * FROM table_bookmark WHERE bookId = :bookId")
+    suspend fun getBookmarksOfBookId(bookId: Int): List<BookmarkEntity>
+
 }

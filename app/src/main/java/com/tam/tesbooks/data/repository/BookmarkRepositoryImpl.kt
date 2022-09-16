@@ -25,7 +25,17 @@ class BookmarkRepositoryImpl @Inject constructor(
             val bookmarks = bookmarkEntities.toBookmarks()
 
             emit(Resource.Success(bookmarks))
+            emit(Resource.Loading(false))
+        }
+
+    override suspend fun getBookmarksOfBookId(bookId: Int): Flow<Resource<List<Bookmark>>> =
+        flow {
             emit(Resource.Loading(true))
+
+            val bookmarks = bookmarkDao.getBookmarksOfBookId(bookId).toBookmarks()
+
+            emit(Resource.Success(bookmarks))
+            emit(Resource.Loading(false))
         }
 
     override suspend fun addBookmark(bookmark: Bookmark) =

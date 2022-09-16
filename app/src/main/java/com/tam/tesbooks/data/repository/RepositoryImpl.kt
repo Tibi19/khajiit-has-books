@@ -66,14 +66,16 @@ class RepositoryImpl @Inject constructor(
     override suspend fun getBookmarks(lastLoadedBookmark: Bookmark?): Flow<Resource<List<Bookmark>>> =
         bookmarkRepository.getBookmarks(lastLoadedBookmark)
 
+    override suspend fun getBookmarksOfBookId(bookId: Int): Flow<Resource<List<Bookmark>>> =
+        bookmarkRepository.getBookmarksOfBookId(bookId)
+
     override suspend fun addBookmark(bookmark: Bookmark) =
         bookmarkRepository.addBookmark(bookmark)
 
     override suspend fun removeBookmark(bookmark: Bookmark) =
         bookmarkRepository.removeBookmark(bookmark)
 
-    // TODO in json repo
-    override suspend fun getBook(bookInfo: BookInfo): Resource<Book> =
+    override suspend fun getBook(bookInfo: BookInfo): Flow<Resource<Book>> =
         jsonRepository.getBook(bookInfo)
 
     override suspend fun getCategories(): Resource<List<String>> =

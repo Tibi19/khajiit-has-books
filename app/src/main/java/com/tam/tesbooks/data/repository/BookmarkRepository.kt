@@ -8,6 +8,8 @@ interface BookmarkRepository {
 
     suspend fun getBookmarks(lastLoadedBookmark: Bookmark? = null): Flow<Resource<List<Bookmark>>>
 
+    suspend fun getBookmarksOfBookId(bookId: Int): Flow<Resource<List<Bookmark>>>
+
     suspend fun addBookmark(bookmark: Bookmark)
 
     suspend fun removeBookmark(bookmark: Bookmark)
