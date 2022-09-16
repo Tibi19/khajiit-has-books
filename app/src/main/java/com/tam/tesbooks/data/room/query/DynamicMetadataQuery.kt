@@ -148,7 +148,7 @@ class DynamicMetadataQuery(val query: String) {
         fun search(searchQuery: String) {
             if(searchQuery.isEmpty()) return
 
-            val likeQuery = "LIKE '%' || LOWER('$searchQuery') || '%'"
+            val likeQuery = "LIKE '%' || LOWER(\"$searchQuery\") || '%'"
             addNewWhereClause()
             where += "(LOWER(title) $likeQuery OR "
             where += "LOWER(author) $likeQuery OR "
