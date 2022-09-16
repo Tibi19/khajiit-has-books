@@ -33,6 +33,7 @@ const val ERROR_NO_DEFAULT_LISTS = "Default book lists have not been initialized
 const val ERROR_LOAD_METADATAS = "Could not load books information from file"
 const val ERROR_LOAD_CATEGORIES = "Could not load categories from file"
 const val ERROR_LOAD_TAGS = "Could not load tags from file"
+const val ERROR_LOAD_BOOK = "Could not load book from file"
 const val FALLBACK_ERROR_BOOK_INFOS = "Could not load information about books"
 const val FALLBACK_URL_NO_IMAGE = "https://upload.wikimedia.org/wikipedia/commons/0/0a/No-image-available.png"
 

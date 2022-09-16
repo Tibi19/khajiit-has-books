@@ -11,3 +11,8 @@ fun String.toBookParagraph(bookId: Int, paragraphPosition: Int): BookParagraph {
     }
     return TextParagraph(bookId, paragraphPosition, this)
 }
+
+fun List<String>.toBookParagraphs(bookId: Int): List<BookParagraph> =
+    mapIndexed { i, content ->
+        content.toBookParagraph(bookId, i)
+    }

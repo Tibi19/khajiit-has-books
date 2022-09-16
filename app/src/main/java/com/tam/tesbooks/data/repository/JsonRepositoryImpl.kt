@@ -1,11 +1,14 @@
 package com.tam.tesbooks.data.repository
 
 import com.tam.tesbooks.data.json.JsonLoader
+import com.tam.tesbooks.data.mapper.toBookWithContents
 import com.tam.tesbooks.data.mapper.toEntities
 import com.tam.tesbooks.data.room.database.BookInfoDatabase
 import com.tam.tesbooks.domain.model.book.Book
 import com.tam.tesbooks.domain.model.book.BookInfo
 import com.tam.tesbooks.util.*
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
 
 class JsonRepositoryImpl @Inject constructor(
@@ -26,9 +29,21 @@ class JsonRepositoryImpl @Inject constructor(
         return Resource.Success()
     }
 
-    override suspend fun getBook(bookInfo: BookInfo): Resource<Book> {
-        TODO("Not yet implemented")
-    }
+    override suspend fun getBook(bookInfo: BookInfo): Flow<Resource<Book>> =
+        flow {
+            emit(Resource.Loading(true))
+
+            val paragraphContents = jsonLoader.getBookText(bookInfo.metadata.fileName)?.paragraphs
+                ?: run {
+                    emit(Resource.Error(ERROR_LOAD_BOOK))
+                    return@flow
+                }
+
+            val book = bookInfo.toBookWithContents(paragraphContents)
+
+            emit(Resource.Success(book))
+            emit(Resource.Loading(true))
+        }
 
     override suspend fun getCategories(): Resource<List<String>> =
         jsonLoader.getCategoriesDto()
