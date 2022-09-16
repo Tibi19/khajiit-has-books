@@ -14,5 +14,6 @@ data class BookmarkEntity(
     val id: Int = 0,
     val bookId: Int,
     val paragraphPosition: Int,
+    val paragraphContent: String,
     val dateTimeAdded: LocalDateTime
 )

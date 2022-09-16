@@ -5,8 +5,6 @@ import java.time.LocalDateTime
 
 data class Bookmark(
     val id: Int,
-    val bookId: Int,
-    val paragraphPosition: Int,
     val paragraph: BookParagraph,
     val dateTimeAdded: LocalDateTime
 )
