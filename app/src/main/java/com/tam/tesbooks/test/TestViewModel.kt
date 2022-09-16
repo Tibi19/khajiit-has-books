@@ -8,6 +8,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tam.tesbooks.data.repository.RepositoryTest
 import com.tam.tesbooks.domain.model.book.BookInfo
+import com.tam.tesbooks.domain.model.book.ImageParagraph
+import com.tam.tesbooks.domain.model.book.TextParagraph
 import com.tam.tesbooks.domain.model.listing_modifier.*
 import com.tam.tesbooks.domain.repository.Repository
 import com.tam.tesbooks.util.*
@@ -45,8 +47,8 @@ class TestViewModel @Inject constructor(
 
     fun showTest() {
         printTest("")
-//        showBookInfos()
-        showBookInfosFromList()
+        showBookInfos()
+//        showBookInfosFromList()
     }
 
     private fun showBookInfosFromList() =
@@ -68,19 +70,40 @@ class TestViewModel @Inject constructor(
         viewModelScope.launch {
             delay(3000)
             val libraryOrder = LibraryOrder(Order.CATEGORY)
-            val libraryFilter = LibraryFilter(isExcludingAnonymous = true)
+            val libraryFilter = LibraryFilter(isExcludingAnonymous = false)
             val alreadyLoaded = listOf<BookInfo>()
-            val searchQuery = "argonian"
+            val searchQuery = "Crafting Motifs"
             val bookInfos = repository.getBookInfos(libraryOrder, libraryFilter, alreadyLoaded, searchQuery)
 
             bookInfos.collect { result ->
                 result.onResource(
-                    { data -> data?.let { printBookInfosWithLists(data) } },
+                    { data ->
+                        data?.let {
+                            printBookInfosWithLists(data)
+                        }
+                    },
                     { error -> error?.let { printTest(error) } },
                     { isLoading -> printTest("Is loading book infos: $isLoading") }
                 )
             }
         }
+
+    private suspend fun showBookText(bookInfo: BookInfo) =
+        repository.getBook(bookInfo)
+            .collect { result ->
+                result.onResource(
+                    { data ->
+                        data ?: return@onResource
+                        data.paragraphs.forEach { bookParagraph ->
+                            when (bookParagraph) {
+                                is TextParagraph -> printTest(bookParagraph.text)
+                                is ImageParagraph -> printTest(bookParagraph.imageUrl)
+                            }
+                        }
+                    },
+                    { error -> error?.let { printTest(error) } }
+                )
+            }
 
 //    private fun showBookInfosNextPage(alreadyLoaded: List<BookInfo>, stopPage: Boolean = false): Job =
 //        viewModelScope.launch {
