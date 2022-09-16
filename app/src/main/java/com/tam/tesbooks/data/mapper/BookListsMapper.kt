@@ -11,3 +11,9 @@ fun BookListEntity.toBookList() =
         name = name,
         isDefault = isDefault
     )
+
+fun BookList.toEntity() =
+    BookListEntity(
+        name = name,
+        isDefault = isDefault
+    )
