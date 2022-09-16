@@ -27,32 +27,33 @@ class BookInfoRepositoryImpl @Inject constructor(
         libraryFilter: LibraryFilter,
         alreadyLoadedInfos: List<BookInfo>,
         searchQuery: String
-    ): Flow<Resource<List<BookInfo>>> = flow {
-        emit(Resource.Loading(true))
+    ): Flow<Resource<List<BookInfo>>> =
+        flow {
+            emit(Resource.Loading(true))
 
-        val dynamicMetadataQuery = DynamicMetadataQuery
-            .build {
-                decideCategories(libraryOrder.orderBy)
-                order(libraryOrder)
-                search(searchQuery)
-                filter(libraryFilter)
-                decideExclusion(libraryOrder.orderBy, alreadyLoadedInfos)
+            val dynamicMetadataQuery = DynamicMetadataQuery
+                .build {
+                    decideCategories(libraryOrder.orderBy)
+                    order(libraryOrder)
+                    search(searchQuery)
+                    filter(libraryFilter)
+                    decideExclusion(libraryOrder.orderBy, alreadyLoadedInfos)
+                }
+
+            val metadatasResource = getBookMetadatas(dynamicMetadataQuery)
+            metadatasResource.onError { message ->
+                emit(Resource.Error(message!!))
+                return@flow
             }
 
-        val metadatasResource = getBookMetadatas(dynamicMetadataQuery)
-        metadatasResource.onError { message ->
-            emit(Resource.Error(message!!))
-            return@flow
+            val bookInfos = metadatasResource.data!!
+                .toBookInfosWithLists {
+                    bookListDao.getBookListsOfBookId(id)
+                }
+
+            emit(Resource.Success(bookInfos))
+            emit(Resource.Loading(false))
         }
-
-        val bookInfos = metadatasResource.data!!
-            .toBookInfosWithLists {
-                bookListDao.getBookListsOfBookId(id)
-            }
-
-        emit(Resource.Success(bookInfos))
-        emit(Resource.Loading(false))
-    }
 
     private suspend fun getBookMetadatas(dynamicMetadataQuery: DynamicMetadataQuery): Resource<List<BookMetadataEntity>> =
         try {
@@ -97,7 +98,29 @@ class BookInfoRepositoryImpl @Inject constructor(
         bookList: BookList,
         bookListSort: BookListSort,
         alreadyLoadedInfos: List<BookInfo>
-    ): Flow<Resource<List<BookInfo>>> {
-        TODO("Not yet implemented")
-    }
+    ): Flow<Resource<List<BookInfo>>> =
+        flow {
+            emit(Resource.Loading(true))
+
+            val dynamicMetadataQuery = DynamicMetadataQuery
+                .build {
+                    fromBookList(bookList.id)
+                    sortList(bookListSort)
+                    decideExclusion(bookListSort.sortBy, bookList, alreadyLoadedInfos)
+                }
+
+            val metadatasResource = getBookMetadatas(dynamicMetadataQuery)
+            metadatasResource.onError { message ->
+                emit(Resource.Error(message!!))
+                return@flow
+            }
+
+            val bookInfos = metadatasResource.data!!
+                .toBookInfosWithLists {
+                    bookListDao.getBookListsOfBookId(id)
+                }
+
+            emit(Resource.Success(bookInfos))
+            emit(Resource.Loading(false))
+        }
 }

@@ -38,7 +38,6 @@ class RepositoryImpl @Inject constructor(
     ): Flow<Resource<List<BookInfo>>> =
         bookInfoRepository.getBookInfos(libraryOrder, libraryFilter, alreadyLoadedInfos, searchQuery)
 
-    // TODO in book info repo
     override suspend fun getBookInfosFromList(
         bookList: BookList,
         bookListSort: BookListSort,
@@ -49,34 +48,27 @@ class RepositoryImpl @Inject constructor(
     override suspend fun getBookLists(): Resource<List<BookList>> =
         bookListRepository.getBookLists()
 
-    // TODO in book list repo
     override suspend fun addBookList(bookList: BookList) =
         bookListRepository.addBookList(bookList)
 
-    // TODO in book list repo
     override suspend fun editBookList(bookList: BookList) =
         bookListRepository.editBookList(bookList)
 
-    // TODO in book list repo
     override suspend fun removeBookList(bookList: BookList) =
         bookListRepository.removeBookList(bookList)
 
     override suspend fun addBookToList(bookInfo: BookInfo, bookList: BookList) =
-        bookListRepository.removeBookFromList(bookInfo, bookList)
+        bookListRepository.addBookToList(bookInfo, bookList)
 
-    // TODO in book list repo
     override suspend fun removeBookFromList(bookInfo: BookInfo, bookList: BookList) =
         bookListRepository.removeBookFromList(bookInfo, bookList)
 
-    // TODO in bookmark repo
     override suspend fun getBookmarks(lastLoadedBookmark: Bookmark?): Flow<Resource<List<Bookmark>>> =
         bookmarkRepository.getBookmarks(lastLoadedBookmark)
 
-    // TODO in bookmark repo
     override suspend fun addBookmark(bookmark: Bookmark) =
         bookmarkRepository.addBookmark(bookmark)
 
-    // TODO in bookmark repo
     override suspend fun removeBookmark(bookmark: Bookmark) =
         bookmarkRepository.removeBookmark(bookmark)
 

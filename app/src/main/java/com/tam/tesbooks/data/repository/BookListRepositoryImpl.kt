@@ -1,6 +1,7 @@
 package com.tam.tesbooks.data.repository
 
 import com.tam.tesbooks.data.mapper.toBookLists
+import com.tam.tesbooks.data.mapper.toEntity
 import com.tam.tesbooks.data.room.database.BookInfoDatabase
 import com.tam.tesbooks.data.room.entity.BookListEntity
 import com.tam.tesbooks.data.room.entity.BookSaveEntity
@@ -39,24 +40,20 @@ class BookListRepositoryImpl @Inject constructor(
         return Resource.Success(bookListEntities.toBookLists())
     }
 
-    override suspend fun addBookList(bookList: BookList) {
-        TODO("Not yet implemented")
-    }
+    override suspend fun addBookList(bookList: BookList) =
+        bookListDao.insertBookList(bookList.toEntity())
 
-    override suspend fun editBookList(bookList: BookList) {
-        TODO("Not yet implemented")
-    }
+    override suspend fun editBookList(bookList: BookList) =
+        bookListDao.updateBookList(bookList.toEntity())
 
-    override suspend fun removeBookList(bookList: BookList) {
-        TODO("Not yet implemented")
-    }
+    override suspend fun removeBookList(bookList: BookList) =
+        bookListDao.deleteBookList(bookList.id)
 
     override suspend fun addBookToList(bookInfo: BookInfo, bookList: BookList) =
         bookSaveDao.insertBookSave(
             BookSaveEntity(bookInfo.bookId, bookList.id, LocalDateTime.now())
         )
 
-    override suspend fun removeBookFromList(bookInfo: BookInfo, bookList: BookList) {
-        TODO("Not yet implemented")
-    }
+    override suspend fun removeBookFromList(bookInfo: BookInfo, bookList: BookList) =
+        bookSaveDao.deleteBookSave(bookInfo.bookId, bookList.id)
 }
