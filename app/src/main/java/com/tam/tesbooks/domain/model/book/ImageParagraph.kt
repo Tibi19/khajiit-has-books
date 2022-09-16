@@ -8,6 +8,10 @@ class ImageParagraph(bookId: Int, position: Int, content: String) : BookParagrap
     lateinit var imageUrl: String
         private set
 
+    init {
+        parseContent()
+    }
+
     override fun parseContent() {
         val urlRegex = getImageUrlRegex()
         imageUrl = urlRegex.find(content)?.value ?: FALLBACK_URL_NO_IMAGE

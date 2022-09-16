@@ -6,10 +6,6 @@ abstract class BookParagraph(
     val content: String
 ) {
 
-    init{
-        this.parseContent()
-    }
-
     abstract fun parseContent()
 
 }

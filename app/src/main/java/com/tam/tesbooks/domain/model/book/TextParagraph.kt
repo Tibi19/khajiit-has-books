@@ -11,6 +11,10 @@ class TextParagraph(bookId: Int, position: Int, content: String): BookParagraph(
     lateinit var text: String
         private set
 
+    init {
+        parseContent()
+    }
+
     override fun parseContent() {
         parseCleanText()
         parseAttributes()
