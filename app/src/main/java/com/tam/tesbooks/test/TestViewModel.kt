@@ -47,7 +47,7 @@ class TestViewModel @Inject constructor(
 
     fun showTest() {
         printTest("")
-        showBookInfos()
+//        showBookInfos()
 //        showBookInfosFromList()
     }
 

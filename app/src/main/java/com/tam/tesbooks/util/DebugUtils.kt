@@ -1,6 +1,8 @@
 package com.tam.tesbooks.util
 
+import android.content.Context
 import android.util.Log.d
+import android.widget.Toast
 import com.tam.tesbooks.data.json.dto.BookMetadataDto
 import com.tam.tesbooks.data.json.dto.BookTextDto
 import com.tam.tesbooks.data.room.entity.BookMetadataEntity
@@ -65,3 +67,5 @@ suspend inline fun <T> getMeasured(messageBeforeTime: String, get: suspend () ->
     printTest("$messageBeforeTime $time")
     return value
 }
+
+fun showToast(context: Context, message: String) = Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
