@@ -31,7 +31,7 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     //TestBookScreen()
-                    TestNavHost()
+                   TestScaffold()
                 }
             }
         }

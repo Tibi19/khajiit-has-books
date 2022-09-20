@@ -4,6 +4,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.core.text.isDigitsOnly
+import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tam.tesbooks.data.repository.RepositoryTest
@@ -25,7 +26,8 @@ import kotlin.system.measureTimeMillis
 @HiltViewModel
 class TestViewModel @Inject constructor(
     private val repository: Repository,
-    private val repositoryTest: RepositoryTest
+    private val repositoryTest: RepositoryTest,
+    private val savedStateHandle: SavedStateHandle
 ): ViewModel() {
 
     var searchQuery by mutableStateOf("")
@@ -34,6 +36,8 @@ class TestViewModel @Inject constructor(
 
     init {
         initializeDatabase()
+        val bookId: Int? = savedStateHandle[ARG_BOOK_ID]
+        search(bookId?.toString() ?: "")
     }
 
     private fun initializeDatabase() =

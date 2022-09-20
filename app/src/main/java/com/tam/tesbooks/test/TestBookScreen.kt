@@ -24,6 +24,7 @@ fun TestBookScreen(
 ) {
     val metadataState = viewModel.metadata
     val bookTextState = viewModel.bookText.collectAsState()
+
     Column(
         modifier = Modifier
             .padding(horizontal = 16.dp)

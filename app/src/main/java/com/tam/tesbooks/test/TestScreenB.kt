@@ -12,19 +12,15 @@ import androidx.compose.ui.platform.LocalContext
 import com.tam.tesbooks.util.showToast
 
 @Composable
-fun TestScreenB(navigationScaffoldDestinations: Map<TestDestination, () -> Unit>) {
+fun TestScreenB() {
 
-    TestScaffold(navigationScaffoldDestinations) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            Text(text = "B")
-
-        }
+        Text(text = "B")
 
     }
 

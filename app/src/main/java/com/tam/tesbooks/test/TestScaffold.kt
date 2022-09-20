@@ -6,37 +6,45 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
 import com.tam.tesbooks.util.showToast
 import kotlinx.coroutines.launch
 
 @Composable
-fun TestScaffold(navigationScaffoldDestinations: Map<TestDestination, () -> Unit>, content: @Composable () -> Unit) {
+fun TestScaffold() {
     val scaffoldState = rememberScaffoldState()
+    val navController = rememberNavController()
     Scaffold(
         scaffoldState = scaffoldState,
-        bottomBar = { BottomBar(scaffoldState, navigationScaffoldDestinations) },
-        drawerContent = { TestDrawer(navigationScaffoldDestinations) },
-        content = { content() }
+        bottomBar = { BottomBar(scaffoldState, navController) },
+        drawerContent = { TestDrawer(scaffoldState, navController) },
+        content = { TestNavGraph(navController = navController) }
     )
 }
 
 @Composable
-fun BottomBar(scaffoldState: ScaffoldState, navigationScaffoldDestinations: Map<TestDestination, () -> Unit>) {
+fun BottomBar(scaffoldState: ScaffoldState, navController: NavHostController) {
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentDestination = navBackStackEntry?.destination
+    val scope = rememberCoroutineScope()
+
+    val isScreenWithBottomBar = getDestinationsWithBottomBar().any { it.route == currentDestination?.route }
+    if(!isScreenWithBottomBar) return
+
     BottomNavigation(
         backgroundColor = MaterialTheme.colors.secondary,
         contentColor = MaterialTheme.colors.primary,
         elevation = 10.dp
     ) {
-//        val selectedIndex = remember { mutableStateOf(1) }
-        val context = LocalContext.current
-        val scope = rememberCoroutineScope()
 
         BottomNavigationItem(
             icon = { Icon(
@@ -56,10 +64,12 @@ fun BottomBar(scaffoldState: ScaffoldState, navigationScaffoldDestinations: Map<
                 contentDescription = "Home",
                 modifier = Modifier.size(30.dp)
             ) },
-            selected = false,
+            selected = currentDestination?.hierarchy?.any { it.route == TestDestination.A.route } == true,
             onClick = {
-//                selectedIndex.value = 1
-                navigationScaffoldDestinations[TestDestination.A]?.invoke()
+                navController.navigate(TestDestination.A.route) {
+                    popUpTo(navController.graph.findStartDestination().id)
+                    launchSingleTop = true
+                }
             }
         )
 
@@ -69,10 +79,12 @@ fun BottomBar(scaffoldState: ScaffoldState, navigationScaffoldDestinations: Map<
                 contentDescription = "Settings",
                 modifier = Modifier.size(30.dp)
             ) },
-            selected = false,
+            selected = currentDestination?.hierarchy?.any { it.route == TestDestination.B.route } == true,
             onClick = {
-//                selectedIndex.value = 2
-                navigationScaffoldDestinations[TestDestination.B]?.invoke()
+                navController.navigate(TestDestination.B.route) {
+                    popUpTo(navController.graph.findStartDestination().id)
+                    launchSingleTop = true
+                }
             }
         )
     }

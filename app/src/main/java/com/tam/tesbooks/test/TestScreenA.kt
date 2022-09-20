@@ -1,33 +1,47 @@
 package com.tam.tesbooks.test
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Button
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material.TextField
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import com.tam.tesbooks.util.showToast
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import com.tam.tesbooks.util.printTest
 
 @Composable
-fun TestScreenA(navigationScaffoldDestinations: Map<TestDestination, () -> Unit>) {
+fun TestScreenA(navigateToBook: (bookId: Int) -> Unit) {
 
     val context = LocalContext.current
 
-    TestScaffold(navigationScaffoldDestinations) {
+    Column(
+        modifier = Modifier.fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
 
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        var text by remember { mutableStateOf(TextFieldValue("")) }
 
-            Button(onClick = { showToast(context, "Clicked in A") }) {
-                Text(text = "A")
-            }
+        TextField(
+            value = text,
+            modifier = Modifier.width(120.dp),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            onValueChange = { text = it }
+        )
 
+        Spacer(Modifier.size(10.dp))
+
+        Button(onClick = {
+            val bookIdInput = text.text
+            val bookId = if (bookIdInput.isEmpty()) 0 else bookIdInput.toInt()
+            navigateToBook(bookId)
+        }) {
+            Text(text = "Go to Book")
         }
 
     }
