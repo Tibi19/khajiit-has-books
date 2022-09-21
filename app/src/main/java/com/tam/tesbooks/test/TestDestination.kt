@@ -1,6 +1,7 @@
 package com.tam.tesbooks.test
 
-const val ARG_BOOK_ID = "book_id"
+import com.tam.tesbooks.presentation.navigation.ARG_BOOK_ID
+
 const val ARG_C_MESSAGE = "c_message"
 
 sealed class TestDestination(val route: String) {

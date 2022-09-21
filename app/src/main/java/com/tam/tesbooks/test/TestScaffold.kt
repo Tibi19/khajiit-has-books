@@ -6,17 +6,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material.icons.filled.Settings
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import androidx.navigation.NavDestination.Companion.hierarchy
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import com.tam.tesbooks.util.showToast
 import kotlinx.coroutines.launch
 
 @Composable
@@ -25,14 +24,14 @@ fun TestScaffold() {
     val navController = rememberNavController()
     Scaffold(
         scaffoldState = scaffoldState,
-        bottomBar = { BottomBar(scaffoldState, navController) },
+        bottomBar = { TestBottomBar(scaffoldState, navController) },
         drawerContent = { TestDrawer(scaffoldState, navController) },
         content = { TestNavGraph(navController = navController) }
     )
 }
 
 @Composable
-fun BottomBar(scaffoldState: ScaffoldState, navController: NavHostController) {
+fun TestBottomBar(scaffoldState: ScaffoldState, navController: NavHostController) {
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentDestination = navBackStackEntry?.destination
     val scope = rememberCoroutineScope()

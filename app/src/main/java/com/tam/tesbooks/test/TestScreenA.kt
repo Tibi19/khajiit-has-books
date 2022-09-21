@@ -12,7 +12,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
-import com.tam.tesbooks.util.printTest
 
 @Composable
 fun TestScreenA(navigateToBook: (bookId: Int) -> Unit) {

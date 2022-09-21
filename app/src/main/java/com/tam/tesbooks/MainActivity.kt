@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import com.tam.tesbooks.presentation.navigation.NavigationScaffold
 import com.tam.tesbooks.test.*
 import com.tam.tesbooks.ui.theme.KhajiitHasBooksTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -31,7 +32,8 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colors.background
                 ) {
                     //TestBookScreen()
-                   TestScaffold()
+                    //TestScaffold()
+                    NavigationScaffold()
                 }
             }
         }

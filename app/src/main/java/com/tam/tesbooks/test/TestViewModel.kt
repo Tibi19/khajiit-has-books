@@ -13,6 +13,7 @@ import com.tam.tesbooks.domain.model.book.ImageParagraph
 import com.tam.tesbooks.domain.model.book.TextParagraph
 import com.tam.tesbooks.domain.model.listing_modifier.*
 import com.tam.tesbooks.domain.repository.Repository
+import com.tam.tesbooks.presentation.navigation.ARG_BOOK_ID
 import com.tam.tesbooks.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
@@ -77,7 +78,7 @@ class TestViewModel @Inject constructor(
             val libraryFilter = LibraryFilter(isExcludingAnonymous = false)
             val alreadyLoaded = listOf<BookInfo>()
             val searchQuery = "Crafting Motifs"
-            val bookInfos = repository.getBookInfos(libraryOrder, libraryFilter, alreadyLoaded, searchQuery)
+            val bookInfos = repository.getBookInfos(libraryOrder, libraryFilter, searchQuery, alreadyLoaded)
 
             bookInfos.collect { result ->
                 result.onResource(
@@ -93,7 +94,7 @@ class TestViewModel @Inject constructor(
         }
 
     private suspend fun showBookText(bookInfo: BookInfo) =
-        repository.getBook(bookInfo)
+        repository.getBook(bookInfo.bookId)
             .collect { result ->
                 result.onResource(
                     { data ->
