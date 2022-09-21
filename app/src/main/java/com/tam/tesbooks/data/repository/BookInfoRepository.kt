@@ -10,6 +10,8 @@ import kotlinx.coroutines.flow.Flow
 
 interface BookInfoRepository {
 
+    suspend fun getBookInfo(id: Int): Resource<BookInfo>
+
     suspend fun getBookInfos(
         libraryOrder: LibraryOrder,
         libraryFilter: LibraryFilter,

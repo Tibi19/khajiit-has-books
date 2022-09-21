@@ -1,5 +1,6 @@
 package com.tam.tesbooks.data.repository
 
+import com.tam.tesbooks.data.mapper.toBookInfo
 import com.tam.tesbooks.data.mapper.toBookInfosWithLists
 import com.tam.tesbooks.data.room.database.BookInfoDatabase
 import com.tam.tesbooks.data.room.entity.BookMetadataEntity
@@ -12,7 +13,6 @@ import com.tam.tesbooks.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import javax.inject.Inject
-
 class BookInfoRepositoryImpl @Inject constructor(
     database: BookInfoDatabase,
     private val jsonRepository: JsonRepository
@@ -21,6 +21,12 @@ class BookInfoRepositoryImpl @Inject constructor(
     private val bookMetadataDao = database.bookMetadataDao
     private val bookSaveDao = database.bookSaveDao
     private val bookListDao = database.bookListDao
+
+    override suspend fun getBookInfo(id: Int): Resource<BookInfo> {
+        val savedInBookLists = bookListDao.getBookListsOfBookId(id)
+        val bookInfo = bookMetadataDao.getMetadata(id).toBookInfo(savedInBookLists)
+        return Resource.Success(bookInfo)
+    }
 
     override suspend fun getBookInfos(
         libraryOrder: LibraryOrder,
@@ -124,3 +130,4 @@ class BookInfoRepositoryImpl @Inject constructor(
             emit(Resource.Loading(false))
         }
 }
+
