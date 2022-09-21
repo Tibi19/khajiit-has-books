@@ -45,3 +45,11 @@ const val TAG_BOLD = "<bold>"
 const val TAG_HEADER = "<header>"
 const val TAG_QUOTE = "<quote>"
 const val TAG_CENTER = "<center>"
+
+// Timing
+const val TIME_WAIT_AFTER_SEARCH_INPUT = 500L
+
+// Content Description
+const val CONTENT_DRAWER = "Menu Drawer"
+const val CONTENT_LIBRARY = "Home Library"
+const val CONTENT_SETTINGS = "Settings"
