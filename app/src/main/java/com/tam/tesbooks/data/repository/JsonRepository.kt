@@ -9,7 +9,7 @@ interface JsonRepository {
 
     suspend fun saveMetadatasFromJson(): Resource<Unit>
 
-    suspend fun getBook(bookInfo: BookInfo): Flow<Resource<Book>>
+    suspend fun getBook(bookId: Int): Flow<Resource<Book>>
 
     suspend fun getCategories(): Resource<List<String>>
 

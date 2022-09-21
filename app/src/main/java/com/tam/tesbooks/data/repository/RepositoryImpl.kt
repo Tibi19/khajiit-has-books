@@ -21,6 +21,9 @@ class RepositoryImpl @Inject constructor(
     private val bookmarkRepository: BookmarkRepository
 ): Repository {
 
+    override suspend fun getBookInfo(id: Int): Resource<BookInfo> =
+        bookInfoRepository.getBookInfo(id)
+
     override suspend fun initializeDatabase(): Resource<Unit> {
         jsonRepository.saveMetadatasFromJson()
             .onError { message ->
@@ -33,8 +36,8 @@ class RepositoryImpl @Inject constructor(
     override suspend fun getBookInfos(
         libraryOrder: LibraryOrder,
         libraryFilter: LibraryFilter,
-        alreadyLoadedInfos: List<BookInfo>,
-        searchQuery: String
+        searchQuery: String,
+        alreadyLoadedInfos: List<BookInfo>
     ): Flow<Resource<List<BookInfo>>> =
         bookInfoRepository.getBookInfos(libraryOrder, libraryFilter, alreadyLoadedInfos, searchQuery)
 
@@ -75,8 +78,8 @@ class RepositoryImpl @Inject constructor(
     override suspend fun removeBookmark(bookmark: Bookmark) =
         bookmarkRepository.removeBookmark(bookmark)
 
-    override suspend fun getBook(bookInfo: BookInfo): Flow<Resource<Book>> =
-        jsonRepository.getBook(bookInfo)
+    override suspend fun getBook(bookId: Int): Flow<Resource<Book>> =
+        jsonRepository.getBook(bookId)
 
     override suspend fun getCategories(): Resource<List<String>> =
         jsonRepository.getCategories()

@@ -14,11 +14,13 @@ interface Repository {
 
     suspend fun initializeDatabase(): Resource<Unit>
 
+    suspend fun getBookInfo(id: Int): Resource<BookInfo>
+
     suspend fun getBookInfos(
         libraryOrder: LibraryOrder,
         libraryFilter: LibraryFilter,
-        alreadyLoadedInfos: List<BookInfo> = emptyList(),
-        searchQuery: String = ""
+        searchQuery: String = "",
+        alreadyLoadedInfos: List<BookInfo> = emptyList()
     ): Flow<Resource<List<BookInfo>>>
 
     suspend fun getBookInfosFromList(
@@ -47,7 +49,7 @@ interface Repository {
 
     suspend fun removeBookmark(bookmark: Bookmark)
 
-    suspend fun getBook(bookInfo: BookInfo): Flow<Resource<Book>>
+    suspend fun getBook(bookId: Int): Flow<Resource<Book>>
 
     suspend fun getCategories(): Resource<List<String>>
 

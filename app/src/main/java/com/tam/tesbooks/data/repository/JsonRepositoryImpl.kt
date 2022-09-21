@@ -1,6 +1,7 @@
 package com.tam.tesbooks.data.repository
 
 import com.tam.tesbooks.data.json.JsonLoader
+import com.tam.tesbooks.data.mapper.toBookInfo
 import com.tam.tesbooks.data.mapper.toBookWithContents
 import com.tam.tesbooks.data.mapper.toEntities
 import com.tam.tesbooks.data.room.database.BookInfoDatabase
@@ -17,6 +18,7 @@ class JsonRepositoryImpl @Inject constructor(
 ): JsonRepository {
 
     private val bookMetadataDao = database.bookMetadataDao
+    private val bookListDao = database.bookListDao
 
     override suspend fun saveMetadatasFromJson(): Resource<Unit> {
         val metadatasCount = bookMetadataDao.getMetadatasCount()
@@ -29,16 +31,20 @@ class JsonRepositoryImpl @Inject constructor(
         return Resource.Success()
     }
 
-    override suspend fun getBook(bookInfo: BookInfo): Flow<Resource<Book>> =
+    override suspend fun getBook(bookId: Int): Flow<Resource<Book>> =
         flow {
             emit(Resource.Loading(true))
 
-            val paragraphContents = jsonLoader.getBookText(bookInfo.metadata.fileName)?.paragraphs
+            val bookMetadata = bookMetadataDao.getMetadata(bookId)
+
+            val paragraphContents = jsonLoader.getBookText(bookMetadata.fileName)?.paragraphs
                 ?: run {
                     emit(Resource.Error(ERROR_LOAD_BOOK))
                     return@flow
                 }
 
+            val savedInLists = bookListDao.getBookListsOfBookId(bookId)
+            val bookInfo = bookMetadata.toBookInfo(savedInLists)
             val book = bookInfo.toBookWithContents(paragraphContents)
 
             emit(Resource.Success(book))
