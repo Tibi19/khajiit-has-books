@@ -8,7 +8,7 @@ import com.tam.tesbooks.data.room.query.DynamicMetadataQuery
 import com.tam.tesbooks.domain.model.book.BookInfo
 import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.domain.model.listing_modifier.*
-import com.tam.tesbooks.util.FALLBACK_ERROR_BOOK_INFOS
+import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOK_INFOS
 import com.tam.tesbooks.util.Resource
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -67,7 +67,7 @@ class BookInfoRepositoryImpl @Inject constructor(
             Resource.Success(bookMetadatas)
         } catch (e: Exception) {
             e.printStackTrace()
-            Resource.Error(e.message ?: FALLBACK_ERROR_BOOK_INFOS)
+            Resource.Error(e.message ?: FALLBACK_ERROR_LOAD_BOOK_INFOS)
         }
 
     private suspend fun DynamicMetadataQuery.Builder.decideCategories(order: Order?) {
