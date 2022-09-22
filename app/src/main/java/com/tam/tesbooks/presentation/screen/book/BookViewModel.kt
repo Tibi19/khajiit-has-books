@@ -8,7 +8,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tam.tesbooks.domain.repository.Repository
 import com.tam.tesbooks.presentation.navigation.ARG_BOOK_ID
+import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOK
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,6 +24,9 @@ class BookViewModel @Inject constructor(
     var state by mutableStateOf(BookState())
         private set
 
+    private val errorChannel = Channel<String>()
+    val errorFlow = errorChannel.receiveAsFlow()
+
     init {
         loadBook()
     }
@@ -32,7 +38,7 @@ class BookViewModel @Inject constructor(
                 .collect { result ->
                     result.onResource(
                         { data -> state = state.copy(book = data) },
-                        { error -> state = state.copy(error = error) },
+                        { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOK) },
                         { isLoading -> state = state.copy(isLoading = isLoading) }
                     )
                 }

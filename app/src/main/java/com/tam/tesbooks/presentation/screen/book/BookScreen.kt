@@ -13,6 +13,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tam.tesbooks.presentation.reusable.BookParagraphItem
+import com.tam.tesbooks.presentation.reusable.OnErrorEffect
 import com.tam.tesbooks.util.Dimens
 
 @Preview
@@ -20,6 +21,8 @@ import com.tam.tesbooks.util.Dimens
 fun BookScreen(bookViewModel: BookViewModel = hiltViewModel()) {
 
     val state = bookViewModel.state
+
+    OnErrorEffect(errorFlow = bookViewModel.errorFlow)
 
     LazyColumn(
         modifier = Modifier.fillMaxSize()

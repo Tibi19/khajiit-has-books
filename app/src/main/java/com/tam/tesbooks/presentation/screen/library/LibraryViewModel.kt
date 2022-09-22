@@ -12,10 +12,15 @@ import com.tam.tesbooks.domain.model.listing_modifier.LibraryFilter
 import com.tam.tesbooks.domain.model.listing_modifier.LibraryOrder
 import com.tam.tesbooks.domain.repository.Repository
 import com.tam.tesbooks.presentation.navigation.ARG_TAG
+import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOK_INFOS
+import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOK_LISTS
+import com.tam.tesbooks.util.FALLBACK_ERROR_UPDATE_BOOK_INFO
 import com.tam.tesbooks.util.TIME_WAIT_AFTER_SEARCH_INPUT
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -27,6 +32,9 @@ class LibraryViewModel @Inject constructor(
 
     var state by mutableStateOf(LibraryState())
         private set
+
+    private val errorChannel = Channel<String>()
+    val errorFlow = errorChannel.receiveAsFlow()
 
     init {
         checkForTagFilter()
@@ -49,7 +57,7 @@ class LibraryViewModel @Inject constructor(
                         data ?: return@onResource
                         state = state.copy(bookLists = data)
                     },
-                    { error -> state = state.copy(error = error) }
+                    { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOK_LISTS) }
                 )
         }
 
@@ -63,7 +71,7 @@ class LibraryViewModel @Inject constructor(
                             val newBookInfos = state.bookInfos + data
                             state = state.copy(bookInfos = newBookInfos.toMutableList())
                         },
-                        { error -> state = state.copy(error = error) },
+                        { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOK_INFOS) },
                         { isLoading -> state = state.copy(isLoading = isLoading) }
                     )
                 }
@@ -100,13 +108,17 @@ class LibraryViewModel @Inject constructor(
 
     private suspend fun updateBookInfo(bookInfo: BookInfo) =
         repository.getBookInfo(bookInfo.bookId)
-            .onSuccess { updatedBookInfo ->
-                updatedBookInfo ?: return@onSuccess
-                val updateAtIndex = state.bookInfos.indexOfFirst { it.bookId == updatedBookInfo.bookId }
-                val newBookInfos = state.bookInfos.toMutableList()
-                newBookInfos[updateAtIndex] = updatedBookInfo
-                state = state.copy(bookInfos = newBookInfos)
-            }
+            .onResource(
+                { data ->
+                    data ?: return@onResource
+                    val updateAtIndex = state.bookInfos.indexOfFirst { it.bookId == data.bookId }
+                    val newBookInfos = state.bookInfos.toMutableList()
+                    newBookInfos[updateAtIndex] = data
+                    state = state.copy(bookInfos = newBookInfos)
+                },
+                { error -> errorChannel.send(error ?: FALLBACK_ERROR_UPDATE_BOOK_INFO) }
+            )
+
 
     private var searchJob: Job? = null
 

@@ -9,7 +9,6 @@ data class LibraryState(
     val bookInfos: MutableList<BookInfo> = mutableListOf(),
     val bookLists: List<BookList> = listOf(),
     val isLoading: Boolean = false,
-    val error: String? = null,
     val searchQuery: String = "",
     val libraryOrder: LibraryOrder = LibraryOrder(),
     val libraryFilter: LibraryFilter = LibraryFilter()

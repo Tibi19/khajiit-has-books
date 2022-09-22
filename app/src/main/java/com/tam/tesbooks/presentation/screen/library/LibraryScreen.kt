@@ -9,6 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tam.tesbooks.presentation.reusable.BookCardItem
+import com.tam.tesbooks.presentation.reusable.OnErrorEffect
 import com.tam.tesbooks.util.Dimens
 
 @Preview
@@ -18,6 +19,9 @@ fun LibraryScreen(
     goToBookScreen: (bookId: Int) -> Unit = {}
 ) {
     val state = libraryViewModel.state
+
+    OnErrorEffect(errorFlow = libraryViewModel.errorFlow)
+
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
@@ -36,5 +40,7 @@ fun LibraryScreen(
         item {
             Spacer(modifier = Dimens.SIZE_BOTTOM_BAR_HEIGHT)
         }
+
     }
+
 }
