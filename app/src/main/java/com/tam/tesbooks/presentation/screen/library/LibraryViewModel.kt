@@ -69,7 +69,7 @@ class LibraryViewModel @Inject constructor(
                         { data ->
                             data ?: return@onResource
                             val newBookInfos = state.bookInfos + data
-                            state = state.copy(bookInfos = newBookInfos.toMutableList())
+                            state = state.copy(bookInfos = newBookInfos)
                         },
                         { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOK_INFOS) },
                         { isLoading -> state = state.copy(isLoading = isLoading) }
