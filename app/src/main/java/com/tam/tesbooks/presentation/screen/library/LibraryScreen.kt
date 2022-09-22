@@ -25,6 +25,10 @@ fun LibraryScreen(
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
+        item {
+            LibrarySearchBar(libraryViewModel)
+        }
+
         items(state.bookInfos) { bookInfo ->
             BookCardItem(
                 bookInfo = bookInfo,

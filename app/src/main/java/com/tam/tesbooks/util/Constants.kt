@@ -50,9 +50,16 @@ const val TAG_QUOTE = "<quote>"
 const val TAG_CENTER = "<center>"
 
 // Timing
-const val TIME_WAIT_AFTER_SEARCH_INPUT = 500L
+const val TIME_WAIT_AFTER_SEARCH_INPUT = 300L
 
 // Content Description
 const val CONTENT_DRAWER = "Menu Drawer"
 const val CONTENT_LIBRARY = "Home Library"
 const val CONTENT_SETTINGS = "Settings"
+const val CONTENT_ORDER_BOOKS = "Books Ordering Options"
+const val CONTENT_FILTER_BOOKS = "Books Filtering Options"
+const val CONTENT_SORT_LIST = "Sort Book List Options"
+const val CONTENT_SEARCH = "Search for a book"
+
+// UI Text
+const val TEXT_SEARCH = "Search..."
