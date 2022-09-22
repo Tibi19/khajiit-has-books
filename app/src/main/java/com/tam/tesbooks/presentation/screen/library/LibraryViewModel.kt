@@ -68,7 +68,7 @@ class LibraryViewModel @Inject constructor(
                     result.onResource(
                         { data ->
                             data ?: return@onResource
-                            val newBookInfos = state.bookInfos + data
+                            val newBookInfos = if(shouldLoadMore) state.bookInfos + data else data
                             state = state.copy(bookInfos = newBookInfos)
                         },
                         { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOK_INFOS) },
