@@ -10,11 +10,15 @@ import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Sort
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tam.tesbooks.presentation.dialog.filter.FilterByDialog
+import com.tam.tesbooks.presentation.dialog.OrderByDialog
+import com.tam.tesbooks.ui.theme.lightGray
 import com.tam.tesbooks.util.*
 
 @Preview(showBackground = true)
@@ -22,6 +26,8 @@ import com.tam.tesbooks.util.*
 fun LibrarySearchBar(libraryViewModel: LibraryViewModel = hiltViewModel()) {
 
     val state = libraryViewModel.state
+    val isOrderByDialogOpen = remember { mutableStateOf(false) }
+    val isFilterByDialogOpen = remember { mutableStateOf(false) }
 
     Row(
         modifier = Dimens.PADDING_BOTTOM_SMALL
@@ -41,7 +47,7 @@ fun LibrarySearchBar(libraryViewModel: LibraryViewModel = hiltViewModel()) {
                 unfocusedIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent,
                 textColor = Color.White,
-                backgroundColor = MaterialTheme.colors.secondary
+                backgroundColor = lightGray
             ),
             leadingIcon = {
                 Icon(
@@ -54,7 +60,7 @@ fun LibrarySearchBar(libraryViewModel: LibraryViewModel = hiltViewModel()) {
             placeholder = { Text(text = TEXT_SEARCH, color = MaterialTheme.colors.onSecondary) }
         )
 
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = { isFilterByDialogOpen.value = true }) {
             Icon(
                 imageVector = Icons.Default.FilterAlt,
                 contentDescription = CONTENT_FILTER_BOOKS,
@@ -63,7 +69,7 @@ fun LibrarySearchBar(libraryViewModel: LibraryViewModel = hiltViewModel()) {
             )
         }
 
-        IconButton(onClick = { /*TODO*/ }) {
+        IconButton(onClick = { isOrderByDialogOpen.value = true }) {
             Icon(
                 imageVector = Icons.Default.Sort,
                 contentDescription = CONTENT_ORDER_BOOKS,
@@ -72,5 +78,23 @@ fun LibrarySearchBar(libraryViewModel: LibraryViewModel = hiltViewModel()) {
             )
         }
     }
-    
+
+    OrderByDialog(
+        isOpenState = isOrderByDialogOpen,
+        libraryOrder = state.libraryOrder,
+        onSubmitOrder = { newLibraryOrder ->
+            val newOrderEvent = LibraryEvent.OnOrderChange(newLibraryOrder)
+            libraryViewModel.onEvent(newOrderEvent)
+        }
+    )
+
+    FilterByDialog(
+        isOpenState = isFilterByDialogOpen,
+        libraryFilter = state.libraryFilter,
+        onSubmitFilter = { newLibraryFilter ->
+            val newFilterEvent = LibraryEvent.OnFilterChange(newLibraryFilter)
+            libraryViewModel.onEvent(newFilterEvent)
+        }
+    )
+
 }
