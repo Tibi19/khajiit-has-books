@@ -173,7 +173,7 @@ class DynamicMetadataQuery(val query: String) {
             tags.forEachIndexed { i, tag ->
                 where += "LOWER(tags) LIKE '%' || LOWER('$tag') || '%'"
                 if (i < tags.size - 1) {
-                    where += " AND "
+                    where += " OR "
                 }
             }
             where += ")"
@@ -185,7 +185,7 @@ class DynamicMetadataQuery(val query: String) {
             categories.forEachIndexed { i, category ->
                 where += "LOWER(tags) LIKE '%' || LOWER('$category') || '%'"
                 if (i < categories.size - 1) {
-                    where += " AND "
+                    where += " OR "
                 }
             }
             where += ")"
