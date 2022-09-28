@@ -41,19 +41,19 @@ fun BookCardItem(
             ) {
                 Button(
                     onClick = { onChangeBookList(bookInfo, bookLists.getRead()) },
-                    modifier = Dimens.PADDING_HORIZONTAL_SMALL
+                    modifier = Dimens.PADDING_SMALL
                 ) {
                     Text("Read")
                 }
                 Button(
                     onClick = { onChangeBookList(bookInfo, bookLists.getFavorite()) },
-                    modifier = Dimens.PADDING_HORIZONTAL_SMALL
+                    modifier = Dimens.PADDING_SMALL
                 ) {
                     Text("Favorite")
                 }
                 Button(
                     onClick = { showToast(context, "Should show add to list dialog") },
-                    modifier = Dimens.PADDING_HORIZONTAL_SMALL
+                    modifier = Dimens.PADDING_SMALL
                 ) {
                     Text("Add to")
                 }

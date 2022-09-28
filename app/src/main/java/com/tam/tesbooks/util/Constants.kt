@@ -22,6 +22,7 @@ const val PATH_BOOK_TEXTS_FOLDER = "book_texts/"
 const val SIZE_BOOK_METADATAS = 5395
 const val SIZE_DEFAULT_BOOK_LISTS = 3
 const val LIMIT_ROOM_QUERY_DEFAULT = 20
+const val SIZE_TAGS_DIVISIONS_IN_FILTER_DIALOG = 2
 
 // Default lists naming
 const val DEFAULT_BOOK_LIST_READ = "Read"
@@ -38,6 +39,8 @@ const val FALLBACK_ERROR_LOAD_BOOK_INFOS = "Could not load information about boo
 const val FALLBACK_ERROR_LOAD_BOOK_LISTS = "Could not load book lists"
 const val FALLBACK_ERROR_UPDATE_BOOK_INFO = "Could not update book details"
 const val FALLBACK_ERROR_LOAD_BOOK = "Could not load book"
+const val FALLBACK_ERROR_LOAD_TAGS = "Could not load tags"
+const val FALLBACK_ERROR_LOAD_CATEGORIES = "Could not load categories"
 const val FALLBACK_URL_NO_IMAGE = "https://upload.wikimedia.org/wikipedia/commons/0/0a/No-image-available.png"
 
 // Paragraph content tags
@@ -63,3 +66,14 @@ const val CONTENT_SEARCH = "Search for a book"
 
 // UI Text
 const val TEXT_SEARCH = "Search..."
+const val TEXT_ORDER_BY_DIALOG_TITLE = "Library Order"
+const val TEXT_FILTER_BY_DIALOG_TITLE = "Library Filters"
+const val TEXT_CANCEL = "Cancel"
+const val TEXT_SUBMIT = "Submit"
+const val TEXT_TITLE = "Book Title"
+const val TEXT_SIZE = "Book Size"
+const val TEXT_AUTHOR = "Author Name"
+const val TEXT_CATEGORY = "Book Category"
+const val TEXT_FILTER_BY_TAG_SUBTITLE = "Filter By Tag"
+const val TEXT_REVERSE_ORDER = "Reverse Order"
+const val TEXT_EXCLUDE_ANONYMOUS = "Exclude Anonymous Author"
