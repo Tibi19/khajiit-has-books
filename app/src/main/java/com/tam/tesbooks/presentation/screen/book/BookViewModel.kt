@@ -27,6 +27,9 @@ class BookViewModel @Inject constructor(
     private val errorChannel = Channel<String>()
     val errorFlow = errorChannel.receiveAsFlow()
 
+    private val searchLibraryChannel = Channel<Pair<String, String>>()
+    val searchLibraryFlow = searchLibraryChannel.receiveAsFlow()
+
     init {
         loadBook()
     }
@@ -45,7 +48,26 @@ class BookViewModel @Inject constructor(
         }
 
     fun onEvent(event: BookEvent) {
+        when(event) {
+            is BookEvent.OnTagSearch -> searchTag(event.tag)
+            else -> {}
+        }
+    }
 
+    private fun searchTag(tag: String) =
+        viewModelScope.launch {
+            val matchingCategoryToSearch = getMatchingCategoryOfTag(tag)
+            val tagToSearch = if (matchingCategoryToSearch.isEmpty()) tag else ""
+            val searchPair = Pair(tagToSearch, matchingCategoryToSearch)
+            searchLibraryChannel.send(searchPair)
+        }
+
+    private suspend fun getMatchingCategoryOfTag(tag: String): String {
+        repository.getCategories()
+            .onSuccess { categories ->
+                return categories?.find { it == tag } ?: ""
+            }
+        return ""
     }
 
 }

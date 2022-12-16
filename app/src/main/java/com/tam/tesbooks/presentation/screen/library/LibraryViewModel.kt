@@ -11,11 +11,9 @@ import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.domain.model.listing_modifier.LibraryFilter
 import com.tam.tesbooks.domain.model.listing_modifier.LibraryOrder
 import com.tam.tesbooks.domain.repository.Repository
+import com.tam.tesbooks.presentation.navigation.ARG_CATEGORY
 import com.tam.tesbooks.presentation.navigation.ARG_TAG
-import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOK_INFOS
-import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOK_LISTS
-import com.tam.tesbooks.util.FALLBACK_ERROR_UPDATE_BOOK_INFO
-import com.tam.tesbooks.util.TIME_WAIT_AFTER_SEARCH_INPUT
+import com.tam.tesbooks.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.channels.Channel
@@ -38,15 +36,31 @@ class LibraryViewModel @Inject constructor(
 
     init {
         checkForTagFilter()
+        checkForCategoryFilter()
         loadBookLists()
         loadBookInfos()
     }
 
     private fun checkForTagFilter() {
-        val tag = savedStateHandle.get<String>(ARG_TAG) ?: return
+        val tag = savedStateHandle.get<String>(ARG_TAG)?.toNormalArg() ?: return
         val tagLibraryFilter = LibraryFilter(tagFilters = listOf(tag))
         state = state.copy(libraryFilter = tagLibraryFilter)
     }
+
+    private fun checkForCategoryFilter() {
+        val category = savedStateHandle.get<String>(ARG_CATEGORY)?.toNormalArg() ?: return
+        val categoryLibraryFilter = LibraryFilter(tagFilters = listOf(category))
+        state = state.copy(libraryFilter = categoryLibraryFilter)
+    }
+
+//    private fun resolveIsTagFilterAlsoCategory(tag: String): Boolean {
+//        if(categories.contains(tag)) {
+//            val categoryLibraryFilter = LibraryFilter(categoryFilters = listOf(tag))
+//            state = state.copy(libraryFilter = categoryLibraryFilter)
+//            return true
+//        }
+//        return false
+//    }
 
     private fun loadBookLists() =
         viewModelScope.launch {

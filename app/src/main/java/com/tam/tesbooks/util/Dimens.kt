@@ -1,5 +1,6 @@
 package com.tam.tesbooks.util
 
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -22,4 +23,7 @@ object Dimens {
     val SIZE_SEARCH_BAR_ICON = Modifier.size(25.dp)
     val SIZE_BOTTOM_BAR_HEIGHT = Modifier.height(56.dp)
     val SPACING_TEXT_DEFAULT = 22.sp
+    val SPACING_TAGS_FLOW_ROW = 5.dp
+    val SIZE_TAG_TEXT = 12.sp
+    val PADDING_VALUES_TAG_BUTTON = PaddingValues(5.dp)
 }

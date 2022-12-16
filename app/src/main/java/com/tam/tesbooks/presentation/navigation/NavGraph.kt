@@ -32,7 +32,12 @@ fun MainNavGraph(navController: NavHostController) {
         composable(
             route = Destination.Book.route,
             arguments = listOf(navArgument(ARG_BOOK_ID) { type = NavType.IntType }),
-        ) { BookScreen() }
+        ) {
+            BookScreen(goToLibraryWithSearch = { tag, category ->
+                val libraryWithArguments = Destination.Library.createRoute(tag, category)
+                navController.navigate(libraryWithArguments)
+            })
+        }
 
         composable(route = Destination.Bookmarks.route) {}
         composable(route = Destination.Settings.route) { TestBookScreen() }
