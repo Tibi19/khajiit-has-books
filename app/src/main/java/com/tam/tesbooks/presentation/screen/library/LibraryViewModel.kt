@@ -53,15 +53,6 @@ class LibraryViewModel @Inject constructor(
         state = state.copy(libraryFilter = categoryLibraryFilter)
     }
 
-//    private fun resolveIsTagFilterAlsoCategory(tag: String): Boolean {
-//        if(categories.contains(tag)) {
-//            val categoryLibraryFilter = LibraryFilter(categoryFilters = listOf(tag))
-//            state = state.copy(libraryFilter = categoryLibraryFilter)
-//            return true
-//        }
-//        return false
-//    }
-
     private fun loadBookLists() =
         viewModelScope.launch {
             repository

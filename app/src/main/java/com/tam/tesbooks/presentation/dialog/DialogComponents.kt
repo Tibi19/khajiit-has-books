@@ -1,7 +1,9 @@
 package com.tam.tesbooks.presentation.dialog
 
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Text
@@ -28,7 +30,11 @@ fun DefaultDialog(
         content = {
 
             Card(shape = RoundedCornerShape(Dimens.RADIUS_DEFAULT)) {
-                Column(modifier = Dimens.PADDING_DEFAULT.width(IntrinsicSize.Max)) {
+                Column(
+                    modifier = Dimens.PADDING_DEFAULT
+                        .width(IntrinsicSize.Max)
+                        .verticalScroll(rememberScrollState())
+                ) {
                     DialogTitle(title = dialogTitle)
                     dialogBody()
                     DialogButtons(isDialogOpenState = isOpenState) { onSubmit() }

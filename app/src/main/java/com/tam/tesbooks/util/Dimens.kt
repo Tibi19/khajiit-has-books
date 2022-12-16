@@ -1,9 +1,6 @@
 package com.tam.tesbooks.util
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -26,4 +23,7 @@ object Dimens {
     val SPACING_TAGS_FLOW_ROW = 5.dp
     val SIZE_TAG_TEXT = 12.sp
     val PADDING_VALUES_TAG_BUTTON = PaddingValues(5.dp)
+    val WIDTH_TAG_FILTER_WARNING_TEXT = Modifier.fillMaxWidth(0.85f)
+    val SIZE_CANCEL_TAG_FILTER_ICON = Modifier.size(25.dp)
+    val PADDING_TAG_FILTER_WARNING = Modifier.padding(top = 5.dp, start = 15.dp, end = 10.dp)
 }
