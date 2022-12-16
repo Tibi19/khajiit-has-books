@@ -49,7 +49,7 @@ class LibraryViewModel @Inject constructor(
 
     private fun checkForCategoryFilter() {
         val category = savedStateHandle.get<String>(ARG_CATEGORY)?.toNormalArg() ?: return
-        val categoryLibraryFilter = LibraryFilter(tagFilters = listOf(category))
+        val categoryLibraryFilter = LibraryFilter(categoryFilters = listOf(category))
         state = state.copy(libraryFilter = categoryLibraryFilter)
     }
 
