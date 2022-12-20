@@ -26,4 +26,6 @@ object Dimens {
     val WIDTH_TAG_FILTER_WARNING_TEXT = Modifier.fillMaxWidth(0.85f)
     val SIZE_CANCEL_TAG_FILTER_ICON = Modifier.size(25.dp)
     val PADDING_TAG_FILTER_WARNING = Modifier.padding(top = 5.dp, start = 15.dp, end = 10.dp)
+    val SIZE_BOOK_BAR_ICON = Modifier.size(25.dp)
+    val STROKE_WIDTH_OUTLINED_BUTTON = 1.dp
 }

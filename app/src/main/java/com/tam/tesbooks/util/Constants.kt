@@ -67,6 +67,7 @@ const val CONTENT_FILTER_BOOKS = "Books Filtering Options"
 const val CONTENT_SORT_LIST = "Sort Book List Options"
 const val CONTENT_SEARCH = "Search for a book"
 const val CONTENT_CLEAR_TAG_FILTER = "Clear tag filter"
+const val CONTENT_GO_BACK = "Go to previous screen"
 
 // UI Text
 const val TEXT_SEARCH = "Search..."

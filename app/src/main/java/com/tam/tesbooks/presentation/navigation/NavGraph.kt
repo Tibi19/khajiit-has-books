@@ -33,10 +33,13 @@ fun MainNavGraph(navController: NavHostController) {
             route = Destination.Book.route,
             arguments = listOf(navArgument(ARG_BOOK_ID) { type = NavType.IntType }),
         ) {
-            BookScreen(goToLibraryWithSearch = { tag, category ->
-                val libraryWithArguments = Destination.Library.createRoute(tag, category)
-                navController.navigate(libraryWithArguments)
-            })
+            BookScreen(
+                goToLibraryWithSearch = { tag, category ->
+                    val libraryWithArguments = Destination.Library.createRoute(tag, category)
+                    navController.navigate(libraryWithArguments)
+                },
+                goToPreviousScreen = { navController.popBackStack() }
+            )
         }
 
         composable(route = Destination.Bookmarks.route) {}

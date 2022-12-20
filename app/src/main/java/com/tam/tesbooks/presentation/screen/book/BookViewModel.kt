@@ -9,10 +9,7 @@ import androidx.lifecycle.viewModelScope
 import com.tam.tesbooks.domain.model.book.Book
 import com.tam.tesbooks.domain.repository.Repository
 import com.tam.tesbooks.presentation.navigation.ARG_BOOK_ID
-import com.tam.tesbooks.util.ERROR_LOAD_NEXT_BOOK_BECAUSE
-import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOK
-import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOKMARKS
-import com.tam.tesbooks.util.FALLBACK_ERROR_UNKNOWN
+import com.tam.tesbooks.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -35,12 +32,26 @@ class BookViewModel @Inject constructor(
     val searchLibraryFlow = searchLibraryChannel.receiveAsFlow()
 
     init {
+        loadBookLists()
         savedStateHandle.get<Int>(ARG_BOOK_ID)?.let { bookId ->
             loadBook(bookId)
             loadBookBookmarks(bookId)
             loadNextRandomBook(listOf(bookId))
         }
     }
+
+    private fun loadBookLists() =
+        viewModelScope.launch {
+            repository
+                .getBookLists()
+                .onResource(
+                    { data ->
+                        data ?: return@onResource
+                        state = state.copy(bookLists = data)
+                    },
+                    { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOK_LISTS) }
+                )
+        }
 
     private fun loadBook(bookId: Int) =
         viewModelScope.launch {

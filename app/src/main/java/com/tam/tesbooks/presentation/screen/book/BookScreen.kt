@@ -1,34 +1,43 @@
 package com.tam.tesbooks.presentation.screen.book
 
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
-import androidx.compose.material.Text
+import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.material.icons.filled.FilterAlt
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.tam.tesbooks.domain.model.book.Book
+import com.tam.tesbooks.domain.model.book.BookInfo
+import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.presentation.reusable.BookParagraphItem
 import com.tam.tesbooks.presentation.reusable.OnErrorEffect
-import com.tam.tesbooks.util.Dimens
+import com.tam.tesbooks.util.*
 import kotlinx.coroutines.flow.collectLatest
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun BookScreen(
     bookViewModel: BookViewModel = hiltViewModel(),
-    goToLibraryWithSearch: (tag: String, category: String) -> Unit
+    goToLibraryWithSearch: (tag: String, category: String) -> Unit,
+    goToPreviousScreen: () -> Unit
 ) {
     val state = bookViewModel.state
 
@@ -43,15 +52,24 @@ fun BookScreen(
     if(state.booksStack.isEmpty()) return
 
     val pagerState = rememberPagerState()
-    HorizontalPager(
-        count = state.booksStack.size,
-        state = pagerState
-    ) { page ->
-        val currentBook = state.booksStack[page]
-        BookItem(
-            book = currentBook,
-            bookViewModel = bookViewModel
+
+    Column {
+
+        BookBar(
+            book = state.booksStack[pagerState.currentPage],
+            goToPreviousScreen = goToPreviousScreen
         )
+
+        HorizontalPager(
+            count = state.booksStack.size,
+            state = pagerState
+        ) { page ->
+            val currentBook = state.booksStack[page]
+            BookItem(
+                book = currentBook,
+                bookViewModel = bookViewModel
+            )
+        }
     }
 
     LaunchedEffect(key1 = pagerState) {
