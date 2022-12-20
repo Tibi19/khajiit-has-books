@@ -68,6 +68,7 @@ const val CONTENT_SORT_LIST = "Sort Book List Options"
 const val CONTENT_SEARCH = "Search for a book"
 const val CONTENT_CLEAR_TAG_FILTER = "Clear tag filter"
 const val CONTENT_GO_BACK = "Go to previous screen"
+const val CONTENT_CREATE_LIST = "Create new book list"
 
 // UI Text
 const val TEXT_SEARCH = "Search..."
@@ -83,3 +84,5 @@ const val TEXT_FILTER_BY_TAG_SUBTITLE = "Filter By Tag"
 const val TEXT_REVERSE_ORDER = "Reverse Order"
 const val TEXT_EXCLUDE_ANONYMOUS = "Exclude Anonymous Author"
 const val TEXT_FILTER_TAG_WARNING = "Currently filtering for the following tags: "
+const val TEXT_ADD_TO_LISTS_DIALOG_TITLE = "Save to List"
+const val TEXT_NEW_LIST = "New Book List"

@@ -28,4 +28,5 @@ object Dimens {
     val PADDING_TAG_FILTER_WARNING = Modifier.padding(top = 5.dp, start = 15.dp, end = 10.dp)
     val SIZE_BOOK_BAR_ICON = Modifier.size(25.dp)
     val STROKE_WIDTH_OUTLINED_BUTTON = 1.dp
+    val PADDING_START_NEW_LIST_IN_DIALOG = Modifier.padding(start = 4.dp)
 }

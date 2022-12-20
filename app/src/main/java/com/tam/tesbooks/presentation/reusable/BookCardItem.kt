@@ -7,26 +7,25 @@ import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import com.tam.tesbooks.domain.model.book.BookInfo
 import com.tam.tesbooks.domain.model.book_list.BookList
+import com.tam.tesbooks.presentation.dialog.lists.AddBookToListDialog
 import com.tam.tesbooks.util.*
 
-@Preview(showBackground = true)
 @Composable
 fun BookCardItem(
     bookInfo: BookInfo = getTestBookInfo(),
     bookLists: List<BookList> = getTestBookLists(),
-    onChangeBookList: (bookInfo: BookInfo, bookList: BookList) -> Unit = { _, _ -> printTest("Trying to change book list") },
-    onNewList: (name: String) -> Unit = { printTest("Trying to create new book list") },
-    onClick: () -> Unit = { printTest("Trying to open book ${bookInfo.metadata.title}") }
+    onChangeBookList: (bookInfo: BookInfo, bookList: BookList) -> Unit,
+    onClick: () -> Unit
 ) {
 
-    val context = LocalContext.current
+    val isListDialogOpenState = remember { mutableStateOf(false) }
 
     Card(
         shape = RoundedCornerShape(Dimens.RADIUS_DEFAULT),
@@ -52,7 +51,7 @@ fun BookCardItem(
                     Text("Favorite")
                 }
                 Button(
-                    onClick = { showToast(context, "Should show add to list dialog") },
+                    onClick = { isListDialogOpenState.value = true },
                     modifier = Dimens.PADDING_SMALL
                 ) {
                     Text("Add to")
@@ -71,5 +70,11 @@ fun BookCardItem(
 
         }
     }
+
+    AddBookToListDialog(
+        isOpenState = isListDialogOpenState,
+        bookInfo = bookInfo,
+        onChangeBookList = onChangeBookList
+    )
 
 }

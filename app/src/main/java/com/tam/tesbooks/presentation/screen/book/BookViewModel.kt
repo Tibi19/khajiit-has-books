@@ -7,6 +7,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tam.tesbooks.domain.model.book.Book
+import com.tam.tesbooks.domain.model.book.BookInfo
+import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.domain.repository.Repository
 import com.tam.tesbooks.presentation.navigation.ARG_BOOK_ID
 import com.tam.tesbooks.util.*
@@ -112,9 +114,39 @@ class BookViewModel @Inject constructor(
                 loadBookBookmarks(swipedToBook.bookInfo.bookId)
                 loadRandomBookOnSwipingToLastBook(swipedToBook)
             }
+            is BookEvent.OnChangeBookList -> changeBookList(event.bookInfo, event.newBookList)
             else -> {}
         }
     }
+
+    private fun changeBookList(bookInfo: BookInfo, bookList: BookList) =
+        viewModelScope.launch {
+            val isBookInList = bookInfo.savedInBookLists.any { it.id == bookList.id }
+
+            if(isBookInList) {
+                repository.removeBookFromList(bookInfo, bookList)
+            } else {
+                repository.addBookToList(bookInfo, bookList)
+            }
+
+            updateBookInfo(bookInfo)
+        }
+
+    private fun updateBookInfo(bookInfo: BookInfo) =
+        viewModelScope.launch {
+            repository.getBookInfo(bookInfo.bookId)
+                .onResource(
+                    { data ->
+                        data ?: return@onResource
+                        val updateAtIndex = state.booksStack.indexOfFirst { it.bookInfo.bookId == data.bookId }
+                        val newBook = state.booksStack[updateAtIndex].copy(bookInfo = data)
+                        val newBooksStack = state.booksStack.toMutableList()
+                        newBooksStack[updateAtIndex] = newBook
+                        state = state.copy(booksStack = newBooksStack)
+                    },
+                    { error -> errorChannel.send(error ?: FALLBACK_ERROR_UPDATE_BOOK_INFO) }
+                )
+        }
 
     private fun loadRandomBookOnSwipingToLastBook(swipedToBook: Book) {
         val isSwipedToBookLastInStack = swipedToBook == state.booksStack.last()

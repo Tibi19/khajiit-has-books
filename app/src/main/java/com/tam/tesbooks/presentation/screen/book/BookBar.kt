@@ -9,22 +9,25 @@ import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.tam.tesbooks.domain.model.book.Book
 import com.tam.tesbooks.domain.model.book.BookInfo
 import com.tam.tesbooks.domain.model.book_list.BookList
+import com.tam.tesbooks.presentation.dialog.lists.AddBookToListDialog
 import com.tam.tesbooks.util.*
 
 @Composable
 fun BookBar(
-    book: Book,
+    bookInfo: BookInfo,
     goToPreviousScreen: () -> Unit,
-    bookLists: List<BookList> = getTestBookLists(),
-    onChangeBookList: (bookInfo: BookInfo, bookList: BookList) -> Unit = { _, _ -> printTest("Trying to change book list") },
-    onNewList: (name: String) -> Unit = { printTest("Trying to create new book list") },
+    bookLists: List<BookList>,
+    onChangeBookList: (bookInfo: BookInfo, bookList: BookList) -> Unit,
 ) {
+    val isListDialogOpenState = remember { mutableStateOf(false) }
+
     Row(
         modifier = Dimens.PADDING_BOTTOM_SMALL
             .fillMaxWidth()
@@ -51,7 +54,7 @@ fun BookBar(
             color = MaterialTheme.colors.primary
         )
         OutlinedButton(
-            onClick = { onChangeBookList(book.bookInfo, bookLists.getRead()) },
+            onClick = { onChangeBookList(bookInfo, bookLists.getRead()) },
             colors = outlinedButtonColors,
             modifier = Dimens.PADDING_SMALL,
             border = outlinedButtonBorder
@@ -60,7 +63,7 @@ fun BookBar(
         }
 
         OutlinedButton(
-            onClick = { onChangeBookList(book.bookInfo, bookLists.getFavorite()) },
+            onClick = { onChangeBookList(bookInfo, bookLists.getFavorite()) },
             colors = outlinedButtonColors,
             modifier = Dimens.PADDING_SMALL,
             border = outlinedButtonBorder
@@ -69,7 +72,7 @@ fun BookBar(
         }
 
         OutlinedButton(
-            onClick = { printTest("Show add to list dialog in book screen") },
+            onClick = { isListDialogOpenState.value = true },
             colors = outlinedButtonColors,
             modifier = Dimens.PADDING_SMALL,
             border = outlinedButtonBorder
@@ -77,4 +80,10 @@ fun BookBar(
             Text("Add to")
         }
     }
+
+    AddBookToListDialog(
+        isOpenState = isListDialogOpenState,
+        bookInfo = bookInfo,
+        onChangeBookList = onChangeBookList
+    )
 }
