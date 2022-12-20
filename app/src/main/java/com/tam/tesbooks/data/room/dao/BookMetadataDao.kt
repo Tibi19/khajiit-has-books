@@ -15,6 +15,9 @@ interface BookMetadataDao {
     @Query("SELECT * FROM table_book_metadata WHERE id = :bookId")
     suspend fun getMetadata(bookId: Int): BookMetadataEntity
 
+    @Query("SELECT * FROM table_book_metadata WHERE id NOT IN (:existingBooksIds) ORDER BY RANDOM() LIMIT 1")
+    suspend fun getRandomMetadata(existingBooksIds: List<Int>): BookMetadataEntity
+
     @Query("SELECT * FROM table_book_metadata")
     suspend fun getMetadatas(): List<BookMetadataEntity>
 

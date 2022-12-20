@@ -51,6 +51,8 @@ interface Repository {
 
     suspend fun getBook(bookId: Int): Flow<Resource<Book>>
 
+    suspend fun getRandomBook(existingBooksIds: List<Int>): Resource<Book?>
+
     suspend fun getCategories(): Resource<List<String>>
 
     suspend fun getTags(): Resource<List<String>>

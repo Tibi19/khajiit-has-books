@@ -81,6 +81,9 @@ class RepositoryImpl @Inject constructor(
     override suspend fun getBook(bookId: Int): Flow<Resource<Book>> =
         jsonRepository.getBook(bookId)
 
+    override suspend fun getRandomBook(existingBooksIds: List<Int>): Resource<Book?> =
+        jsonRepository.getRandomBook(existingBooksIds)
+
     override suspend fun getCategories(): Resource<List<String>> =
         jsonRepository.getCategories()
 

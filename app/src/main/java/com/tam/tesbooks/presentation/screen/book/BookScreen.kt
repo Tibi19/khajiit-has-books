@@ -9,15 +9,22 @@ import androidx.compose.material.Button
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.rememberPagerState
+import com.tam.tesbooks.domain.model.book.Book
 import com.tam.tesbooks.presentation.reusable.BookParagraphItem
 import com.tam.tesbooks.presentation.reusable.OnErrorEffect
 import com.tam.tesbooks.util.Dimens
+import kotlinx.coroutines.flow.collectLatest
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun BookScreen(
     bookViewModel: BookViewModel = hiltViewModel(),
@@ -33,10 +40,40 @@ fun BookScreen(
         }
     }
 
+    if(state.booksStack.isEmpty()) return
+
+    val pagerState = rememberPagerState()
+    HorizontalPager(
+        count = state.booksStack.size,
+        state = pagerState
+    ) { page ->
+        val currentBook = state.booksStack[page]
+        BookItem(
+            book = currentBook,
+            bookViewModel = bookViewModel
+        )
+    }
+
+    LaunchedEffect(key1 = pagerState) {
+        snapshotFlow { pagerState.currentPage }
+            .collectLatest { page ->
+                // Book swipe event should happen only on page change, so return if page is 0
+                if (page == 0) return@collectLatest
+                val bookSwipeEvent = BookEvent.OnBookSwipe(swipedToBookIndex = page)
+                bookViewModel.onEvent(bookSwipeEvent)
+            }
+    }
+}
+
+@Composable
+private fun BookItem(
+    book: Book,
+    bookViewModel: BookViewModel
+) {
     LazyColumn(
         modifier = Modifier.fillMaxSize()
     ) {
-        val metadata = state.book?.bookInfo?.metadata ?: return@LazyColumn
+        val metadata = book.bookInfo.metadata
 
         item {
             Spacer(modifier = Dimens.PADDING_DEFAULT)
@@ -57,7 +94,7 @@ fun BookScreen(
             Spacer(modifier = Dimens.PADDING_DEFAULT)
         }
 
-        items(state.book.paragraphs) { bookParagraph ->
+        items(book.paragraphs) { bookParagraph ->
             BookParagraphItem(
                 bookParagraph = bookParagraph
             )
@@ -67,7 +104,6 @@ fun BookScreen(
             Spacer(modifier = Dimens.PADDING_DEFAULT)
         }
     }
-
 }
 
 @Composable

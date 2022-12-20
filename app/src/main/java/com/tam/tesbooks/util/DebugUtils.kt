@@ -3,6 +3,8 @@ package com.tam.tesbooks.util
 import android.content.Context
 import android.util.Log.d
 import android.widget.Toast
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import com.tam.tesbooks.data.json.dto.BookMetadataDto
 import com.tam.tesbooks.data.json.dto.BookTextDto
 import com.tam.tesbooks.data.room.entity.BookMetadataEntity
@@ -12,6 +14,9 @@ import com.tam.tesbooks.domain.model.book.ImageParagraph
 import com.tam.tesbooks.domain.model.book.TextParagraph
 import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.domain.model.metadata.BookMetadata
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.flow
 import kotlin.system.measureTimeMillis
 
 const val TEST_TAG = "TEST_TES"
@@ -24,6 +29,25 @@ fun printMetadataTest(book: BookMetadata) = printTest("Book id ${book.id}: ${boo
 
 fun printBookInfos(bookInfos: List<BookInfo>) =
     bookInfos.forEach { printMetadataTest(it.metadata) }
+
+fun infiniteFlow(timeout: Long = 1000) =
+    flow {
+        var i = 0
+        while (true) {
+            emit(i++)
+            delay(timeout)
+        }
+    }
+
+@Composable
+fun InfiniteEffect(key: Any = true, timeout: Long = 1000, onEach: () -> Unit) {
+    LaunchedEffect(key1 = key) {
+        infiniteFlow(timeout)
+            .collect {
+                onEach()
+            }
+    }
+}
 
 fun printBookInfosWithLists(bookInfos: List<BookInfo>) =
     bookInfos.forEach { bookInfo ->

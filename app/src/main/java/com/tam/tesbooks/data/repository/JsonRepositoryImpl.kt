@@ -6,7 +6,6 @@ import com.tam.tesbooks.data.mapper.toBookWithContents
 import com.tam.tesbooks.data.mapper.toEntities
 import com.tam.tesbooks.data.room.database.BookInfoDatabase
 import com.tam.tesbooks.domain.model.book.Book
-import com.tam.tesbooks.domain.model.book.BookInfo
 import com.tam.tesbooks.util.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
@@ -50,6 +49,24 @@ class JsonRepositoryImpl @Inject constructor(
             emit(Resource.Success(book))
             emit(Resource.Loading(true))
         }
+
+    override suspend fun getRandomBook(existingBooksIds: List<Int>): Resource<Book?> {
+        val bookMetadatasCount = bookMetadataDao.getMetadatasCount()
+        if(existingBooksIds.size == bookMetadatasCount) {
+            return Resource.Success(null)
+        }
+
+        val randomBookMetadata = bookMetadataDao.getRandomMetadata(existingBooksIds)
+        val paragraphContents = jsonLoader.getBookText(randomBookMetadata.fileName)?.paragraphs
+            ?: run {
+                return Resource.Error(ERROR_LOAD_BOOK)
+            }
+        val savedInLists = bookListDao.getBookListsOfBookId(randomBookMetadata.id)
+        val randomBookInfo = randomBookMetadata.toBookInfo(savedInLists)
+        val randomBook = randomBookInfo.toBookWithContents(paragraphContents)
+
+        return Resource.Success(randomBook)
+    }
 
     override suspend fun getCategories(): Resource<List<String>> =
         jsonLoader.getCategoriesDto()

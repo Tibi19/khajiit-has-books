@@ -6,9 +6,13 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tam.tesbooks.domain.model.book.Book
 import com.tam.tesbooks.domain.repository.Repository
 import com.tam.tesbooks.presentation.navigation.ARG_BOOK_ID
+import com.tam.tesbooks.util.ERROR_LOAD_NEXT_BOOK_BECAUSE
 import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOK
+import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOKMARKS
+import com.tam.tesbooks.util.FALLBACK_ERROR_UNKNOWN
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -31,18 +35,60 @@ class BookViewModel @Inject constructor(
     val searchLibraryFlow = searchLibraryChannel.receiveAsFlow()
 
     init {
-        loadBook()
+        savedStateHandle.get<Int>(ARG_BOOK_ID)?.let { bookId ->
+            loadBook(bookId)
+            loadBookBookmarks(bookId)
+            loadNextRandomBook(listOf(bookId))
+        }
     }
 
-    private fun loadBook() =
+    private fun loadBook(bookId: Int) =
         viewModelScope.launch {
-            val bookId = savedStateHandle.get<Int>(ARG_BOOK_ID) ?: return@launch
             repository.getBook(bookId)
                 .collect { result ->
                     result.onResource(
-                        { data -> state = state.copy(book = data) },
+                        { data ->
+                            data ?: return@onResource
+                            state = state.copy(
+                                booksStack = listOf(data),
+                                isLoading = false
+                            )
+                        },
                         { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOK) },
                         { isLoading -> state = state.copy(isLoading = isLoading) }
+                    )
+                }
+        }
+
+    private fun getExistingBooksIdsFromHistory() = state.booksStack.map { it.bookInfo.bookId }
+
+    private fun loadNextRandomBook(existingBooksIds: List<Int> = getExistingBooksIdsFromHistory()) =
+        viewModelScope.launch {
+            repository.getRandomBook(existingBooksIds)
+                .onResource(
+                    { data ->
+                        data ?: return@onResource
+                        val newBooksStack = state.booksStack + data
+                        state = state.copy(booksStack = newBooksStack)
+                    },
+                    { error ->
+                        val errorReason = error ?: FALLBACK_ERROR_UNKNOWN
+                        val errorMessage = "$ERROR_LOAD_NEXT_BOOK_BECAUSE$errorReason"
+                        errorChannel.send(errorMessage)
+                    }
+                )
+        }
+
+    private fun loadBookBookmarks(bookId: Int) =
+        viewModelScope.launch {
+            repository.getBookmarksOfBookId(bookId)
+                .collect { result ->
+                    result.onResource(
+                        { data ->
+                            data ?: return@onResource
+                            state = state.copy(bookmarks = data)
+                        },
+                        { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOKMARKS) }
                     )
                 }
         }
@@ -50,8 +96,19 @@ class BookViewModel @Inject constructor(
     fun onEvent(event: BookEvent) {
         when(event) {
             is BookEvent.OnTagSearch -> searchTag(event.tag)
+            is BookEvent.OnBookSwipe -> {
+                val swipedToBook = state.booksStack[event.swipedToBookIndex]
+                loadBookBookmarks(swipedToBook.bookInfo.bookId)
+                loadRandomBookOnSwipingToLastBook(swipedToBook)
+            }
             else -> {}
         }
+    }
+
+    private fun loadRandomBookOnSwipingToLastBook(swipedToBook: Book) {
+        val isSwipedToBookLastInStack = swipedToBook == state.booksStack.last()
+        if(!isSwipedToBookLastInStack) return
+        loadNextRandomBook()
     }
 
     private fun searchTag(tag: String) =
