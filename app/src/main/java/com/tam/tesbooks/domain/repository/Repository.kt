@@ -9,6 +9,7 @@ import com.tam.tesbooks.domain.model.listing_modifier.LibraryFilter
 import com.tam.tesbooks.domain.model.listing_modifier.LibraryOrder
 import com.tam.tesbooks.util.Resource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.SharedFlow
 
 interface Repository {
 
@@ -56,5 +57,7 @@ interface Repository {
     suspend fun getCategories(): Resource<List<String>>
 
     suspend fun getTags(): Resource<List<String>>
+
+    suspend fun getDataChangeSharedFlow(): SharedFlow<ChangingData>
 
 }

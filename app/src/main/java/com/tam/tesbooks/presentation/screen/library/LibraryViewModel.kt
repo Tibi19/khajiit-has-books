@@ -39,6 +39,12 @@ class LibraryViewModel @Inject constructor(
         checkForCategoryFilter()
         loadBookLists()
         loadBookInfos()
+
+        refreshDataObserver(
+            viewModelScope = viewModelScope,
+            repository = repository,
+            refreshBookSavedInLists = { bookInfo -> updateBookInfo(bookInfo) }
+        )
     }
 
     private fun checkForTagFilter() {
@@ -107,23 +113,23 @@ class LibraryViewModel @Inject constructor(
             } else {
                 repository.addBookToList(bookInfo, bookList)
             }
-
-            updateBookInfo(bookInfo)
         }
 
-    private suspend fun updateBookInfo(bookInfo: BookInfo) =
-        repository.getBookInfo(bookInfo.bookId)
-            .onResource(
-                { data ->
-                    data ?: return@onResource
-                    val updateAtIndex = state.bookInfos.indexOfFirst { it.bookId == data.bookId }
-                    val newBookInfos = state.bookInfos.toMutableList()
-                    newBookInfos[updateAtIndex] = data
-                    state = state.copy(bookInfos = newBookInfos)
-                },
-                { error -> errorChannel.send(error ?: FALLBACK_ERROR_UPDATE_BOOK_INFO) }
-            )
-
+    private fun updateBookInfo(bookInfo: BookInfo) =
+        viewModelScope.launch {
+            repository.getBookInfo(bookInfo.bookId)
+                .onResource(
+                    { data ->
+                        data ?: return@onResource
+                        val updateAtIndex = state.bookInfos.indexOfFirst { it.bookId == data.bookId }
+                        if (updateAtIndex < 0) return@onResource
+                        val newBookInfos = state.bookInfos.toMutableList()
+                        newBookInfos[updateAtIndex] = data
+                        state = state.copy(bookInfos = newBookInfos)
+                    },
+                    { error -> errorChannel.send(error ?: FALLBACK_ERROR_UPDATE_BOOK_INFO) }
+                )
+        }
 
     private var searchJob: Job? = null
 

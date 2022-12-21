@@ -5,9 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tam.tesbooks.domain.repository.ChangingData
 import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.domain.repository.Repository
 import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOK_LISTS
+import com.tam.tesbooks.util.refreshDataObserver
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
@@ -27,6 +29,12 @@ class ListsViewModel @Inject constructor(
 
     init {
         loadBookLists()
+
+        refreshDataObserver(
+            viewModelScope = viewModelScope,
+            repository = repository,
+            refreshBookLists = { loadBookLists() }
+        )
     }
 
     private fun loadBookLists() =

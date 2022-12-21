@@ -40,6 +40,16 @@ class BookViewModel @Inject constructor(
             loadBookBookmarks(bookId)
             loadNextRandomBook(listOf(bookId))
         }
+
+        refreshDataObserver(
+            viewModelScope = viewModelScope,
+            repository = repository,
+            refreshBookSavedInLists = { bookInfo -> updateBookInfo(bookInfo) },
+            refreshBookmarks = {
+                val currentBook = state.curentBook ?: return@refreshDataObserver
+                loadBookBookmarks(currentBook.bookInfo.bookId)
+            }
+        )
     }
 
     private fun loadBookLists() =
@@ -110,7 +120,8 @@ class BookViewModel @Inject constructor(
         when(event) {
             is BookEvent.OnTagSearch -> searchTag(event.tag)
             is BookEvent.OnBookSwipe -> {
-                val swipedToBook = state.booksStack[event.swipedToBookIndex]
+                state = state.copy(currentBookIndex = event.swipedToBookIndex)
+                val swipedToBook = state.curentBook ?: return
                 loadBookBookmarks(swipedToBook.bookInfo.bookId)
                 loadRandomBookOnSwipingToLastBook(swipedToBook)
             }
@@ -128,8 +139,6 @@ class BookViewModel @Inject constructor(
             } else {
                 repository.addBookToList(bookInfo, bookList)
             }
-
-            updateBookInfo(bookInfo)
         }
 
     private fun updateBookInfo(bookInfo: BookInfo) =

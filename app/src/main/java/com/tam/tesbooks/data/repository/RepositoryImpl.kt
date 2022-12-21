@@ -7,9 +7,13 @@ import com.tam.tesbooks.domain.model.bookmark.Bookmark
 import com.tam.tesbooks.domain.model.listing_modifier.BookListSort
 import com.tam.tesbooks.domain.model.listing_modifier.LibraryFilter
 import com.tam.tesbooks.domain.model.listing_modifier.LibraryOrder
+import com.tam.tesbooks.domain.repository.ChangingData
 import com.tam.tesbooks.domain.repository.Repository
 import com.tam.tesbooks.util.Resource
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.SharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -33,6 +37,10 @@ class RepositoryImpl @Inject constructor(
         return Resource.Success()
     }
 
+    private val dataChangeSharedFlow = MutableSharedFlow<ChangingData>()
+    override suspend fun getDataChangeSharedFlow(): SharedFlow<ChangingData> =
+        dataChangeSharedFlow.asSharedFlow()
+
     override suspend fun getBookInfos(
         libraryOrder: LibraryOrder,
         libraryFilter: LibraryFilter,
@@ -53,18 +61,23 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun addBookList(bookList: BookList) =
         bookListRepository.addBookList(bookList)
+            .also { dataChangeSharedFlow.emit(ChangingData.BookLists) }
 
     override suspend fun editBookList(bookList: BookList) =
         bookListRepository.editBookList(bookList)
+            .also { dataChangeSharedFlow.emit(ChangingData.BookLists) }
 
     override suspend fun removeBookList(bookList: BookList) =
         bookListRepository.removeBookList(bookList)
+            .also { dataChangeSharedFlow.emit(ChangingData.BookLists) }
 
     override suspend fun addBookToList(bookInfo: BookInfo, bookList: BookList) =
         bookListRepository.addBookToList(bookInfo, bookList)
+            .also { dataChangeSharedFlow.emit(ChangingData.BookSavedInLists(bookInfo)) }
 
     override suspend fun removeBookFromList(bookInfo: BookInfo, bookList: BookList) =
         bookListRepository.removeBookFromList(bookInfo, bookList)
+            .also { dataChangeSharedFlow.emit(ChangingData.BookSavedInLists(bookInfo)) }
 
     override suspend fun getBookmarks(lastLoadedBookmark: Bookmark?): Flow<Resource<List<Bookmark>>> =
         bookmarkRepository.getBookmarks(lastLoadedBookmark)
@@ -74,9 +87,11 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun addBookmark(bookmark: Bookmark) =
         bookmarkRepository.addBookmark(bookmark)
+            .also { dataChangeSharedFlow.emit(ChangingData.Bookmarks) }
 
     override suspend fun removeBookmark(bookmark: Bookmark) =
         bookmarkRepository.removeBookmark(bookmark)
+            .also { dataChangeSharedFlow.emit(ChangingData.Bookmarks) }
 
     override suspend fun getBook(bookId: Int): Flow<Resource<Book>> =
         jsonRepository.getBook(bookId)
