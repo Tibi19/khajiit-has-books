@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.domain.repository.Repository
 import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOK_LISTS
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -38,6 +39,26 @@ class ListsViewModel @Inject constructor(
                     },
                     { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOK_LISTS) }
                 )
+        }
+
+    fun onEvent(listsEvent: ListsEvent) {
+        when(listsEvent) {
+            is ListsEvent.OnCreateNewList -> createNewList(listsEvent.name)
+            is ListsEvent.OnDeleteList -> deleteList(listsEvent.bookList)
+        }
+    }
+
+    private fun deleteList(bookList: BookList) =
+        viewModelScope.launch {
+            repository.removeBookList(bookList)
+            loadBookLists()
+        }
+
+    private fun createNewList(name: String) =
+        viewModelScope.launch {
+            val newBookList = BookList(name)
+            repository.addBookList(newBookList)
+            loadBookLists()
         }
 
 }

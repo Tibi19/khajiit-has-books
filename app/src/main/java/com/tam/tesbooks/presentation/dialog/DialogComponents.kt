@@ -10,10 +10,12 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.tam.tesbooks.util.Dimens
 import com.tam.tesbooks.util.TEXT_CANCEL
 import com.tam.tesbooks.util.TEXT_SUBMIT
@@ -42,6 +44,36 @@ fun DefaultDialog(
             }
 
         }
+    )
+
+}
+
+@OptIn(ExperimentalComposeUiApi::class)
+@Composable
+fun DynamicDialog(
+    isOpenState: MutableState<Boolean>,
+    onSubmit: () -> Unit,
+    dialogTitle: String,
+    dialogBody: @Composable () -> Unit
+) {
+    Dialog(
+        onDismissRequest = { isOpenState.value = false },
+        content = {
+
+            Card(shape = RoundedCornerShape(Dimens.RADIUS_DEFAULT)) {
+                Column(
+                    modifier = Dimens.PADDING_DEFAULT
+                        .width(IntrinsicSize.Max)
+                        .verticalScroll(rememberScrollState())
+                ) {
+                    DialogTitle(title = dialogTitle)
+                    dialogBody()
+                    DialogButtons(isDialogOpenState = isOpenState) { onSubmit() }
+                }
+            }
+
+        },
+        properties = DialogProperties(usePlatformDefaultWidth = false)
     )
 
 }

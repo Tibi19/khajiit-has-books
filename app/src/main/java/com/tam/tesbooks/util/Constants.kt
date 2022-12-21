@@ -57,6 +57,7 @@ const val TAG_CENTER = "<center>"
 
 // Timing
 const val TIME_WAIT_AFTER_SEARCH_INPUT = 300L
+const val TIME_WAIT_FOR_NEW_LIST_NAME_FOCUS_REQUESTER = 100L
 
 // Content Description
 const val CONTENT_DRAWER = "Menu Drawer"
@@ -69,6 +70,9 @@ const val CONTENT_SEARCH = "Search for a book"
 const val CONTENT_CLEAR_TAG_FILTER = "Clear tag filter"
 const val CONTENT_GO_BACK = "Go to previous screen"
 const val CONTENT_CREATE_LIST = "Create new book list"
+const val CONTENT_CREATE_LIST_DONE = "Submit new list with the specified name"
+const val CONTENT_CREATE_LIST_CANCEL = "Cancel creating new list"
+const val CONTENT_DELETE_LIST = "Delete book list"
 
 // UI Text
 const val TEXT_SEARCH = "Search..."

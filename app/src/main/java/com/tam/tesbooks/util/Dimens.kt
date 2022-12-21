@@ -29,4 +29,6 @@ object Dimens {
     val SIZE_BOOK_BAR_ICON = Modifier.size(25.dp)
     val STROKE_WIDTH_OUTLINED_BUTTON = 1.dp
     val PADDING_START_NEW_LIST_IN_DIALOG = Modifier.padding(start = 4.dp)
+    val PADDING_NEW_LIST_NAME_FIELD = Modifier.padding(start = 17.dp, end = 10.dp, bottom = 5.dp)
+    val WIDTH_VALUE_NEW_LIST_NAME_FIELD = 175.dp
 }

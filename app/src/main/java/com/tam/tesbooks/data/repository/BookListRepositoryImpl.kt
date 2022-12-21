@@ -46,8 +46,10 @@ class BookListRepositoryImpl @Inject constructor(
     override suspend fun editBookList(bookList: BookList) =
         bookListDao.updateBookList(bookList.toEntity())
 
-    override suspend fun removeBookList(bookList: BookList) =
+    override suspend fun removeBookList(bookList: BookList) {
+        if (bookList.isDefault) return
         bookListDao.deleteBookList(bookList.id)
+    }
 
     override suspend fun addBookToList(bookInfo: BookInfo, bookList: BookList) =
         bookSaveDao.insertBookSave(
