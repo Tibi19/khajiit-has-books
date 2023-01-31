@@ -5,9 +5,11 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.TypeConverters
 import com.tam.tesbooks.data.room.converter.LocalDateTimeConverter
+import com.tam.tesbooks.data.room.converter.UuidConverter
 import com.tam.tesbooks.data.room.entity.BookmarkEntity
 import com.tam.tesbooks.util.LIMIT_ROOM_QUERY_DEFAULT
 import java.time.LocalDateTime
+import java.util.*
 
 @Dao
 interface BookmarkDao {
@@ -15,8 +17,9 @@ interface BookmarkDao {
     @Insert
     suspend fun insertBookmark(bookmarkEntity: BookmarkEntity)
 
-    @Query("DELETE FROM table_bookmark WHERE id = :bookmarkId")
-    suspend fun deleteBookmark(bookmarkId: Int)
+    @TypeConverters(UuidConverter::class)
+    @Query("DELETE FROM table_bookmark WHERE uuid = :bookmarkId")
+    suspend fun deleteBookmark(bookmarkId: UUID)
 
     @TypeConverters(LocalDateTimeConverter::class)
     @Query("SELECT * FROM table_bookmark WHERE dateTimeAdded < :before ORDER BY dateTimeAdded DESC LIMIT :limitElements")

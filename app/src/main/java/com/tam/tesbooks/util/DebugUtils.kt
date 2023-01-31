@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlin.system.measureTimeMillis
 
-const val TEST_TAG = "TEST_TES"
+const val TEST_TAG = "tmtest"
 
 fun printTest(message: String) = d(TEST_TAG, message)
 

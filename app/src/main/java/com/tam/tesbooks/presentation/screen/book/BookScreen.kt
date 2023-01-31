@@ -16,6 +16,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
 import com.tam.tesbooks.domain.model.book.Book
+import com.tam.tesbooks.domain.model.bookmark.Bookmark
 import com.tam.tesbooks.presentation.reusable.BookParagraphItem
 import com.tam.tesbooks.presentation.reusable.OnErrorEffect
 import com.tam.tesbooks.util.*
@@ -62,6 +63,7 @@ fun BookScreen(
             val currentBook = state.booksStack[page]
             BookItem(
                 book = currentBook,
+                bookmarks = state.bookmarks,
                 bookViewModel = bookViewModel
             )
         }
@@ -70,8 +72,6 @@ fun BookScreen(
     LaunchedEffect(key1 = pagerState) {
         snapshotFlow { pagerState.currentPage }
             .collectLatest { page ->
-                // Book swipe event should happen only on page change, so return if page is 0
-                if (page == 0) return@collectLatest
                 val bookSwipeEvent = BookEvent.OnBookSwipe(swipedToBookIndex = page)
                 bookViewModel.onEvent(bookSwipeEvent)
             }
@@ -81,6 +81,7 @@ fun BookScreen(
 @Composable
 private fun BookItem(
     book: Book,
+    bookmarks: List<Bookmark>,
     bookViewModel: BookViewModel
 ) {
     LazyColumn(
@@ -98,7 +99,7 @@ private fun BookItem(
                 text = metadata.title
             )
 
-            Text(modifier = Dimens.PADDING_TEXT, text = metadata.author)
+            Text(modifier = Dimens.PADDING_TEXT_OLD, text = metadata.author)
 
             TagsRow(tags = metadata.tags) { tag ->
                 bookViewModel.onEvent(BookEvent.OnTagSearch(tag))
@@ -108,8 +109,15 @@ private fun BookItem(
         }
 
         items(book.paragraphs) { bookParagraph ->
+            val bookmark = bookmarks.find { it.paragraph == bookParagraph }
+            val isParagraphBookmarked = bookmark != null
             BookParagraphItem(
-                bookParagraph = bookParagraph
+                bookParagraph = bookParagraph,
+                onLongPressParagraph = {
+                    val changeBookmarkEvent = BookEvent.OnChangeBookmark(bookParagraph)
+                    bookViewModel.onEvent(changeBookmarkEvent)
+                },
+                shouldHighlightBackground = isParagraphBookmarked
             )
         }
 

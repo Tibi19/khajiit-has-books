@@ -8,4 +8,16 @@ abstract class BookParagraph(
 
     abstract fun parseContent()
 
+    override fun equals(other: Any?): Boolean {
+        if (other !is BookParagraph) return false
+        return this.hashCode() == other.hashCode()
+    }
+
+    override fun hashCode(): Int {
+        var result = bookId
+        result = 31 * result + position
+        result = 31 * result + content.hashCode()
+        return result
+    }
+
 }

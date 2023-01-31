@@ -5,6 +5,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
+val PADDING_TEXT_HORIZONTAL = 15.dp
+val PADDING_TEXT_VERTICAL = 5.dp
+const val BOOKMARK_HIGHLIGHT_ALPHA = 0.15f
+
 object Dimens {
     val PADDING_DEFAULT = Modifier.padding(10.dp)
     val PADDING_SMALL = Modifier.padding(5.dp)
@@ -12,7 +16,7 @@ object Dimens {
     val PADDING_HORIZONTAL_SMALL = Modifier.padding(horizontal = 5.dp)
     val PADDING_BOTTOM = Modifier.padding(bottom = 10.dp)
     val PADDING_BOTTOM_SMALL = Modifier.padding(bottom = 5.dp)
-    val PADDING_TEXT = Modifier.padding(vertical = 5.dp, horizontal = 15.dp)
+    val PADDING_TEXT_OLD = Modifier.padding(vertical = 5.dp, horizontal = 15.dp)
     val PADDING_LAST_TEXT = Modifier.padding(top = 5.dp, bottom = 10.dp, start = 15.dp, end = 15.dp)
     val RADIUS_DEFAULT = 15.dp
     val ELEVATION_DEFAULT = 10.dp

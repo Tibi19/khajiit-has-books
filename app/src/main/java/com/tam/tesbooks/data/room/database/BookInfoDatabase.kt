@@ -18,7 +18,7 @@ import com.tam.tesbooks.data.room.entity.BookmarkEntity
         BookSaveEntity::class,
         BookMetadataEntity::class
     ],
-    version = 5
+    version = 6
 )
 abstract class BookInfoDatabase: RoomDatabase() {
     abstract val bookListDao: BookListDao

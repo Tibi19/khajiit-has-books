@@ -42,6 +42,6 @@ class BookmarkRepositoryImpl @Inject constructor(
         bookmarkDao.insertBookmark(bookmark.toEntity())
 
     override suspend fun removeBookmark(bookmark: Bookmark) =
-        bookmarkDao.deleteBookmark(bookmark.id)
+        bookmarkDao.deleteBookmark(bookmark.uuid)
 
 }

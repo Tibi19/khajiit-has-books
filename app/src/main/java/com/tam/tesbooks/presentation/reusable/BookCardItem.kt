@@ -64,8 +64,8 @@ fun BookCardItem(
                 fontWeight = FontWeight.Bold,
                 modifier = Dimens.PADDING_DEFAULT.fillMaxWidth()
             )
-            Text(modifier = Dimens.PADDING_TEXT, text = bookInfo.metadata.author)
-            Text(modifier = Dimens.PADDING_TEXT, text = bookInfo.metadata.category)
+            Text(modifier = Dimens.PADDING_TEXT_OLD, text = bookInfo.metadata.author)
+            Text(modifier = Dimens.PADDING_TEXT_OLD, text = bookInfo.metadata.category)
             Text(modifier = Dimens.PADDING_LAST_TEXT, text = bookInfo.metadata.description)
 
         }

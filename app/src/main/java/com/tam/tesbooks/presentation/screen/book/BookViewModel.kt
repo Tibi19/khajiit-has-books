@@ -8,7 +8,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.tam.tesbooks.domain.model.book.Book
 import com.tam.tesbooks.domain.model.book.BookInfo
+import com.tam.tesbooks.domain.model.book.BookParagraph
 import com.tam.tesbooks.domain.model.book_list.BookList
+import com.tam.tesbooks.domain.model.bookmark.Bookmark
 import com.tam.tesbooks.domain.repository.Repository
 import com.tam.tesbooks.presentation.navigation.ARG_BOOK_ID
 import com.tam.tesbooks.util.*
@@ -16,6 +18,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import java.time.LocalDateTime
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -110,6 +114,7 @@ class BookViewModel @Inject constructor(
                         { data ->
                             data ?: return@onResource
                             state = state.copy(bookmarks = data)
+                            printTest(data.toString())
                         },
                         { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOKMARKS) }
                     )
@@ -126,9 +131,35 @@ class BookViewModel @Inject constructor(
                 loadRandomBookOnSwipingToLastBook(swipedToBook)
             }
             is BookEvent.OnChangeBookList -> changeBookList(event.bookInfo, event.newBookList)
-            else -> {}
+            is BookEvent.OnChangeBookmark -> changeBookmark(event.paragraph)
         }
     }
+
+    private fun changeBookmark(paragraph: BookParagraph) {
+        val bookmark = state.bookmarks.find{ it.paragraph == paragraph }
+        val isParagraphBookmarked = bookmark != null
+        if (isParagraphBookmarked) {
+            removeBookmark(bookmark!!)
+        } else {
+            addBookmark(paragraph)
+        }
+    }
+
+    private fun removeBookmark(bookmark: Bookmark) =
+        viewModelScope.launch {
+            repository.removeBookmark(bookmark)
+        }
+
+    private fun addBookmark(paragraph: BookParagraph) =
+        viewModelScope.launch {
+            val bookmark = Bookmark(
+                uuid = UUID.randomUUID(),
+                paragraph = paragraph,
+                dateTimeAdded = LocalDateTime.now()
+            )
+            printTest("Adding to db with repository...")
+            repository.addBookmark(bookmark)
+        }
 
     private fun changeBookList(bookInfo: BookInfo, bookList: BookList) =
         viewModelScope.launch {
