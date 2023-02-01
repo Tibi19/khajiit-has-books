@@ -8,6 +8,14 @@ import androidx.compose.ui.unit.sp
 val PADDING_TEXT_HORIZONTAL = 15.dp
 val PADDING_TEXT_VERTICAL = 5.dp
 const val BOOKMARK_HIGHLIGHT_ALPHA = 0.15f
+val PADDING_SMALL = 10.dp
+val PADDING_NORMAL = 18.dp
+val PADDING_LARGE = 20.5.dp
+val PADDING_X_LARGE = 30.dp
+val PADDING_XX_LARGE = 50.dp
+val SIZE_ICON_NORMAL = 23.dp
+val SIZE_TEXT_NORMAL = 18.sp
+val SIZE_TEXT_X_SMALL = 14.sp
 
 object Dimens {
     val PADDING_DEFAULT = Modifier.padding(10.dp)

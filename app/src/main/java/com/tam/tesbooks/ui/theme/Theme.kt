@@ -10,7 +10,8 @@ private val DarkColorPalette = darkColors(
     primary = iceBlue,
     primaryVariant = iceBlueAccent,
     onSecondary = unfocusedIceBlue,
-    secondary = gray
+    secondary = gray,
+    secondaryVariant = darkGray
 )
 
 private val LightColorPalette = lightColors(

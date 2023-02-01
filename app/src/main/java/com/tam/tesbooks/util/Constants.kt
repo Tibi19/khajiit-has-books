@@ -73,6 +73,8 @@ const val CONTENT_CREATE_LIST = "Create new book list"
 const val CONTENT_CREATE_LIST_DONE = "Submit new list with the specified name"
 const val CONTENT_CREATE_LIST_CANCEL = "Cancel creating new list"
 const val CONTENT_DELETE_LIST = "Delete book list"
+const val CONTENT_BANNER = "Application banner"
+const val CONTENT_BOOKMARKS_ICON = "Bookmarks icon"
 
 // UI Text
 const val TEXT_SEARCH = "Search..."
@@ -90,3 +92,4 @@ const val TEXT_EXCLUDE_ANONYMOUS = "Exclude Anonymous Author"
 const val TEXT_FILTER_TAG_WARNING = "Currently filtering for the following tags: "
 const val TEXT_ADD_TO_LISTS_DIALOG_TITLE = "Save to List"
 const val TEXT_NEW_LIST = "New Book List"
+const val TEXT_BOOKMARKS = "Bookmarks"
