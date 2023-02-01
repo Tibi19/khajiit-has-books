@@ -26,29 +26,13 @@ class MainActivity : ComponentActivity() {
         testViewModel.showTest()
         setContent {
             KhajiitHasBooksTheme {
-                // A surface container using the 'background' color from the theme
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.background
                 ) {
-                    //TestBookScreen()
-                    //TestScaffold()
                     NavigationScaffold()
                 }
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String) {
-    Text(text = "Hello $name!")
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    KhajiitHasBooksTheme {
-        Greeting("Android")
     }
 }
