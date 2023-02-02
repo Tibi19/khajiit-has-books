@@ -32,15 +32,18 @@ class DrawerViewModel @Inject constructor(
         refreshDataObserver(
             viewModelScope = viewModelScope,
             repository = repository,
-            refreshBookLists = { loadBookLists() }
+            refreshBookLists = { loadBookLists() },
+            refreshBookSavedInLists = { loadBooksCountInDefaultLists() }
         )
     }
 
     private fun loadBooksCountInDefaultLists() {
         doOnGettingBookLists { bookLists ->
 
+            printTest(bookLists.joinToString(" ; ") { it.name })
+
             val getListLambda: (listName: String) -> BookList? = { listName ->
-                bookLists.first { it.name == listName }
+                bookLists.firstOrNull { it.name == listName }
             }
 
             listOf(

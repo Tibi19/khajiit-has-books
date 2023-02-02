@@ -24,8 +24,8 @@ class BookListRepositoryImpl @Inject constructor(
 
         val defaultBookLists = listOf(
             BookListEntity(0, DEFAULT_BOOK_LIST_VIEWED, true),
-            BookListEntity(0, DEFAULT_BOOK_LIST_READ_LATER, true),
-            BookListEntity(0, DEFAULT_BOOK_LIST_FAVORITE, true)
+            BookListEntity(0, DEFAULT_BOOK_LIST_FAVORITE, true),
+            BookListEntity(0, DEFAULT_BOOK_LIST_READ_LATER, true)
         )
         defaultBookLists.forEach { bookListDao.insertBookList(it) }
     }

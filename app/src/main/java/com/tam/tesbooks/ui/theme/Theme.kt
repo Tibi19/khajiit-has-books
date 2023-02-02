@@ -11,7 +11,8 @@ private val DarkColorPalette = darkColors(
     primaryVariant = iceBlueAccent,
     onSecondary = unfocusedIceBlue,
     secondary = gray,
-    secondaryVariant = darkGray
+    secondaryVariant = darkGray,
+    onSurface = vibrantGray
 )
 
 private val DarkCustomColorPalette = CustomColors(

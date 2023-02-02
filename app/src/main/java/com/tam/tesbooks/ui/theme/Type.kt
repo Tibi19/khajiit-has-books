@@ -24,5 +24,9 @@ val EBGaramondFontFamily = FontFamily(
 val Typography = Typography(
     defaultFontFamily = SourceSansProFamily,
     body1 = TextStyle(fontSize = SIZE_TEXT_X_SMALL),
-    h5 = TextStyle(fontSize = SIZE_TEXT_NORMAL)
+    h5 = TextStyle(fontSize = SIZE_TEXT_NORMAL),
+    button = TextStyle(
+        fontSize = SIZE_TEXT_NORMAL,
+        fontWeight = FontWeight.SemiBold,
+    )
 )
