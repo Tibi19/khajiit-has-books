@@ -25,7 +25,7 @@ const val LIMIT_ROOM_QUERY_DEFAULT = 20
 const val SIZE_TAGS_DIVISIONS_IN_FILTER_DIALOG = 2
 
 // Default lists naming
-const val DEFAULT_BOOK_LIST_READ = "Read"
+const val DEFAULT_BOOK_LIST_VIEWED = "Viewed"
 const val DEFAULT_BOOK_LIST_READ_LATER = "Read Later"
 const val DEFAULT_BOOK_LIST_FAVORITE = "Favorite"
 
@@ -45,6 +45,7 @@ const val FALLBACK_ERROR_LOAD_CATEGORIES = "Could not load categories"
 const val FALLBACK_ERROR_LOAD_BOOKMARKS = "Could not load bookmarks"
 const val FALLBACK_ERROR_UNKNOWN = "Unknown error"
 const val FALLBACK_URL_NO_IMAGE = "https://upload.wikimedia.org/wikipedia/commons/0/0a/No-image-available.png"
+const val FALLBACK_ERROR_COUNT_BOOK_SAVES = "Could not count book saves in book list"
 
 // Paragraph content tags
 const val TAG_IMAGE = "<image="
@@ -75,6 +76,7 @@ const val CONTENT_CREATE_LIST_CANCEL = "Cancel creating new list"
 const val CONTENT_DELETE_LIST = "Delete book list"
 const val CONTENT_BANNER = "Application banner"
 const val CONTENT_BOOKMARKS_ICON = "Bookmarks icon"
+const val CONTENT_FORWARD_BOOKMARKS = "Go to bookmarks screen"
 
 // UI Text
 const val TEXT_SEARCH = "Search..."
@@ -93,3 +95,4 @@ const val TEXT_FILTER_TAG_WARNING = "Currently filtering for the following tags:
 const val TEXT_ADD_TO_LISTS_DIALOG_TITLE = "Save to List"
 const val TEXT_NEW_LIST = "New Book List"
 const val TEXT_BOOKMARKS = "Bookmarks"
+const val TEXT_BOOK_LISTS = "Book Lists"

@@ -79,6 +79,9 @@ class RepositoryImpl @Inject constructor(
         bookListRepository.removeBookFromList(bookInfo, bookList)
             .also { dataChangeSharedFlow.emit(ChangingData.BookSavedInLists(bookInfo)) }
 
+    override suspend fun getBookSavesCountInList(bookList: BookList): Resource<Int> =
+        bookListRepository.getBookSavesCountInList(bookList)
+
     override suspend fun getBookmarks(lastLoadedBookmark: Bookmark?): Flow<Resource<List<Bookmark>>> =
         bookmarkRepository.getBookmarks(lastLoadedBookmark)
 

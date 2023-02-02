@@ -42,6 +42,8 @@ interface Repository {
 
     suspend fun removeBookFromList(bookInfo: BookInfo, bookList: BookList)
 
+    suspend fun getBookSavesCountInList(bookList: BookList): Resource<Int>
+
     suspend fun getBookmarks(lastLoadedBookmark: Bookmark? = null): Flow<Resource<List<Bookmark>>>
 
     suspend fun getBookmarksOfBookId(bookId: Int): Flow<Resource<List<Bookmark>>>

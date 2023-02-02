@@ -20,4 +20,6 @@ interface BookListRepository {
 
     suspend fun removeBookFromList(bookInfo: BookInfo, bookList: BookList)
 
+    suspend fun getBookSavesCountInList(bookList: BookList): Resource<Int>
+
 }

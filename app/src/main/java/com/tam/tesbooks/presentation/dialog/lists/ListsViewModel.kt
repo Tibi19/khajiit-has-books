@@ -59,14 +59,12 @@ class ListsViewModel @Inject constructor(
     private fun deleteList(bookList: BookList) =
         viewModelScope.launch {
             repository.removeBookList(bookList)
-            loadBookLists()
         }
 
     private fun createNewList(name: String) =
         viewModelScope.launch {
             val newBookList = BookList(name)
             repository.addBookList(newBookList)
-            loadBookLists()
         }
 
 }

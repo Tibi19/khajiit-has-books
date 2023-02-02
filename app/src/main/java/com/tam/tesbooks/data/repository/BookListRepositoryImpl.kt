@@ -23,7 +23,7 @@ class BookListRepositoryImpl @Inject constructor(
         if(defaultBookListsCount >= SIZE_DEFAULT_BOOK_LISTS) return
 
         val defaultBookLists = listOf(
-            BookListEntity(0, DEFAULT_BOOK_LIST_READ, true),
+            BookListEntity(0, DEFAULT_BOOK_LIST_VIEWED, true),
             BookListEntity(0, DEFAULT_BOOK_LIST_READ_LATER, true),
             BookListEntity(0, DEFAULT_BOOK_LIST_FAVORITE, true)
         )
@@ -58,4 +58,9 @@ class BookListRepositoryImpl @Inject constructor(
 
     override suspend fun removeBookFromList(bookInfo: BookInfo, bookList: BookList) =
         bookSaveDao.deleteBookSave(bookInfo.bookId, bookList.id)
+
+    override suspend fun getBookSavesCountInList(bookList: BookList): Resource<Int> {
+        val bookSavesCount = bookSaveDao.getBookSavesCountInList(bookList.id)
+        return Resource.Success(bookSavesCount)
+    }
 }

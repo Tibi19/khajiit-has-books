@@ -14,6 +14,10 @@ private val DarkColorPalette = darkColors(
     secondaryVariant = darkGray
 )
 
+private val DarkCustomColorPalette = CustomColors(
+    onSurfaceVariant = shadowGray
+)
+
 private val LightColorPalette = lightColors(
     primary = paperYellow,
     primaryVariant = ashYellow,
@@ -35,12 +39,12 @@ fun KhajiitHasBooksTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
-//    val colors = if (darkTheme) {
-//        DarkColorPalette
-//    } else {
-//        LightColorPalette
-//    }
+//    val colors = if (darkTheme) DarkColorPalette else LightColorPalette
+//    val customColors = if (darkTheme) DarkCustomColorPalette else LightCustomColorPalette
     val colors = DarkColorPalette
+    val customColors = DarkCustomColorPalette
+
+    CustomColors.initialize(customColors)
 
     MaterialTheme(
         colors = colors,
