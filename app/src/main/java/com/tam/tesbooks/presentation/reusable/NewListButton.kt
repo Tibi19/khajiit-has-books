@@ -1,11 +1,12 @@
 package com.tam.tesbooks.presentation.reusable
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.TextField
+import androidx.compose.material.TextFieldDefaults
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Done
@@ -32,24 +33,14 @@ fun NewListButton(
         modifier = modifier
     )
 
-    TextButton(
-        onClick = {
-            if (isCreatingNewListState.value) return@TextButton
-            isCreatingNewListState.value = true
-        },
+    DefaultTextButton(
+        iconPainter = painterResource(id = R.drawable.ic_add),
+        iconContent = CONTENT_CREATE_LIST,
+        text = TEXT_NEW_LIST,
         modifier = modifier
     ) {
-        Image(
-            painter = painterResource(id = R.drawable.ic_add),
-            contentDescription = CONTENT_CREATE_LIST,
-            modifier = Modifier
-                .padding(end = PADDING_NORMAL)
-                .size(SIZE_ICON_NORMAL)
-        )
-        Text(
-            text = TEXT_NEW_LIST,
-            style = MaterialTheme.typography.button
-        )
+        if (isCreatingNewListState.value) return@DefaultTextButton
+        isCreatingNewListState.value = true
     }
 }
 
