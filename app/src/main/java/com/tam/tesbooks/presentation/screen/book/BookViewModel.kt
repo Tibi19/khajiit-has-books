@@ -114,7 +114,6 @@ class BookViewModel @Inject constructor(
                         { data ->
                             data ?: return@onResource
                             state = state.copy(bookmarks = data)
-                            printTest(data.toString())
                         },
                         { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOKMARKS) }
                     )
@@ -157,7 +156,6 @@ class BookViewModel @Inject constructor(
                 paragraph = paragraph,
                 dateTimeAdded = LocalDateTime.now()
             )
-            printTest("Adding to db with repository...")
             repository.addBookmark(bookmark)
         }
 

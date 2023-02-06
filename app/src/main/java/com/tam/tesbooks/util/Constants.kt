@@ -58,7 +58,8 @@ const val TAG_CENTER = "<center>"
 
 // Timing
 const val TIME_WAIT_AFTER_SEARCH_INPUT = 300L
-const val TIME_WAIT_FOR_NEW_LIST_NAME_FOCUS_REQUESTER = 100L
+const val TIME_WAIT_FOR_NEW_NAME_FOCUS_TO_SHOW_KEYBOARD = 150L
+const val TIME_WAIT_FOR_NEW_NAME_KEYBOARD_TO_BRING_PARENT_INTO_VIEW = 150L
 
 // Content Description
 const val CONTENT_DRAWER = "Menu Drawer"
@@ -84,6 +85,8 @@ const val CONTENT_LIST = "Custom list"
 const val CONTENT_LIST_MENU = "Menu of actions on custom list"
 const val CONTENT_CANCEL_ACTION = "Cancel the current action"
 const val CONTENT_CONFIRM_ACTION = "Confirm the current action"
+const val CONTENT_RENAME_LIST_DONE = "Submit new name for this list"
+const val CONTENT_RENAME_LIST_CANCEL = "Cancel renaming this list"
 
 // UI Text
 const val TEXT_SEARCH = "Search..."

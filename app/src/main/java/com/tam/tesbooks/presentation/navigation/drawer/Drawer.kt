@@ -1,28 +1,26 @@
 package com.tam.tesbooks.presentation.navigation.drawer
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
-import androidx.compose.runtime.*
-import androidx.compose.ui.Alignment
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.tam.tesbooks.R
-import com.tam.tesbooks.domain.model.book_list.BookList
-import com.tam.tesbooks.presentation.dialog.ConfirmationDialog
 import com.tam.tesbooks.presentation.reusable.NewListButton
-import com.tam.tesbooks.presentation.reusable.SectionText
+import com.tam.tesbooks.presentation.reusable.OnErrorEffect
 import com.tam.tesbooks.ui.theme.CustomColors
 import com.tam.tesbooks.ui.theme.KhajiitHasBooksTheme
 import com.tam.tesbooks.util.*
@@ -33,8 +31,10 @@ fun Drawer(
     navController: NavHostController,
     drawerViewModel: DrawerViewModel = hiltViewModel()
 ) {
-
     val state = drawerViewModel.state
+    val isCreatingNewListState = remember { mutableStateOf(false) }
+
+    OnErrorEffect(errorFlow = drawerViewModel.errorFlow)
 
     Column(
         modifier = Modifier
@@ -69,11 +69,15 @@ fun Drawer(
             )
         }
 
-        NewListButton(
-            onNewList = { newListName ->
+        if(isCreatingNewListState.value) {
+            NewListRow(isCreatingNewListState = isCreatingNewListState) { newListName ->
                 val createListEvent = DrawerEvent.OnCreateNewList(newListName)
                 drawerViewModel.onEvent(createListEvent)
-            },
+            }
+        }
+
+        NewListButton(
+            isCreatingNewListState = isCreatingNewListState,
             modifier = Modifier.padding(horizontal = PADDING_NEW_LIST_IN_DRAWER)
         )
 

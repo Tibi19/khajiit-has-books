@@ -14,6 +14,7 @@ fun BookListEntity.toBookList() =
 
 fun BookList.toEntity() =
     BookListEntity(
+        id = id,
         name = name,
         isDefault = isDefault
     )

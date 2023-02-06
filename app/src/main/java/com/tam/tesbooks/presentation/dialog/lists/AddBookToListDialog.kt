@@ -100,10 +100,7 @@ fun AddBookToListDialogBody(
         }
 
         NewListButton(
-            onNewList = { newListName ->
-                val createListEvent = ListsEvent.OnCreateNewList(newListName)
-                listsViewModel.onEvent(createListEvent)
-            },
+            isCreatingNewListState = remember { mutableStateOf(false) },
             modifier = Dimens.PADDING_START_NEW_LIST_IN_DIALOG
         )
 

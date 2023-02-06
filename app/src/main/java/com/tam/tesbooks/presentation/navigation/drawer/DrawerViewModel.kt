@@ -40,8 +40,6 @@ class DrawerViewModel @Inject constructor(
     private fun loadBooksCountInDefaultLists() {
         doOnGettingBookLists { bookLists ->
 
-            printTest(bookLists.joinToString(" ; ") { it.name })
-
             val getListLambda: (listName: String) -> BookList? = { listName ->
                 bookLists.firstOrNull { it.name == listName }
             }
