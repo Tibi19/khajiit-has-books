@@ -15,7 +15,6 @@ import com.tam.tesbooks.domain.model.book.TextParagraph
 import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.domain.model.metadata.BookMetadata
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 import kotlin.system.measureTimeMillis
 
@@ -120,13 +119,26 @@ fun getEmptyBookTextDto() =
         paragraphs = emptyList()
     )
 
-suspend inline fun <T> getMeasured(messageBeforeTime: String, get: suspend () -> T): T {
+inline fun <T> getMeasured(
+    messageBeforeTime: String,
+    get: () -> T
+): T {
     var value: T
     val time = measureTimeMillis {
         value = get()
     }
     printTest("$messageBeforeTime $time")
     return value
+}
+
+inline fun doMeasured(
+    messageBeforeTime: String,
+    runnable: () -> Unit
+) {
+    val time = measureTimeMillis {
+        runnable()
+    }
+    printTest("$messageBeforeTime $time")
 }
 
 fun showToast(context: Context, message: String) = Toast.makeText(context, message, Toast.LENGTH_SHORT).show()

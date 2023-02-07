@@ -16,15 +16,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.focus.*
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import com.tam.tesbooks.util.*
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.android.awaitFrame
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -42,15 +42,9 @@ fun RowScope.NewNameField(
 ) {
     if(!isActiveState.value) return
 
-    val keyboard = LocalSoftwareKeyboardController.current
     val newNameFieldFocusRequester = remember { FocusRequester() }
-
     LaunchedEffect(key1 = newNameFieldFocusRequester) {
         newNameFieldFocusRequester.requestFocus()
-        delay(TIME_WAIT_FOR_NEW_NAME_FOCUS_TO_SHOW_KEYBOARD)
-        keyboard?.show()
-        delay(TIME_WAIT_FOR_NEW_NAME_KEYBOARD_TO_BRING_PARENT_INTO_VIEW)
-        bringParentIntoView()
     }
 
     var newNameValue by remember {
@@ -65,7 +59,10 @@ fun RowScope.NewNameField(
         isError = false,
         interactionSource = newNameInteractionSource
     )
-    val isNewNameFocused by newNameInteractionSource.collectIsFocusedAsState()
+    val isNewNameFocusedByInteractionSource by newNameInteractionSource.collectIsFocusedAsState()
+    val coroutineScope = rememberCoroutineScope()
+    val keyboard = LocalSoftwareKeyboardController.current
+    val isKeyboardOpenState = isKeyboardOpenAsState()
 
     BasicTextField(
         value = newNameValue,
@@ -94,13 +91,39 @@ fun RowScope.NewNameField(
         modifier = modifier
             .focusRequester(newNameFieldFocusRequester)
             .onFocusChanged { focusState ->
-                val isTransitioningFromFocusToUnfocus = isNewNameFocused && !focusState.isFocused
+                if (focusState.isFocused) {
+                    coroutineScope.launchRaiseKeyboardJob(
+                        keyboard = keyboard,
+                        isKeyboardOpenState = isKeyboardOpenState,
+                        bringIntoView = bringParentIntoView
+                    )
+                }
+
+                val isTransitioningFromFocusToUnfocus = isNewNameFocusedByInteractionSource && !focusState.isFocused
                 if (isTransitioningFromFocusToUnfocus) {
                     isActiveState.value = false
                 }
             }
     )
 }
+
+@OptIn(ExperimentalComposeUiApi::class)
+private fun CoroutineScope.launchRaiseKeyboardJob(
+    keyboard: SoftwareKeyboardController?,
+    isKeyboardOpenState: State<Boolean>,
+    bringIntoView: suspend () -> Unit
+) =
+    launch {
+        do {
+            delay(TIME_WAIT_TO_RETRY_SHOWING_KEYBOARD_FOR_NAME_FIELD)
+            keyboard?.show()
+        } while (!isKeyboardOpenState.value)
+
+        repeat(TIMES_TO_TRY_BRINGING_INTO_VIEW_NAME_FIELD) {
+            awaitFrame()
+            bringIntoView()
+        }
+    }
 
 @Composable
 private fun BoxScope.NewNameIndicator(colorState: State<Color>) =
@@ -141,7 +164,7 @@ private fun NewNameTrailingIcon(
                 coroutineScope.launch {
                     // onNewName might update state, so we wait for this state and ui to update first
                     // Otherwise, screen will flicker between this and updating isNewNameActiveState
-                    awaitFrame()
+                    delay(TIME_WAIT_FOR_NEW_NAME_UPDATE)
                     isNewNameActiveState.value = false
                 }
             }
