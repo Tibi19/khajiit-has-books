@@ -24,6 +24,7 @@ fun BookListRow(
     bookList: BookList,
     state: DrawerState,
     drawerViewModel: DrawerViewModel,
+    isDrawerOpen: Boolean,
     goToListScreen: () -> Unit
 ) {
     val bringIntoViewRequester = remember { BringIntoViewRequester() }
@@ -53,6 +54,10 @@ fun BookListRow(
 
         val isDeleteDialogOpenState = remember { mutableStateOf(false) }
         val isRenamingListState = remember { mutableStateOf(false) }
+
+        if (!isDrawerOpen) {
+            isRenamingListState.value = false
+        }
 
         Image(
             painter = painterResource(listIconResource),

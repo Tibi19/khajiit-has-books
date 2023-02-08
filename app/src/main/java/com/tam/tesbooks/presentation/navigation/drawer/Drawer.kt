@@ -8,6 +8,7 @@ import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
@@ -20,10 +21,12 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.tam.tesbooks.R
 import com.tam.tesbooks.presentation.reusable.NewListButton
+import com.tam.tesbooks.presentation.reusable.OnBackPressListener
 import com.tam.tesbooks.presentation.reusable.OnErrorEffect
 import com.tam.tesbooks.ui.theme.CustomColors
 import com.tam.tesbooks.ui.theme.KhajiitHasBooksTheme
 import com.tam.tesbooks.util.*
+import kotlinx.coroutines.launch
 
 @Composable
 fun Drawer(
@@ -31,10 +34,23 @@ fun Drawer(
     navController: NavHostController,
     drawerViewModel: DrawerViewModel = hiltViewModel()
 ) {
+
     val state = drawerViewModel.state
+    val isDrawerOpen = scaffoldState.drawerState.isOpen
     val isCreatingNewListState = remember { mutableStateOf(false) }
+    val coroutineScope = rememberCoroutineScope()
 
     OnErrorEffect(errorFlow = drawerViewModel.errorFlow)
+
+    if(isDrawerOpen) {
+        OnBackPressListener(isOneTimeListener = true) {
+            coroutineScope.launch {
+                scaffoldState.drawerState.close()
+            }
+        }
+    } else {
+        isCreatingNewListState.value = false
+    }
 
     Column(
         modifier = Modifier
@@ -65,6 +81,7 @@ fun Drawer(
                 bookList = bookList,
                 state = state,
                 drawerViewModel = drawerViewModel,
+                isDrawerOpen = isDrawerOpen,
                 goToListScreen = {}
             )
         }

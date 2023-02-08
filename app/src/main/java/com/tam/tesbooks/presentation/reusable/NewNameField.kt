@@ -116,7 +116,7 @@ private fun CoroutineScope.launchRaiseKeyboardJob(
     launch {
         do {
             delay(TIME_WAIT_TO_RETRY_SHOWING_KEYBOARD_FOR_NAME_FIELD)
-            keyboard?.show()
+            keyboard?.show() ?: return@launch
         } while (!isKeyboardOpenState.value)
 
         repeat(TIMES_TO_TRY_BRINGING_INTO_VIEW_NAME_FIELD) {
