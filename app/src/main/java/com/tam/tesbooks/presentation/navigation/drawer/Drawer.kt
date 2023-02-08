@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.tam.tesbooks.R
+import com.tam.tesbooks.presentation.navigation.Destination
 import com.tam.tesbooks.presentation.reusable.NewListButton
 import com.tam.tesbooks.presentation.reusable.OnBackPressListener
 import com.tam.tesbooks.presentation.reusable.OnErrorEffect
@@ -66,7 +67,15 @@ fun Drawer(
                 .padding(vertical = PADDING_X_LARGE, horizontal = PADDING_XX_LARGE)
         )
         
-        BookmarksRow(goToBookmarksScreen = {})
+        BookmarksRow(goToBookmarksScreen = {
+            val bookmarksRoute = Destination.Bookmarks.route
+            navController.navigate(bookmarksRoute) {
+                launchSingleTop = true
+            }
+            coroutineScope.launch {
+                scaffoldState.drawerState.close()
+            }
+        })
 
         Text(
             text = TEXT_BOOK_LISTS,

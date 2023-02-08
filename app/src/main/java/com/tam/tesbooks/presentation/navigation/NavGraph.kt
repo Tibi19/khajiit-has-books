@@ -7,6 +7,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.tam.tesbooks.presentation.screen.book.BookScreen
+import com.tam.tesbooks.presentation.screen.bookmarks.BookmarksScreen
 import com.tam.tesbooks.presentation.screen.library.LibraryScreen
 import com.tam.tesbooks.test.TestBookScreen
 
@@ -42,7 +43,13 @@ fun MainNavGraph(navController: NavHostController) {
             )
         }
 
-        composable(route = Destination.Bookmarks.route) {}
+        composable(route = Destination.Bookmarks.route) {
+            BookmarksScreen(goToBookScreen = { bookId ->
+                val bookRoute = Destination.Book.createRoute(bookId)
+                navController.navigate(bookRoute)
+            })
+        }
+
         composable(route = Destination.Settings.route) { TestBookScreen() }
     }
 
