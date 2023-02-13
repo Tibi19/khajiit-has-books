@@ -6,8 +6,10 @@ import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import com.tam.tesbooks.R
+import com.tam.tesbooks.util.SIZE_TEXT_LARGE
 import com.tam.tesbooks.util.SIZE_TEXT_NORMAL
 import com.tam.tesbooks.util.SIZE_TEXT_SMALL
+import com.tam.tesbooks.util.SIZE_TEXT_X_SMALL
 
 val SourceSansProFamily = FontFamily(
     Font(R.font.source_sans_pro, FontWeight.Normal),
@@ -22,8 +24,13 @@ val EBGaramondFontFamily = FontFamily(
 
 val Typography = Typography(
     defaultFontFamily = SourceSansProFamily,
-    body1 = TextStyle(fontSize = SIZE_TEXT_SMALL),
+    body1 = TextStyle(fontSize = SIZE_TEXT_X_SMALL),
+    h4 = TextStyle(fontSize = SIZE_TEXT_LARGE),
     h5 = TextStyle(fontSize = SIZE_TEXT_NORMAL),
+    h6 = TextStyle(
+        fontSize = SIZE_TEXT_SMALL,
+        fontWeight = FontWeight.Bold
+    ),
     button = TextStyle(
         fontSize = SIZE_TEXT_NORMAL,
         fontWeight = FontWeight.SemiBold,

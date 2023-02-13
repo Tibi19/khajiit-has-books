@@ -5,9 +5,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-val PADDING_TEXT_HORIZONTAL = 15.dp
-val PADDING_TEXT_VERTICAL = 5.dp
 const val BOOKMARK_HIGHLIGHT_ALPHA = 0.15f
+val PADDING_XX_SMALL = 2.5.dp
 val PADDING_X_SMALL = 5.dp
 val PADDING_SMALL = 10.dp
 val PADDING_NORMAL = 18.dp
@@ -16,9 +15,10 @@ val PADDING_X_LARGE = 30.dp
 val PADDING_XX_LARGE = 50.dp
 val SIZE_ICON_NORMAL = 23.dp
 val SIZE_ICON_SMALL = 16.dp
-val SIZE_TEXT_NORMAL = 18.sp
+val SIZE_TEXT_X_SMALL = 15.sp
 val SIZE_TEXT_SMALL = 16.sp
-val SIZE_TEXT_X_SMALL = 14.sp
+val SIZE_TEXT_NORMAL = 18.sp
+val SIZE_TEXT_LARGE = 20.sp
 val PADDING_BOOKS_IN_LIST_COUNT_END = 8.dp
 val PADDING_NEW_LIST_IN_DRAWER = 22.dp
 val PADDING_DISCLAIMER_TOP = 65.dp
@@ -27,6 +27,7 @@ val SIZE_TEXT_DISCLAIMER = 11.sp
 val SIZE_DIALOG_CANCEL_ICON = 13.dp
 val OFFSET_NEW_NAME_INDICATOR = 8.dp
 val SIZE_NEW_NAME_INDICATOR = 2.dp
+val SIZE_BOOKMARKS_DIVIDER = 1.dp
 
 object Dimens {
     val PADDING_DEFAULT = Modifier.padding(10.dp)

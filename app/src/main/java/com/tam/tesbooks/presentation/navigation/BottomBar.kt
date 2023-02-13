@@ -27,8 +27,11 @@ fun BottomBar(scaffoldState: ScaffoldState, navController: NavHostController) {
     val isScreenWithBottomBar = getDestinationsWithBottomBar().any { it.route == currentDestination?.route }
     if(!isScreenWithBottomBar) return
 
+    val isScreenWithSecondaryBackground = getDestinationsWithSecondaryBackground().any { it.route == currentDestination?.route }
+    val barBackgroundColor = if (isScreenWithSecondaryBackground) MaterialTheme.colors.secondaryVariant else MaterialTheme.colors.secondary
+
     BottomNavigation(
-        backgroundColor = MaterialTheme.colors.secondary,
+        backgroundColor = barBackgroundColor,
         contentColor = MaterialTheme.colors.primary,
         elevation = Dimens.ELEVATION_DEFAULT,
         modifier = Dimens.SIZE_BOTTOM_BAR_HEIGHT

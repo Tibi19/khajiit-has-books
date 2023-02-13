@@ -41,3 +41,8 @@ fun getDestinationsWithBottomBar(): List<Destination> =
         Destination.Bookmarks,
         Destination.Settings
     )
+
+fun getDestinationsWithSecondaryBackground(): List<Destination> =
+    listOf(
+        Destination.Bookmarks
+    )

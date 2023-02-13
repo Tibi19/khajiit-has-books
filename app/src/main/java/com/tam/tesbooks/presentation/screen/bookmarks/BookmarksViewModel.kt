@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.tam.tesbooks.domain.model.bookmark.Bookmark
 import com.tam.tesbooks.domain.repository.Repository
 import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOKMARKS
 import com.tam.tesbooks.util.refreshDataObserver
@@ -49,6 +50,17 @@ class BookmarksViewModel @Inject constructor(
                         { isLoading -> state = state.copy(isLoading = isLoading) }
                     )
                 }
+        }
+
+    fun onEvent(event: BookmarksEvent) {
+        when(event) {
+            is BookmarksEvent.OnDeleteBookmark -> deleteBookmark(event.bookmark)
+        }
+    }
+
+    private fun deleteBookmark(bookmark: Bookmark) =
+        viewModelScope.launch {
+            repository.removeBookmark(bookmark)
         }
 
 }
