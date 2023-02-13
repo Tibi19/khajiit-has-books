@@ -32,7 +32,7 @@ fun BookParagraphItem(
         .longPressParagraphModifier(
             onLongPressParagraph = onLongPressParagraph,
             shouldHighlightBackground = shouldHighlightBackground,
-            highlightColor = MaterialTheme.colors.primary.copy(alpha = BOOKMARK_HIGHLIGHT_ALPHA)
+            highlightColor = MaterialTheme.colors.primary.copy(alpha = HIGHLIGHT_ALPHA_BOOKMARK)
         )
         .padding(vertical = paddingParagraphVerticalHalf, horizontal = PADDING_NORMAL)
 

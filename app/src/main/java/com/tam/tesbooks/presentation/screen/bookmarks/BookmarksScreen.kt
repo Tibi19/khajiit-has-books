@@ -1,5 +1,6 @@
 package com.tam.tesbooks.presentation.screen.bookmarks
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -15,6 +16,7 @@ import com.tam.tesbooks.ui.theme.CustomColors
 import com.tam.tesbooks.util.SIZE_BOOKMARKS_DIVIDER
 import com.tam.tesbooks.util.TEXT_BOOKMARKS
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BookmarksScreen(
     bookmarksViewModel: BookmarksViewModel = hiltViewModel(),
@@ -37,7 +39,10 @@ fun BookmarksScreen(
             }
         }
 
-        items(state.bookmarks) {bookmark ->
+        items(
+            key = { bookmark -> bookmark.uuid },
+            items = state.bookmarks
+        ) {bookmark ->
             BookmarkItem(
                 bookmark = bookmark,
                 goToBookScreen = goToBookScreen,
@@ -49,7 +54,8 @@ fun BookmarksScreen(
             if(state.bookmarks.last() != bookmark) {
                 Divider(
                     thickness = SIZE_BOOKMARKS_DIVIDER,
-                    color = CustomColors.colors.onSurfaceVariant
+                    color = CustomColors.colors.onSurfaceVariant,
+                    modifier = Modifier.animateItemPlacement()
                 )
             }
         }

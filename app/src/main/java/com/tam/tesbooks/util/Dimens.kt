@@ -5,7 +5,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
-const val BOOKMARK_HIGHLIGHT_ALPHA = 0.15f
+const val HIGHLIGHT_ALPHA_BOOKMARK = 0.15f
+const val THRESHOLD_DISMISS_BOOKMARK = 0.2f
+const val SCALE_DISMISSED_BOOKMARK_BACKGROUND = 1f
+const val SCALE_DISMISSING_BOOKMARK_BACKGROUND = 0.9f
 val PADDING_XX_SMALL = 2.5.dp
 val PADDING_X_SMALL = 5.dp
 val PADDING_SMALL = 10.dp

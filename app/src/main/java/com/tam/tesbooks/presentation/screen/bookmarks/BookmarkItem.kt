@@ -1,12 +1,20 @@
+@file:OptIn(ExperimentalMaterialApi::class)
+
 package com.tam.tesbooks.presentation.screen.bookmarks
 
+import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
+import androidx.compose.foundation.lazy.LazyItemScope
+import androidx.compose.material.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import com.tam.tesbooks.R
 import com.tam.tesbooks.domain.model.bookmark.Bookmark
@@ -14,31 +22,69 @@ import com.tam.tesbooks.presentation.reusable.BookParagraphItem
 import com.tam.tesbooks.presentation.reusable.SectionText
 import com.tam.tesbooks.util.*
 
+@ExperimentalFoundationApi
 @Composable
-fun BookmarkItem(
+fun LazyItemScope.BookmarkItem(
     bookmark: Bookmark,
     goToBookScreen: (bookId: Int) -> Unit,
     deleteBookmark: () -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .clickable { goToBookScreen(bookmark.paragraph.bookId) }
-            .fillMaxWidth()
-            .padding(top = PADDING_NORMAL, bottom = PADDING_SMALL)
-    ) {
-        BookmarkHeader(
-            bookmark = bookmark,
-            goToBookScreen = goToBookScreen
-        )
-
-        BookParagraphItem(bookParagraph = bookmark.paragraph)
-    }
+    val dismissState = rememberDismissState(
+        confirmStateChange = {
+            val isDismissed = it == DismissValue.DismissedToStart
+            if (isDismissed) {
+                deleteBookmark()
+            }
+            isDismissed
+        }
+    )
+    SwipeToDismiss(
+        state = dismissState,
+        directions = setOf(DismissDirection.EndToStart),
+        dismissThresholds = { FractionalThreshold(THRESHOLD_DISMISS_BOOKMARK) },
+        background = { BookmarkDismissBackground(isDismissed = dismissState.targetValue == DismissValue.DismissedToStart) },
+        dismissContent = { BookmarkItemContent(bookmark = bookmark, goToBookScreen = goToBookScreen) },
+        modifier = Modifier.animateItemPlacement()
+    )
 }
 
 @Composable
-private fun BookmarkDismissBackground() {
-    // TODO: https://developer.android.com/training/wearables/compose/swipe-to-dismiss
-    // Add keys to items of lazy column parent: https://daanidev.medium.com/swipe-to-delete-in-jetpack-compose-android-ca935a209c61
+private fun BookmarkDismissBackground(isDismissed: Boolean) {
+    val dismissedColor = MaterialTheme.colors.primaryVariant
+    val defaultColor = MaterialTheme.colors.primary
+    val backgroundColor by animateColorAsState(if (isDismissed) dismissedColor else defaultColor)
+    val dismissedScale by animateFloatAsState(if (isDismissed) SCALE_DISMISSED_BOOKMARK_BACKGROUND else SCALE_DISMISSING_BOOKMARK_BACKGROUND)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(backgroundColor)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            modifier = Modifier
+                .padding(end = PADDING_SMALL)
+                .align(Alignment.CenterEnd)
+        ) {
+
+            Text(
+                text = TEXT_DELETE,
+                color = MaterialTheme.colors.onPrimary,
+                style = MaterialTheme.typography.button,
+                modifier = Modifier
+                    .padding(bottom = PADDING_XX_SMALL)
+                    .scale(dismissedScale)
+            )
+
+            Image(
+                painter = painterResource(R.drawable.ic_trash),
+                contentDescription = CONTENT_DELETE_BOOKMARK,
+                modifier = Modifier
+                    .size(SIZE_ICON_NORMAL)
+                    .scale(dismissedScale)
+            )
+
+        }
+    }
 }
 
 @Composable
@@ -50,6 +96,7 @@ private fun BookmarkItemContent(
         modifier = Modifier
             .clickable { goToBookScreen(bookmark.paragraph.bookId) }
             .fillMaxWidth()
+            .background(MaterialTheme.colors.secondary)
             .padding(top = PADDING_NORMAL, bottom = PADDING_SMALL)
     ) {
         BookmarkHeader(
