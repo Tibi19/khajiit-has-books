@@ -82,7 +82,7 @@ fun Drawer(
             style = MaterialTheme.typography.h5,
             fontWeight = FontWeight.Bold,
             color = CustomColors.colors.onSurfaceVariant,
-            modifier = Modifier.padding(start = PADDING_X_LARGE, bottom = PADDING_LARGE / 2)
+            modifier = Modifier.padding(start = PADDING_X_LARGE, bottom = PADDING_LARGE / 2, top = PADDING_NORMAL)
         )
 
         state.bookLists.forEach { bookList ->
