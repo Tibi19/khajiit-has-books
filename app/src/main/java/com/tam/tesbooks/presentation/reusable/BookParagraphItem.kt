@@ -25,16 +25,16 @@ fun BookParagraphItem(
     onLongPressParagraph: (() -> Unit)? = null,
     shouldHighlightBackground: Boolean = false
 ) {
-    val paddingTextVerticalHalf = PADDING_TEXT_VERTICAL / 2
+    val paddingParagraphVerticalHalf = PADDING_X_SMALL / 2
     val paragraphModifier = modifier
         .fillMaxWidth()
-        .padding(vertical = paddingTextVerticalHalf)
+        .padding(vertical = paddingParagraphVerticalHalf)
         .longPressParagraphModifier(
             onLongPressParagraph = onLongPressParagraph,
             shouldHighlightBackground = shouldHighlightBackground,
             highlightColor = MaterialTheme.colors.primary.copy(alpha = BOOKMARK_HIGHLIGHT_ALPHA)
         )
-        .padding(vertical = paddingTextVerticalHalf, horizontal = PADDING_TEXT_HORIZONTAL)
+        .padding(vertical = paddingParagraphVerticalHalf, horizontal = PADDING_NORMAL)
 
     when(bookParagraph) {
         is TextParagraph -> TextParagraphItem(bookParagraph, paragraphModifier)
@@ -66,8 +66,7 @@ private fun TextParagraphItem(
 ) {
     Text(
         modifier = modifier,
-        text = textParagraph.text,
-        lineHeight = Dimens.SPACING_TEXT_DEFAULT
+        text = textParagraph.text
     )
 }
 

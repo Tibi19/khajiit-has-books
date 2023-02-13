@@ -10,11 +10,18 @@ import com.tam.tesbooks.presentation.navigation.drawer.Drawer
 fun NavigationScaffold() {
     val scaffoldState = rememberScaffoldState()
     val navController = rememberNavController()
+
     Scaffold(
         scaffoldState = scaffoldState,
         bottomBar = { BottomBar(scaffoldState, navController) },
         drawerContent = { Drawer(scaffoldState, navController) },
-        content = { MainNavGraph(navController = navController) }
+        content = { paddingValues ->
+            MainNavGraph(
+                navController = navController,
+                scaffoldPaddingValues = paddingValues
+            )
+        }
     )
+
 }
 

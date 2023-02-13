@@ -40,10 +40,6 @@ fun LibraryScreen(
                 onClick = { goToBookScreen(bookInfo.bookId) }
             )
         }
-        
-        item {
-            Spacer(modifier = Dimens.SIZE_BOTTOM_BAR_HEIGHT)
-        }
 
     }
 
