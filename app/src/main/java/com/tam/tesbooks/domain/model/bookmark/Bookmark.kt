@@ -7,5 +7,6 @@ import java.util.*
 data class Bookmark(
     val uuid: UUID,
     val paragraph: BookParagraph,
+    val bookTitle: String,
     val dateTimeAdded: LocalDateTime
 )

@@ -151,9 +151,12 @@ class BookViewModel @Inject constructor(
 
     private fun addBookmark(paragraph: BookParagraph) =
         viewModelScope.launch {
+            val currentBook = state.curentBook ?: return@launch
+            val bookTitle = currentBook.bookInfo.metadata.title
             val bookmark = Bookmark(
                 uuid = UUID.randomUUID(),
                 paragraph = paragraph,
+                bookTitle = bookTitle,
                 dateTimeAdded = LocalDateTime.now()
             )
             repository.addBookmark(bookmark)

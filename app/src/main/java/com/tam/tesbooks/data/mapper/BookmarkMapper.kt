@@ -11,6 +11,7 @@ fun BookmarkEntity.toBookmark(): Bookmark =
     Bookmark(
         uuid = uuid,
         paragraph = paragraphContent.toBookParagraph(bookId, paragraphPosition),
+        bookTitle = bookTitle,
         dateTimeAdded = dateTimeAdded,
     )
 
@@ -20,5 +21,6 @@ fun Bookmark.toEntity(): BookmarkEntity =
         bookId = paragraph.bookId,
         paragraphPosition = paragraph.position,
         paragraphContent = paragraph.content,
+        bookTitle = bookTitle,
         dateTimeAdded = dateTimeAdded
     )

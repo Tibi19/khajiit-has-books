@@ -130,7 +130,7 @@ private fun BookmarkHeader(
         )
 
         SectionText(
-            text = "TODO: Needs Book Title",
+            text = "$TEXT_BOOKMARK_TITLE_START${bookmark.bookTitle}",
             style = MaterialTheme.typography.h6
         )
 
