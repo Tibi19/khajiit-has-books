@@ -2,19 +2,19 @@ package com.tam.tesbooks.presentation.screen.bookmarks
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tam.tesbooks.presentation.reusable.BarRow
+import com.tam.tesbooks.presentation.reusable.LoadingMoreIndicator
 import com.tam.tesbooks.presentation.reusable.SectionText
 import com.tam.tesbooks.ui.theme.CustomColors
-import com.tam.tesbooks.util.SIZE_BOOKMARKS_DIVIDER
-import com.tam.tesbooks.util.TEXT_BOOKMARKS
+import com.tam.tesbooks.util.*
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -30,7 +30,7 @@ fun BookmarksScreen(
             .fillMaxSize()
             .background(MaterialTheme.colors.secondary)
     ) {
-        item {
+        stickyHeader {
             BarRow(onOptionalBackIcon = goToPreviousScreen) {
                 SectionText(
                     text = TEXT_BOOKMARKS,
@@ -57,9 +57,27 @@ fun BookmarksScreen(
                     color = CustomColors.colors.onSurfaceVariant,
                     modifier = Modifier.animateItemPlacement()
                 )
+            } else {
+                decideLoadingMoreBookmarks(state, bookmarksViewModel)
             }
+        }
+
+        item {
+            if (!state.isLoading) return@item
+            LoadingMoreIndicator()
         }
 
     }
 
+}
+
+private fun decideLoadingMoreBookmarks(
+    state: BookmarksState,
+    bookmarksViewModel: BookmarksViewModel
+) {
+    val shouldLoadMore = state.canLoadMore && !state.isLoading
+    if(shouldLoadMore) {
+        val loadMoreEvent = BookmarksEvent.OnLoadMoreBookmarks
+        bookmarksViewModel.onEvent(loadMoreEvent)
+    }
 }

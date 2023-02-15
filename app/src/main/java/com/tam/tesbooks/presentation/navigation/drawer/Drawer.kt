@@ -69,8 +69,9 @@ fun Drawer(
         
         BookmarksRow(goToBookmarksScreen = {
             val bookmarksRoute = Destination.Bookmarks.route
-            navController.navigate(bookmarksRoute) {
-                launchSingleTop = true
+            val currentRoute = navController.currentDestination?.route
+            if (currentRoute != bookmarksRoute) {
+                navController.navigate(bookmarksRoute)
             }
             coroutineScope.launch {
                 scaffoldState.drawerState.close()

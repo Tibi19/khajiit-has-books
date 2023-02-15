@@ -60,6 +60,7 @@ const val TAG_CENTER = "<center>"
 const val TIME_WAIT_AFTER_SEARCH_INPUT = 300L
 const val TIME_WAIT_TO_RETRY_SHOWING_KEYBOARD_FOR_NAME_FIELD = 50L
 const val TIME_WAIT_FOR_NEW_NAME_UPDATE = 150L
+const val TIME_MINIMUM_FOR_LOADING_MORE_ELEMENTS = 800L
 
 // Content Description
 const val CONTENT_DRAWER = "Menu Drawer"
