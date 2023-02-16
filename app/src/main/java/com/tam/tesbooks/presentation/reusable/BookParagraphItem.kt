@@ -10,12 +10,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.tooling.preview.Preview
-import com.skydoves.landscapist.glide.GlideImage
+import coil.compose.AsyncImage
 import com.tam.tesbooks.domain.model.book.BookParagraph
 import com.tam.tesbooks.domain.model.book.ImageParagraph
 import com.tam.tesbooks.domain.model.book.TextParagraph
-import com.tam.tesbooks.util.*
+import com.tam.tesbooks.util.HIGHLIGHT_ALPHA_BOOKMARK
+import com.tam.tesbooks.util.PADDING_NORMAL
+import com.tam.tesbooks.util.PADDING_X_SMALL
+import com.tam.tesbooks.util.getTestTextParagraph
 
 @Preview(showBackground = true)
 @Composable
@@ -75,8 +79,19 @@ private fun ImageParagraphItem(
     imageParagraph: ImageParagraph,
     modifier: Modifier
 ) {
-    GlideImage(
+    AsyncImage(
         modifier = modifier,
-        imageModel = imageParagraph.imageUrl,
+        model = imageParagraph.imageUrl,
+        contentScale = ContentScale.FillWidth,
+        contentDescription = getContentFromImageUrl(imageParagraph.imageUrl)
     )
+}
+
+private fun getContentFromImageUrl(url: String): String {
+    val positionLastPartOfUrl = url.lastIndexOf('/')
+    val positionImageExtension = url.lastIndexOf('.')
+    val imageIdentifier = url.substring(positionLastPartOfUrl..positionImageExtension)
+    val positionFirstUnderline = imageIdentifier.indexOf('_')
+    val rawDescription = imageIdentifier.substring(positionFirstUnderline + 1)
+    return rawDescription.replace('_', ' ')
 }
