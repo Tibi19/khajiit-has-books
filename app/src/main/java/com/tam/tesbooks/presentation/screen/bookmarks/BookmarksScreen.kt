@@ -7,8 +7,10 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tam.tesbooks.presentation.reusable.BarRow
 import com.tam.tesbooks.presentation.reusable.LoadingMoreIndicator
@@ -37,6 +39,11 @@ fun BookmarksScreen(
                     style = MaterialTheme.typography.h4
                 )
             }
+        }
+
+        item {
+            if(state.bookmarks.isNotEmpty()) return@item
+            NoBookmarksPrompt()
         }
 
         items(
@@ -69,6 +76,15 @@ fun BookmarksScreen(
 
     }
 
+}
+
+@Composable
+private fun NoBookmarksPrompt() {
+    Text(
+        text = "$TEXT_NO_BOOKMARKS\n\n$TEXT_ADD_BOOKMARKS",
+        textAlign = TextAlign.Center,
+        modifier = Modifier.padding(PADDING_NORMAL)
+    )
 }
 
 private fun decideLoadingMoreBookmarks(
