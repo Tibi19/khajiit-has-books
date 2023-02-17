@@ -6,6 +6,7 @@ import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 private val DarkColorPalette = darkColors(
     primary = iceBlue,
@@ -33,10 +34,13 @@ fun KhajiitHasBooksTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable () -> Unit
 ) {
+    val systemUiController = rememberSystemUiController()
 //    val colors = if (darkTheme) DarkColorPalette else LightColorPalette
 //    val customColors = if (darkTheme) DarkCustomColorPalette else LightCustomColorPalette
     val colors = DarkColorPalette
     val customColors = DarkCustomColorPalette
+
+    systemUiController.setStatusBarColor(Color.Black) // if (darkTheme) Color.Black else ...
 
     CustomColors.initialize(customColors)
 
@@ -46,4 +50,5 @@ fun KhajiitHasBooksTheme(
         shapes = Shapes,
         content = content
     )
+
 }
