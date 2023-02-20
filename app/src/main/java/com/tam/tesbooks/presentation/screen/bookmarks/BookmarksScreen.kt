@@ -14,6 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tam.tesbooks.presentation.reusable.BarRow
 import com.tam.tesbooks.presentation.reusable.LoadingMoreIndicator
+import com.tam.tesbooks.presentation.reusable.OnErrorEffect
 import com.tam.tesbooks.presentation.reusable.SectionText
 import com.tam.tesbooks.ui.theme.CustomColors
 import com.tam.tesbooks.util.*
@@ -26,6 +27,8 @@ fun BookmarksScreen(
     goToPreviousScreen: () -> Unit = {},
 ) {
     val state = bookmarksViewModel.state
+
+    OnErrorEffect(errorFlow = bookmarksViewModel.errorFlow)
 
     LazyColumn(
         modifier = Modifier
