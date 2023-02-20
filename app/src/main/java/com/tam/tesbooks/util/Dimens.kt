@@ -1,6 +1,9 @@
 package com.tam.tesbooks.util
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,6 +36,10 @@ val SIZE_NEW_NAME_INDICATOR = 2.dp
 val SIZE_BOOKMARKS_DIVIDER = 1.dp
 val SIZE_ICON_MARK_VIEWED_BOOK = 20.dp
 val PADDING_TOP_ICON_MARK_VIEWED_BOOK = 3.dp
+val SPACING_H2_LETTERS = 0.9.sp
+val PADDING_BOTTOM_BOOK_DETAILS_TEXT = 8.dp
+val SPACING_TAGS_FLOW_ROW = 5.dp
+val SIZE_TAG_TEXT = 12.sp
 
 object Dimens {
     val PADDING_DEFAULT = Modifier.padding(10.dp)
@@ -49,9 +56,6 @@ object Dimens {
     val SIZE_SEARCH_BAR_ICON = Modifier.size(25.dp)
     val SIZE_BOTTOM_BAR_HEIGHT = Modifier.height(56.dp)
     val SPACING_TEXT_DEFAULT = 22.sp
-    val SPACING_TAGS_FLOW_ROW = 5.dp
-    val SIZE_TAG_TEXT = 12.sp
-    val PADDING_VALUES_TAG_BUTTON = PaddingValues(5.dp)
     val WIDTH_TAG_FILTER_WARNING_TEXT = Modifier.fillMaxWidth(0.85f)
     val SIZE_CANCEL_TAG_FILTER_ICON = Modifier.size(25.dp)
     val PADDING_TAG_FILTER_WARNING = Modifier.padding(top = 5.dp, start = 15.dp, end = 10.dp)

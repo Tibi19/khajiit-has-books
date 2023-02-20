@@ -3,7 +3,7 @@ package com.tam.tesbooks.ui.theme
 import androidx.compose.ui.graphics.Color
 
 val iceBlue = Color(0xFF86AAB8)
-val iceBlueAccent = Color(0xFF0CEAE2)
+val iceBlueAccent = Color(0xFF34BBCD)
 val unfocusedIceBlue = Color(0xFF74888F)
 val gray = Color(0xFF2B2B2B)
 val darkGray = Color(0xFF202020)

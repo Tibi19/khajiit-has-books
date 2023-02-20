@@ -11,7 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.tam.tesbooks.R
-import com.tam.tesbooks.util.*
+import com.tam.tesbooks.util.CONTENT_GO_BACK
+import com.tam.tesbooks.util.CONTENT_GO_FORWARD
+import com.tam.tesbooks.util.PADDING_NORMAL
+import com.tam.tesbooks.util.SIZE_ICON_NORMAL
 
 @Composable
 fun BarRow(
