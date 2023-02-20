@@ -17,6 +17,7 @@ import com.tam.tesbooks.util.*
 fun BookmarksRow(goToBookmarksScreen: () -> Unit) =
     BarRow(
         onOptionalForwardIcon = goToBookmarksScreen,
+        forwardIconContentDescription = CONTENT_FORWARD_BOOKMARKS,
         paddingInside = PaddingValues(vertical = PADDING_NORMAL, horizontal = PADDING_X_LARGE),
         modifier = Modifier.clickable { goToBookmarksScreen() }
     ) {

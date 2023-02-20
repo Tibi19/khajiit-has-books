@@ -36,7 +36,10 @@ fun BookmarksScreen(
             .background(MaterialTheme.colors.secondary)
     ) {
         stickyHeader {
-            BarRow(onOptionalBackIcon = goToPreviousScreen) {
+            BarRow(
+                onOptionalBackIcon = goToPreviousScreen,
+                backIconContentDescription = CONTENT_GO_TO_PREVIOUS_SCREEN
+            ) {
                 SectionText(
                     text = TEXT_BOOKMARKS,
                     style = MaterialTheme.typography.h4

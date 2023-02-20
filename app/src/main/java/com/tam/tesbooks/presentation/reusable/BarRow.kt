@@ -11,9 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import com.tam.tesbooks.R
-import com.tam.tesbooks.util.CONTENT_FORWARD_BOOKMARKS
-import com.tam.tesbooks.util.PADDING_NORMAL
-import com.tam.tesbooks.util.SIZE_ICON_NORMAL
+import com.tam.tesbooks.util.*
 
 @Composable
 fun BarRow(
@@ -21,7 +19,9 @@ fun BarRow(
     paddingInside: PaddingValues = PaddingValues(PADDING_NORMAL),
     backgroundColor: Color = MaterialTheme.colors.secondaryVariant,
     onOptionalBackIcon: (() -> Unit)? = null,
+    backIconContentDescription: String? = null,
     onOptionalForwardIcon: (() -> Unit)? = null,
+    forwardIconContentDescription: String? = null,
     content: @Composable RowScope.() -> Unit
 ) {
     Row(
@@ -34,7 +34,7 @@ fun BarRow(
         onOptionalBackIcon?.let { onBackIcon ->
             Image(
                 painter = painterResource(id = R.drawable.ic_back),
-                contentDescription = CONTENT_FORWARD_BOOKMARKS,
+                contentDescription = backIconContentDescription ?: CONTENT_GO_BACK,
                 modifier = Modifier
                     .padding(end = PADDING_NORMAL)
                     .size(SIZE_ICON_NORMAL)
@@ -47,7 +47,7 @@ fun BarRow(
         onOptionalForwardIcon?.let { onForwardIcon ->
             Image(
                 painter = painterResource(id = R.drawable.ic_forward),
-                contentDescription = CONTENT_FORWARD_BOOKMARKS,
+                contentDescription = forwardIconContentDescription ?: CONTENT_GO_FORWARD,
                 modifier = Modifier
                     .size(SIZE_ICON_NORMAL)
                     .clickable { onForwardIcon() }
