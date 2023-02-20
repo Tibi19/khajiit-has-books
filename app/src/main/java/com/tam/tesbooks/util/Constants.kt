@@ -94,6 +94,11 @@ const val CONTENT_RENAME_LIST_DONE = "Submit new name for this list"
 const val CONTENT_RENAME_LIST_CANCEL = "Cancel renaming this list"
 const val CONTENT_GO_FORWARD = "Go forward"
 const val CONTENT_GO_BACK = "Go back"
+const val CONTENT_UNMARKED_AS_VIEWED = "This book hasn't been viewed. Click to mark as viewed."
+const val CONTENT_MARKED_AS_VIEWED = "This book has been marked as viewed. Click to revert."
+const val CONTENT_UNMARKED_AS_FAVORITE = "This book hasn't been added to favorites. Click to add to favorites."
+const val CONTENT_MARKED_AS_FAVORITE = "This book has been added to favorites. Click to remove from favorites."
+const val CONTENT_SAVE_TO_LIST = "Save this book to book list..."
 
 // UI Text
 const val TEXT_SEARCH = "Search..."

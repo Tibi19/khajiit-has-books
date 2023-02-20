@@ -39,7 +39,7 @@ fun BookCardItem(
                 horizontalArrangement = Arrangement.End
             ) {
                 Button(
-                    onClick = { onChangeBookList(bookInfo, bookLists.getRead()) },
+                    onClick = { onChangeBookList(bookInfo, bookLists.getViewed()) },
                     modifier = Dimens.PADDING_SMALL
                 ) {
                     Text("Read")

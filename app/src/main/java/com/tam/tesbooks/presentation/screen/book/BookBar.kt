@@ -1,22 +1,22 @@
 package com.tam.tesbooks.presentation.screen.book
 
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIos
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
+import com.tam.tesbooks.R
 import com.tam.tesbooks.domain.model.book.BookInfo
 import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.presentation.dialog.lists.AddBookToListDialog
+import com.tam.tesbooks.presentation.reusable.BarRow
+import com.tam.tesbooks.presentation.reusable.getFavoriteIconIdAndDescription
+import com.tam.tesbooks.presentation.reusable.getMarkViewedIconIdAndDescription
 import com.tam.tesbooks.util.*
 
 @Composable
@@ -28,57 +28,43 @@ fun BookBar(
 ) {
     val isListDialogOpenState = remember { mutableStateOf(false) }
 
-    Row(
-        modifier = Dimens.PADDING_BOTTOM_SMALL
-            .fillMaxWidth()
-            .background(MaterialTheme.colors.secondary),
-        verticalAlignment = Alignment.CenterVertically
+    val viewedBooksList = bookLists.getViewed()
+    val favoriteBooksList = bookLists.getFavorite()
+    val (markViewedIconId, markViewedIconDescription) = getMarkViewedIconIdAndDescription(bookInfo, viewedBooksList)
+    val (favoriteIconId, favoriteIconDescription) = getFavoriteIconIdAndDescription(bookInfo, favoriteBooksList)
+
+    BarRow(
+        onOptionalBackIcon = goToPreviousScreen,
+        backIconContentDescription = CONTENT_GO_TO_PREVIOUS_SCREEN
     ) {
-        IconButton(onClick = { goToPreviousScreen() }) {
-            Icon(
-                imageVector = Icons.Default.ArrowBackIos,
-                contentDescription = CONTENT_GO_BACK,
-                tint = MaterialTheme.colors.primary,
-                modifier = Dimens.SIZE_BOOK_BAR_ICON
-            )
-        }
 
         Spacer(modifier = Modifier.weight(1f))
 
-        val outlinedButtonColors = ButtonDefaults.buttonColors(
-            backgroundColor = Color.Transparent,
-            contentColor = MaterialTheme.colors.primary
+        Image(
+            painter = painterResource(id = markViewedIconId),
+            contentDescription = markViewedIconDescription,
+            modifier = Modifier
+                .padding(top = PADDING_TOP_ICON_MARK_VIEWED_BOOK, end = PADDING_LARGE)
+                .size(SIZE_ICON_MARK_VIEWED_BOOK)
+                .clickable { onChangeBookList(bookInfo, viewedBooksList) }
         )
-        val outlinedButtonBorder = BorderStroke(
-            width = Dimens.STROKE_WIDTH_OUTLINED_BUTTON,
-            color = MaterialTheme.colors.primary
+
+        Image(
+            painter = painterResource(id = favoriteIconId),
+            contentDescription = favoriteIconDescription,
+            modifier = Modifier
+                .padding(end = PADDING_LARGE)
+                .size(SIZE_ICON_NORMAL)
+                .clickable { onChangeBookList(bookInfo, favoriteBooksList) }
         )
-        OutlinedButton(
-            onClick = { onChangeBookList(bookInfo, bookLists.getRead()) },
-            colors = outlinedButtonColors,
-            modifier = Dimens.PADDING_SMALL,
-            border = outlinedButtonBorder
-        ) {
-            Text("Read")
-        }
 
-        OutlinedButton(
-            onClick = { onChangeBookList(bookInfo, bookLists.getFavorite()) },
-            colors = outlinedButtonColors,
-            modifier = Dimens.PADDING_SMALL,
-            border = outlinedButtonBorder
-        ) {
-            Text("Favorite")
-        }
-
-        OutlinedButton(
-            onClick = { isListDialogOpenState.value = true },
-            colors = outlinedButtonColors,
-            modifier = Dimens.PADDING_SMALL,
-            border = outlinedButtonBorder
-        ) {
-            Text("Add to")
-        }
+        Image(
+            painter = painterResource(id = R.drawable.ic_save),
+            contentDescription = CONTENT_SAVE_TO_LIST,
+            modifier = Modifier
+                .size(SIZE_ICON_NORMAL)
+                .clickable { isListDialogOpenState.value = true }
+        )
     }
 
     AddBookToListDialog(
@@ -86,4 +72,5 @@ fun BookBar(
         bookInfo = bookInfo,
         onChangeBookList = onChangeBookList
     )
+
 }

@@ -1,5 +1,6 @@
 package com.tam.tesbooks.presentation.screen.book
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -43,7 +44,11 @@ fun BookScreen(
 
     val pagerState = rememberPagerState()
 
-    Column {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(MaterialTheme.colors.secondary)
+    ) {
 
         val currentBookInfo = state.booksStack[pagerState.currentPage].bookInfo
         BookBar(
