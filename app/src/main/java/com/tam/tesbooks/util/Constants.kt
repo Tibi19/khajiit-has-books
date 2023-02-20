@@ -46,6 +46,7 @@ const val FALLBACK_ERROR_LOAD_BOOKMARKS = "Could not load bookmarks"
 const val FALLBACK_ERROR_UNKNOWN = "Unknown error"
 const val FALLBACK_URL_NO_IMAGE = "https://upload.wikimedia.org/wikipedia/commons/0/0a/No-image-available.png"
 const val FALLBACK_ERROR_COUNT_BOOK_SAVES = "Could not count book saves in book list"
+const val FALLBACK_ERROR_DATABASE = "Could not load database"
 
 // Paragraph content tags
 const val TAG_IMAGE = "<image="
@@ -61,6 +62,7 @@ const val TIME_WAIT_AFTER_SEARCH_INPUT = 300L
 const val TIME_WAIT_TO_RETRY_SHOWING_KEYBOARD_FOR_NAME_FIELD = 50L
 const val TIME_WAIT_FOR_NEW_NAME_UPDATE = 150L
 const val TIME_MINIMUM_FOR_LOADING_MORE_ELEMENTS = 800L
+const val TIME_WAIT_FOR_UI_ON_FIRST_LOAD = 350L
 
 // Content Description
 const val CONTENT_DRAWER = "Menu Drawer"
