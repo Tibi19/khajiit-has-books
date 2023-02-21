@@ -13,6 +13,7 @@ import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.domain.model.bookmark.Bookmark
 import com.tam.tesbooks.domain.repository.Repository
 import com.tam.tesbooks.presentation.navigation.ARG_BOOK_ID
+import com.tam.tesbooks.presentation.navigation.ARG_PARAGRAPH_POSITION
 import com.tam.tesbooks.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
@@ -37,12 +38,19 @@ class BookViewModel @Inject constructor(
     private val searchLibraryChannel = Channel<Pair<String, String>>()
     val searchLibraryFlow = searchLibraryChannel.receiveAsFlow()
 
+    private val scrollToParagraphPositionChannel = Channel<Int>()
+    val scrollToParagraphPositionFlow = scrollToParagraphPositionChannel.receiveAsFlow()
+
     init {
         loadBookLists()
         savedStateHandle.get<Int>(ARG_BOOK_ID)?.let { bookId ->
             loadBook(bookId)
             loadBookBookmarks(bookId)
             loadNextRandomBook(listOf(bookId))
+        }
+
+        savedStateHandle.get<Int>(ARG_PARAGRAPH_POSITION)?.let { paragraphPosition ->
+            scrollToParagraph(paragraphPosition)
         }
 
         refreshDataObserver(
@@ -55,6 +63,13 @@ class BookViewModel @Inject constructor(
             }
         )
     }
+
+    private fun scrollToParagraph(paragraphPosition: Int) {
+        if (paragraphPosition < 0) return
+        viewModelScope.launch {
+            scrollToParagraphPositionChannel.send(paragraphPosition)
+        }
+     }
 
     private fun loadBookLists() =
         viewModelScope.launch {

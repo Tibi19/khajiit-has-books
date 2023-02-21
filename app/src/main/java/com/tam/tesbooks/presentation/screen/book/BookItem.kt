@@ -5,9 +5,13 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
@@ -22,6 +26,7 @@ import com.tam.tesbooks.presentation.reusable.BookParagraphItem
 import com.tam.tesbooks.ui.theme.CustomColors
 import com.tam.tesbooks.ui.theme.EBGaramondFontFamily
 import com.tam.tesbooks.util.*
+import kotlinx.coroutines.android.awaitFrame
 
 @Composable
 fun BookItem(
@@ -29,7 +34,16 @@ fun BookItem(
     bookmarks: List<Bookmark>,
     bookViewModel: BookViewModel
 ) {
+    val lazyListState = rememberLazyListState()
+    val areParagraphsLoaded = remember {
+        derivedStateOf {
+            book.paragraphs.isNotEmpty() &&
+            lazyListState.layoutInfo.totalItemsCount >= SIZE_BOOK_SCREEN_ITEMS_COUNT_WITH_NO_PARAGRAPHS + book.paragraphs.size
+        }
+    }
+
     LazyColumn(
+        state = lazyListState,
         modifier = Modifier.fillMaxSize()
     ) {
         val metadata = book.bookInfo.metadata
@@ -66,7 +80,14 @@ fun BookItem(
         }
 
         item {
-            Spacer(modifier = Dimens.PADDING_DEFAULT)
+            Spacer(modifier = Modifier.size(PADDING_NORMAL))
+        }
+    }
+
+    LaunchedEffect(areParagraphsLoaded) {
+        bookViewModel.scrollToParagraphPositionFlow.collect { paragraphPosition ->
+            awaitFrame()
+            lazyListState.animateScrollToItem(SIZE_BOOK_SCREEN_ITEMS_BEFORE_PARAGRAPHS + paragraphPosition)
         }
     }
 }

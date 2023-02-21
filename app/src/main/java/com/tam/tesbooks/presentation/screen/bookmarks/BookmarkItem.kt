@@ -26,7 +26,7 @@ import com.tam.tesbooks.util.*
 @Composable
 fun LazyItemScope.BookmarkItem(
     bookmark: Bookmark,
-    goToBookScreen: (bookId: Int) -> Unit,
+    goToBookScreenAndParagraph: (bookId: Int, paragraphPosition: Int) -> Unit,
     deleteBookmark: () -> Unit
 ) {
     val dismissState = rememberDismissState(
@@ -43,7 +43,7 @@ fun LazyItemScope.BookmarkItem(
         directions = setOf(DismissDirection.EndToStart),
         dismissThresholds = { FractionalThreshold(THRESHOLD_DISMISS_BOOKMARK) },
         background = { BookmarkDismissBackground(isDismissed = dismissState.targetValue == DismissValue.DismissedToStart) },
-        dismissContent = { BookmarkItemContent(bookmark = bookmark, goToBookScreen = goToBookScreen) },
+        dismissContent = { BookmarkItemContent(bookmark = bookmark, goToBookScreenAndParagraph = goToBookScreenAndParagraph) },
         modifier = Modifier.animateItemPlacement()
     )
 }
@@ -90,18 +90,18 @@ private fun BookmarkDismissBackground(isDismissed: Boolean) {
 @Composable
 private fun BookmarkItemContent(
     bookmark: Bookmark,
-    goToBookScreen: (bookId: Int) -> Unit
+    goToBookScreenAndParagraph: (bookId: Int, paragraphPosition: Int) -> Unit
 ) {
     Column(
         modifier = Modifier
-            .clickable { goToBookScreen(bookmark.paragraph.bookId) }
+            .clickable { goToBookScreenAndParagraph(bookmark.paragraph.bookId, bookmark.paragraph.position) }
             .fillMaxWidth()
             .background(MaterialTheme.colors.secondary)
             .padding(top = PADDING_NORMAL, bottom = PADDING_SMALL)
     ) {
         BookmarkHeader(
             bookmark = bookmark,
-            goToBookScreen = goToBookScreen
+            goToBookScreenAndParagraph = goToBookScreenAndParagraph
         )
 
         BookParagraphItem(bookParagraph = bookmark.paragraph)
@@ -111,7 +111,7 @@ private fun BookmarkItemContent(
 @Composable
 private fun BookmarkHeader(
     bookmark: Bookmark,
-    goToBookScreen: (bookId: Int) -> Unit
+    goToBookScreenAndParagraph: (bookId: Int, paragraphPosition: Int) -> Unit
 ) {
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -139,7 +139,7 @@ private fun BookmarkHeader(
             contentDescription = CONTENT_FORWARD_BOOKMARKS,
             modifier = Modifier
                 .size(SIZE_ICON_NORMAL)
-                .clickable { goToBookScreen(bookmark.paragraph.bookId) }
+                .clickable { goToBookScreenAndParagraph(bookmark.paragraph.bookId, bookmark.paragraph.position) }
         )
     }
 }

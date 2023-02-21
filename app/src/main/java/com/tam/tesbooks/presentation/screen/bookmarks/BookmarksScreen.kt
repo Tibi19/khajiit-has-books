@@ -23,7 +23,7 @@ import com.tam.tesbooks.util.*
 @Composable
 fun BookmarksScreen(
     bookmarksViewModel: BookmarksViewModel = hiltViewModel(),
-    goToBookScreen: (bookId: Int) -> Unit = {},
+    goToBookScreenAndParagraph: (bookId: Int, paragraphPosition: Int) -> Unit,
     goToPreviousScreen: () -> Unit = {},
 ) {
     val state = bookmarksViewModel.state
@@ -58,7 +58,7 @@ fun BookmarksScreen(
         ) {bookmark ->
             BookmarkItem(
                 bookmark = bookmark,
-                goToBookScreen = goToBookScreen,
+                goToBookScreenAndParagraph = goToBookScreenAndParagraph,
                 deleteBookmark = {
                     val deleteBookmarkEvent = BookmarksEvent.OnDeleteBookmark(bookmark)
                     bookmarksViewModel.onEvent(deleteBookmarkEvent)

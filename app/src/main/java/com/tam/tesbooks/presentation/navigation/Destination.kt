@@ -6,6 +6,7 @@ const val ARG_TAG = "tag"
 const val ARG_CATEGORY = "category"
 const val ARG_BOOK_LIST_ID = "book_list_id"
 const val ARG_BOOK_ID = "book_id"
+const val ARG_PARAGRAPH_POSITION = "paragraph_position"
 
 sealed class Destination(val route: String) {
     object Library: Destination("library?$ARG_TAG={$ARG_TAG}&$ARG_CATEGORY={$ARG_CATEGORY}") {
@@ -26,8 +27,9 @@ sealed class Destination(val route: String) {
         fun createRoute(bookListId: Int) = "book_list/$bookListId"
     }
 
-    object Book: Destination("book/{$ARG_BOOK_ID}") {
+    object Book: Destination("book/{$ARG_BOOK_ID}?$ARG_PARAGRAPH_POSITION={$ARG_PARAGRAPH_POSITION}") {
         fun createRoute(bookId: Int) = "book/$bookId"
+        fun createRoute(bookId: Int, paragraphPosition: Int) = "book/$bookId?$ARG_PARAGRAPH_POSITION=$paragraphPosition"
     }
 
     object Bookmarks: Destination("bookmarks")
