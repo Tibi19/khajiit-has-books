@@ -19,7 +19,8 @@ private val DarkColorPalette = darkColors(
 )
 
 private val DarkCustomColorPalette = CustomColors(
-    onSurfaceVariant = shadowGray
+    onSurfaceVariant = shadowGray,
+    tagTextColor = Color.Black
 )
 
 private val LightColorPalette = lightColors(

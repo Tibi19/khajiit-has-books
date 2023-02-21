@@ -1,12 +1,14 @@
 package com.tam.tesbooks.presentation.screen.book
 
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
@@ -17,6 +19,8 @@ import com.tam.tesbooks.domain.model.book.Book
 import com.tam.tesbooks.domain.model.bookmark.Bookmark
 import com.tam.tesbooks.domain.model.metadata.BookMetadata
 import com.tam.tesbooks.presentation.reusable.BookParagraphItem
+import com.tam.tesbooks.ui.theme.CustomColors
+import com.tam.tesbooks.ui.theme.EBGaramondFontFamily
 import com.tam.tesbooks.util.*
 
 @Composable
@@ -111,24 +115,40 @@ private fun TagsRow(
     onTagClick: (tag: String) -> Unit
 ) {
     FlowRow(
-        mainAxisSpacing = SPACING_TAGS_FLOW_ROW,
-        crossAxisSpacing = SPACING_TAGS_FLOW_ROW,
+        mainAxisSpacing = PADDING_SMALL,
+        crossAxisSpacing = PADDING_SMALL,
         modifier = Modifier
             .padding(top = PADDING_XX_SMALL, bottom = PADDING_LARGE)
             .padding(horizontal = PADDING_NORMAL)
     ) {
 
         tags.forEach { tag ->
-            Button(
-                contentPadding = PaddingValues(PADDING_XX_SMALL),
+            BookTag(
+                tagText = tag,
                 onClick = { onTagClick(tag) }
-            ) {
-                Text(
-                    text = tag,
-                    fontSize = SIZE_TAG_TEXT
-                )
-            }
+            )
         }
 
+    }
+}
+
+@Composable
+private fun BookTag(
+    tagText: String,
+    onClick: () -> Unit
+) {
+    Box(
+        contentAlignment = Alignment.Center,
+        modifier = Modifier
+            .background(color = MaterialTheme.colors.primary)
+            .clickable { onClick() }
+            .padding(vertical = PADDING_XX_SMALL, horizontal = PADDING_X_SMALL)
+    ) {
+        Text(
+            text = tagText,
+            style = MaterialTheme.typography.body1,
+            color = CustomColors.colors.tagTextColor,
+            fontFamily = EBGaramondFontFamily
+        )
     }
 }

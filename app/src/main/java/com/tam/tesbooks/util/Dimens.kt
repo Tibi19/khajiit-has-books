@@ -38,8 +38,6 @@ val SIZE_ICON_MARK_VIEWED_BOOK = 20.dp
 val PADDING_TOP_ICON_MARK_VIEWED_BOOK = 3.dp
 val SPACING_H2_LETTERS = 0.9.sp
 val PADDING_BOTTOM_BOOK_DETAILS_TEXT = 8.dp
-val SPACING_TAGS_FLOW_ROW = 5.dp
-val SIZE_TAG_TEXT = 12.sp
 
 object Dimens {
     val PADDING_DEFAULT = Modifier.padding(10.dp)
