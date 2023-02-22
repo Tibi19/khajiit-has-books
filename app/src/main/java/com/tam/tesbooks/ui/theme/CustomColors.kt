@@ -9,14 +9,8 @@ class CustomColors(
 
     companion object {
 
-        private var instance: CustomColors? = null
-        val colors: CustomColors
-            get() = instance ?: defaultColors
-
-        private val defaultColors = CustomColors(
-            onSurfaceVariant = Color.White,
-            tagTextColor = Color.Black
-        )
+        private lateinit var instance: CustomColors
+        val colors: CustomColors get() = instance
 
         fun initialize(customColors: CustomColors) {
             instance = customColors
