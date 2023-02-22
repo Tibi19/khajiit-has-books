@@ -5,8 +5,14 @@ import com.tam.tesbooks.util.getTextTagsRegex
 
 class TextParagraph(bookId: Int, position: Int, content: String): BookParagraph(bookId, position, content) {
 
-    private val _attributes: MutableList<TextAttribute> = mutableListOf()
-    val attributes: List<TextAttribute> = _attributes
+    private val attributes: MutableList<TextAttribute> = mutableListOf()
+
+    val isBold get() = attributes.contains(TextAttribute.BOLD)
+    val isItalic get() = attributes.contains(TextAttribute.ITALIC)
+    val isHeader get() = attributes.contains(TextAttribute.HEADER)
+    val isTitle get() = attributes.contains(TextAttribute.TITLE)
+    val isCentered get() = attributes.contains(TextAttribute.CENTER)
+    val isQuote get() = attributes.contains(TextAttribute.QUOTE)
 
     lateinit var text: String
         private set
@@ -27,7 +33,7 @@ class TextParagraph(bookId: Int, position: Int, content: String): BookParagraph(
     private fun parseAttributes() =
         getTagsToTextAttributes().forEach { textToAttribute ->
             if(!content.contains(textToAttribute.key)) return@forEach
-            _attributes.add(textToAttribute.value)
+            attributes.add(textToAttribute.value)
         }
 
 }
