@@ -9,6 +9,7 @@ abstract class BookParagraph(
     abstract fun parseContent()
 
     override fun equals(other: Any?): Boolean {
+        other ?: return false
         if (other !is BookParagraph) return false
         return this.hashCode() == other.hashCode()
     }
@@ -19,5 +20,4 @@ abstract class BookParagraph(
         result = 31 * result + content.hashCode()
         return result
     }
-
 }

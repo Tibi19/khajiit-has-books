@@ -46,7 +46,6 @@ class BookViewModel @Inject constructor(
         savedStateHandle.get<Int>(ARG_BOOK_ID)?.let { bookId ->
             loadBook(bookId)
             loadBookBookmarks(bookId)
-            loadNextRandomBook(listOf(bookId))
         }
 
         savedStateHandle.get<Int>(ARG_PARAGRAPH_POSITION)?.let { paragraphPosition ->
