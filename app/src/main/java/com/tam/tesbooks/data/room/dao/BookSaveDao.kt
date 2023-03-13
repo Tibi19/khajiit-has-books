@@ -25,4 +25,7 @@ interface BookSaveDao {
     @Query("SELECT COUNT(bookId) FROM table_book_save WHERE bookListId = :bookListId")
     suspend fun getBookSavesCountInList(bookListId: Int): Int
 
+    @Query("DELETE FROM table_book_save WHERE bookListId = :bookListId")
+    suspend fun deleteBookSavesInList(bookListId: Int)
+
 }

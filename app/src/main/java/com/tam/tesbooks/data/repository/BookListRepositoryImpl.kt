@@ -48,6 +48,7 @@ class BookListRepositoryImpl @Inject constructor(
 
     override suspend fun removeBookList(bookList: BookList) {
         if (bookList.isDefault) return
+        bookSaveDao.deleteBookSavesInList(bookList.id)
         bookListDao.deleteBookList(bookList.id)
     }
 
