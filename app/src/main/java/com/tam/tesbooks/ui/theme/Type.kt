@@ -25,10 +25,16 @@ val Typography = Typography(
     h2 = TextStyle(
         fontFamily = EBGaramondFontFamily,
         fontWeight = FontWeight.Bold,
-        fontSize = SIZE_TEXT_LARGE,
+        fontSize = SIZE_TEXT_X_LARGE,
         letterSpacing = SPACING_H2_LETTERS
     ),
-    h4 = TextStyle(fontSize = SIZE_TEXT_LARGE),
+    h3 = TextStyle(
+        fontFamily = EBGaramondFontFamily,
+        fontWeight = FontWeight.Bold,
+        fontSize = SIZE_TEXT_LARGE,
+        letterSpacing = SPACING_H3_LETTERS
+    ),
+    h4 = TextStyle(fontSize = SIZE_TEXT_X_LARGE),
     h5 = TextStyle(fontSize = SIZE_TEXT_NORMAL),
     h6 = TextStyle(
         fontSize = SIZE_TEXT_SMALL,

@@ -100,7 +100,10 @@ const val CONTENT_UNMARKED_AS_VIEWED = "This book hasn't been viewed. Click to m
 const val CONTENT_MARKED_AS_VIEWED = "This book has been marked as viewed. Click to revert."
 const val CONTENT_UNMARKED_AS_FAVORITE = "This book hasn't been added to favorites. Click to add to favorites."
 const val CONTENT_MARKED_AS_FAVORITE = "This book has been added to favorites. Click to remove from favorites."
+const val CONTENT_UNMARKED_AS_READ_LATER = "This book hasn't been marked to read later. Click to mark for later reading."
+const val CONTENT_MARKED_AS_READ_LATER = "This book has been marked to read later. Click to revert."
 const val CONTENT_SAVE_TO_LIST = "Save this book to book list..."
+const val CONTENT_WRITTEN_BY = "This book was written by..."
 
 // UI Text
 const val TEXT_SEARCH = "Search..."
@@ -133,3 +136,4 @@ const val TEXT_BOOK_AUTHOR_INTRO = "Author:  "
 const val TEXT_BOOK_CATEGORY_INTRO = "Category:  "
 const val TEXT_BOOK_DESCRIPTION_INTRO = "Description:  "
 const val TEXT_BOOK_DESCRIPTION_EMPTY_REPLACEMENT = "-"
+const val TEXT_BETWEEN_AUTHOR_AND_CATEGORY = " in "
