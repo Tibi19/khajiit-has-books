@@ -138,7 +138,7 @@ fun DialogButtons(
             text = confirmationText,
             iconModifier = Modifier
                 .padding(end = PADDING_SMALL)
-                .size(SIZE_ICON_SMALL)
+                .size(SIZE_ICON_X_SMALL)
         ) {
             onSubmit()
             isDialogOpenState.value = false
