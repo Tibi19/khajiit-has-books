@@ -17,5 +17,6 @@ data class BookMetadataEntity (
     val tags: List<String>,
     val category: String,
     val fileName: String,
-    val textSize: Int
+    val textSize: Int,
+    val banner: String
 )

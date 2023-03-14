@@ -67,7 +67,8 @@ fun getTestBookInfo() =
             tags = listOf("Alchemy", "Journals, Notes & Correspondence", "TES2:Daggerfall"),
             category = "Journals, Notes & Correspondence",
             fileName = "nofile.json",
-            textSize = 99
+            textSize = 99,
+            banner = "https://i.pinimg.com/236x/3a/78/06/3a7806e7d7a98e3cfdf9623331e150a1.jpg"
         ),
         savedInBookLists = listOf(
             BookList("Read", true, 1),
@@ -99,18 +100,6 @@ fun getTestImageParagraph(): ImageParagraph =
         8,
         5,
         "<image=https://www.imperial-library.info/sites/default/files/mwbks_tslov_vivec_face.jpg>"
-    )
-
-fun getEmptyMetadataEntity() =
-    BookMetadataEntity(
-        id = -1,
-        title = "No Title",
-        author = "No Author",
-        description = "No Description",
-        tags = emptyList(),
-        category = "No Category",
-        fileName = "No file name",
-        textSize = 0
     )
 
 fun getEmptyBookTextDto() =

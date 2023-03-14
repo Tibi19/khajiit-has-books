@@ -19,7 +19,8 @@ fun BookMetadataDto.toEntity() =
         tags = tags,
         category = category,
         fileName = fileName,
-        textSize = textSize
+        textSize = textSize,
+        banner = banner
     )
 
 fun BookMetadataEntity.toMetadata(): BookMetadata =
@@ -31,6 +32,7 @@ fun BookMetadataEntity.toMetadata(): BookMetadata =
         tags = tags,
         category = category,
         fileName = fileName,
-         textSize = textSize
+        textSize = textSize,
+        banner = banner
     )
 
