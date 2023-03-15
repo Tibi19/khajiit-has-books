@@ -10,6 +10,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.tam.tesbooks.presentation.screen.book.BookScreen
+import com.tam.tesbooks.presentation.screen.book_list.BookListScreen
 import com.tam.tesbooks.presentation.screen.bookmarks.BookmarksScreen
 import com.tam.tesbooks.presentation.screen.library.LibraryScreen
 
@@ -31,7 +32,18 @@ fun MainNavGraph(
             })
         }
 
-        composable(route = Destination.BookList.route) {}
+        composable(
+            route = Destination.BookList.route,
+            arguments = listOf(navArgument(ARG_BOOK_LIST_ID) { type = NavType.IntType })
+        ) {
+            BookListScreen(
+                goToBookScreen = { bookId ->
+                    val bookRoute = Destination.Book.createRoute(bookId)
+                    navController.navigate(bookRoute)
+                },
+                goToPreviousScreen = { navController.popBackStack() }
+            )
+        }
 
         composable(
             route = Destination.Book.route,

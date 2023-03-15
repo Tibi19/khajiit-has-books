@@ -20,6 +20,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import com.tam.tesbooks.R
+import com.tam.tesbooks.presentation.navigation.ARG_BOOK_LIST_ID
 import com.tam.tesbooks.presentation.navigation.Destination
 import com.tam.tesbooks.presentation.reusable.NewListButton
 import com.tam.tesbooks.presentation.reusable.OnBackPressListener
@@ -92,7 +93,18 @@ fun Drawer(
                 state = state,
                 drawerViewModel = drawerViewModel,
                 isDrawerOpen = isDrawerOpen,
-                goToListScreen = {}
+                goToListScreen = {
+                    val bookListRoute = Destination.BookList.createRoute(bookList.id)
+                    val bookListGenericRoute = Destination.BookList.route
+                    val currentRoute = navController.currentDestination?.route
+                    val currentBookListId by lazy { navController.currentBackStackEntry?.arguments?.getInt(ARG_BOOK_LIST_ID) }
+                    if(currentRoute != bookListGenericRoute || bookList.id != currentBookListId) {
+                        navController.navigate(bookListRoute)
+                    }
+                    coroutineScope.launch {
+                        scaffoldState.drawerState.close()
+                    }
+                }
             )
         }
 
