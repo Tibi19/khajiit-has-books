@@ -3,8 +3,6 @@ package com.tam.tesbooks.presentation.reusable
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
 import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -14,17 +12,19 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.unit.max
+import coil.compose.AsyncImage
+import com.tam.tesbooks.R
 import com.tam.tesbooks.domain.model.book.BookInfo
 import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.presentation.dialog.lists.AddBookToListDialog
-import com.tam.tesbooks.ui.theme.KhajiitHasBooksTheme
 import com.tam.tesbooks.util.*
-import com.tam.tesbooks.R
 
 @Composable
 fun BookCardItem(
@@ -67,124 +67,121 @@ private fun BookCard(
             .padding(horizontal = PADDING_NORMAL)
             .clickable { onClick() }
     ) {
-        Column(
-            modifier = Modifier
-                .padding(PADDING_NORMAL)
-                .fillMaxWidth()
-        ) {
-
-            Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(bottom = PADDING_NORMAL)
-            ) {
-                Image(
-                    painter = painterResource(R.drawable.ic_written_by),
-                    contentDescription = CONTENT_WRITTEN_BY,
-                    modifier = Modifier
-                        .padding(end = PADDING_X_SMALL, top = PADDING_XX_SMALL)
-                        .size(SIZE_ICON_SMALL)
-                )
-
-                val author = bookInfo.metadata.author
-                val category = bookInfo.metadata.category
-                val authorAndCategoryText = "$author$TEXT_BETWEEN_AUTHOR_AND_CATEGORY$category"
-                Text(
-                    text = authorAndCategoryText,
-                    color = MaterialTheme.colors.onSurface,
-                    overflow = TextOverflow.Ellipsis,
-                    maxLines = 1
-                )
-            }
-
-            Text(
-                text = bookInfo.metadata.title.uppercase(),
-                style = MaterialTheme.typography.h3,
-                modifier = Modifier.padding(bottom = PADDING_SMALL)
+        Column(modifier = Modifier.fillMaxWidth()) {
+            BookCardBanner(
+                bookTitle = bookInfo.metadata.title,
+                bannerUrl = bookInfo.metadata.banner
             )
-
-            val descriptionText = bookInfo.metadata.description
-            if(descriptionText.isNotEmpty()) {
-                Text(text = bookInfo.metadata.description)
-            }
-
-            BookListsControlRow(
+            BookCardContent(
                 bookInfo = bookInfo,
-                buttons = setOf(
-                    BookListOption.Viewed,
-                    BookListOption.Favorite,
-                    BookListOption.AddTo(onOpenAddToListDialog = { isListDialogOpenState.value = true })
-                ),
                 bookLists = bookLists,
-                onChangeBookList = { bookList -> onChangeBookList(bookInfo, bookList) },
-                horizontalArrangement = Arrangement.End,
-                modifier = Modifier
-                    .padding(top = PADDING_LARGE)
-                    .fillMaxWidth()
+                isListDialogOpenState = isListDialogOpenState,
+                onChangeBookList = onChangeBookList
             )
-
         }
     }
 
 @Composable
-@Preview
-private fun BookCardPreview() =
-    KhajiitHasBooksTheme {
-        BookCard(
-            bookInfo = getTestBookInfo(),
-            bookLists = getTestBookLists(),
-            isListDialogOpenState = remember { mutableStateOf(false) },
-            onChangeBookList = { _, _ -> },
-            onClick = {}
-        )
+fun BookCardBanner(bookTitle: String, bannerUrl: String) {
+    AsyncImage(
+        model = bannerUrl,
+        contentScale = ContentScale.Crop,
+        contentDescription = "$CONTENT_BANNER_IMAGE_START$bookTitle",
+        alignment = Alignment.Center,
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(LocalBannerHeight.current)
+    )
+}
+
+private object LocalBannerHeight {
+    private var bannerHeight: Dp? = null
+    val current: Dp
+        @Composable get() = bannerHeight ?: run {
+            bannerHeight = getBannerHeight()
+            bannerHeight!!
+        }
+
+    @Composable
+    private fun getBannerHeight(): Dp = getContentHeight() * RATIO_BOOK_ITEM_BANNER_TO_CONTENT_HEIGHTS
+
+    @Composable
+    // Content height is an estimate if both title and description are single lines
+    private fun getContentHeight(): Dp {
+        val authorIconHeight = PADDING_XX_SMALL + SIZE_ICON_SMALL
+        val authorAndDescriptionHeight = SIZE_TEXT_X_SMALL.toDp()
+        val authorRowHeight = max(authorIconHeight, authorAndDescriptionHeight)
+        val titleHeight = SIZE_TEXT_LARGE.toDp()
+        val descriptionHeight = SIZE_TEXT_X_SMALL.toDp()
+        return authorRowHeight + titleHeight + descriptionHeight + SIZE_ICON_NORMAL + 3 * PADDING_NORMAL + PADDING_SMALL + PADDING_LARGE
     }
 
+    @Composable
+    private fun TextUnit.toDp() = with(LocalDensity.current) { toDp() }
+
+    private operator fun Int.times(dp: Dp): Dp = Dp(value = dp.value * this)
+}
+
 @Composable
-private fun BookCardItemLegacy(
+private fun BookCardContent(
     bookInfo: BookInfo,
     bookLists: List<BookList>,
-    onChangeBookList: (bookInfo: BookInfo, bookList: BookList) -> Unit,
-    onClick: () -> Unit
+    isListDialogOpenState: MutableState<Boolean>,
+    onChangeBookList: (bookInfo: BookInfo, bookList: BookList) -> Unit
 ) =
-    Card(
-        shape = RoundedCornerShape(Dimens.RADIUS_DEFAULT),
-        elevation = Dimens.ELEVATION_DEFAULT,
-        modifier = Dimens.PADDING_DEFAULT.clickable { onClick() }
+    Column(
+        modifier = Modifier
+            .padding(PADDING_NORMAL)
+            .fillMaxWidth()
     ) {
-        Column(modifier = Modifier.fillMaxWidth()) {
 
-            Row(
-                modifier = Dimens.PADDING_DEFAULT.fillMaxWidth(),
-                horizontalArrangement = Arrangement.End
-            ) {
-                Button(
-                    onClick = { onChangeBookList(bookInfo, bookLists.getViewed()) },
-                    modifier = Dimens.PADDING_SMALL
-                ) {
-                    Text("Read")
-                }
-                Button(
-                    onClick = { onChangeBookList(bookInfo, bookLists.getFavorite()) },
-                    modifier = Dimens.PADDING_SMALL
-                ) {
-                    Text("Favorite")
-                }
-                Button(
-                    onClick = { /* isListDialogOpenState.value = true */ },
-                    modifier = Dimens.PADDING_SMALL
-                ) {
-                    Text("Add to")
-                }
-            }
-
-            Text(
-                text = bookInfo.metadata.title,
-                textAlign = TextAlign.Center,
-                fontWeight = FontWeight.Bold,
-                modifier = Dimens.PADDING_DEFAULT.fillMaxWidth()
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier.padding(bottom = PADDING_NORMAL)
+        ) {
+            Image(
+                painter = painterResource(R.drawable.ic_written_by),
+                contentDescription = CONTENT_WRITTEN_BY,
+                modifier = Modifier
+                    .padding(end = PADDING_X_SMALL, top = PADDING_XX_SMALL)
+                    .size(SIZE_ICON_SMALL)
             )
-            Text(modifier = Dimens.PADDING_TEXT_OLD, text = bookInfo.metadata.author)
-            Text(modifier = Dimens.PADDING_TEXT_OLD, text = bookInfo.metadata.category)
-            Text(modifier = Dimens.PADDING_LAST_TEXT, text = bookInfo.metadata.description)
 
+            val author = bookInfo.metadata.author
+            val category = bookInfo.metadata.category
+            val authorAndCategoryText = "$author$TEXT_BETWEEN_AUTHOR_AND_CATEGORY$category"
+            Text(
+                text = authorAndCategoryText,
+                color = MaterialTheme.colors.onSurface,
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1
+            )
         }
+
+        Text(
+            text = bookInfo.metadata.title.uppercase(),
+            style = MaterialTheme.typography.h3
+        )
+
+        val descriptionText = bookInfo.metadata.description
+        if(descriptionText.isNotEmpty()) {
+            Spacer(modifier = Modifier.height(PADDING_SMALL))
+            Text(text = bookInfo.metadata.description)
+        }
+
+        BookListsControlRow(
+            bookInfo = bookInfo,
+            buttons = setOf(
+                BookListOption.Viewed,
+                BookListOption.Favorite,
+                BookListOption.AddTo(onOpenAddToListDialog = { isListDialogOpenState.value = true })
+            ),
+            bookLists = bookLists,
+            onChangeBookList = { bookList -> onChangeBookList(bookInfo, bookList) },
+            horizontalArrangement = Arrangement.End,
+            modifier = Modifier
+                .padding(top = PADDING_LARGE)
+                .fillMaxWidth()
+        )
+
     }

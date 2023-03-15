@@ -104,6 +104,7 @@ const val CONTENT_UNMARKED_AS_READ_LATER = "This book hasn't been marked to read
 const val CONTENT_MARKED_AS_READ_LATER = "This book has been marked to read later. Click to revert."
 const val CONTENT_SAVE_TO_LIST = "Save this book to book list..."
 const val CONTENT_WRITTEN_BY = "This book was written by..."
+const val CONTENT_BANNER_IMAGE_START = "Banner image for "
 
 // UI Text
 const val TEXT_SEARCH = "Search..."
