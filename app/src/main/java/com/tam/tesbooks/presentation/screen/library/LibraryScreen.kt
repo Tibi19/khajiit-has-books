@@ -1,8 +1,10 @@
 package com.tam.tesbooks.presentation.screen.library
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
@@ -21,7 +23,9 @@ fun LibraryScreen(
     OnErrorEffect(errorFlow = libraryViewModel.errorFlow)
 
     LazyColumn(
-        modifier = Modifier.fillMaxSize()
+        modifier = Modifier
+            .background(MaterialTheme.colors.secondaryVariant)
+            .fillMaxSize()
     ) {
         item {
             LibrarySearchBar(libraryViewModel)
