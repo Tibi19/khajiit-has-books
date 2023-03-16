@@ -109,10 +109,10 @@ private object LocalBannerHeight {
     // Content height is an estimate if both title and description are single lines
     private fun getContentHeight(): Dp {
         val authorIconHeight = PADDING_XX_SMALL + SIZE_ICON_SMALL
-        val authorAndDescriptionHeight = SIZE_TEXT_X_SMALL.toDp()
+        val authorAndDescriptionHeight = MaterialTheme.typography.body1.fontSize.toDp()
         val authorRowHeight = max(authorIconHeight, authorAndDescriptionHeight)
-        val titleHeight = SIZE_TEXT_LARGE.toDp()
-        val descriptionHeight = SIZE_TEXT_X_SMALL.toDp()
+        val titleHeight = MaterialTheme.typography.h3.fontSize.toDp()
+        val descriptionHeight = MaterialTheme.typography.body1.fontSize.toDp()
         return authorRowHeight + titleHeight + descriptionHeight + SIZE_ICON_NORMAL + 3 * PADDING_NORMAL + PADDING_SMALL + PADDING_LARGE
     }
 
