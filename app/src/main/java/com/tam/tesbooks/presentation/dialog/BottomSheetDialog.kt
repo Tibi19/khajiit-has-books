@@ -1,17 +1,16 @@
 package com.tam.tesbooks.presentation.dialog
 
-import androidx.compose.foundation.gestures.scrollable
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import com.tam.tesbooks.R
 import com.tam.tesbooks.presentation.reusable.BarRow
-import com.tam.tesbooks.presentation.reusable.DefaultTextButton
 import com.tam.tesbooks.presentation.reusable.DialogControl
 import com.tam.tesbooks.presentation.reusable.SectionText
 import com.tam.tesbooks.util.*

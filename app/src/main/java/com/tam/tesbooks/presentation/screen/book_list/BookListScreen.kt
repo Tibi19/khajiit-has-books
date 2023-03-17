@@ -30,6 +30,7 @@ fun BookListScreen(
         item {
             BookListBar(
                 bookListName = state.bookList?.name ?: "",
+                bookListSort = state.listSort,
                 onSortChange = { listSort: BookListSort ->
                     val sortChangeEvent = BookListEvent.OnSortChange(listSort)
                     bookListViewModel.onEvent(sortChangeEvent)

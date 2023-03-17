@@ -1,43 +1,51 @@
 package com.tam.tesbooks.presentation.dialog
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.Button
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import com.tam.tesbooks.util.PADDING_NORMAL
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import com.tam.tesbooks.domain.model.listing_modifier.BookListSort
+import com.tam.tesbooks.domain.model.listing_modifier.Sort
 import com.tam.tesbooks.util.TEXT_SORT_LIST
 
 @Composable
-fun SortListDialog(isOpenState: MutableState<Boolean>) {
+fun SortListDialog(
+    isOpenState: MutableState<Boolean>,
+    bookListSort: BookListSort,
+    onSubmitSort: (newListSort: BookListSort) -> Unit
+) {
     if(!isOpenState.value) return
 
     BottomSheetDialogProvider.showDialog(
         isOpenState = isOpenState,
-        content = { SortListDialogContent(isOpenState = isOpenState) }
+        content = {
+            SortListDialogContent(
+                isOpenState = isOpenState,
+                bookListSort = bookListSort,
+                onSubmitSort = { newListSort -> onSubmitSort(newListSort) }
+            )
+        }
     )
+
 }
 
 @Composable
-private fun SortListDialogContent(isOpenState: MutableState<Boolean>) {
+private fun SortListDialogContent(
+    isOpenState: MutableState<Boolean>,
+    bookListSort: BookListSort,
+    onSubmitSort: (newListSort: BookListSort) -> Unit
+) {
+    val bookListSortState = remember { mutableStateOf(bookListSort) }
     BottomSheetDialog(
         title = TEXT_SORT_LIST,
         isOpenState = isOpenState,
-        onSubmit = {}
+        onSubmit = { onSubmitSort(bookListSortState.value) }
     ) {
-        Button(onClick = { isOpenState.value = false }) {
-            Text(text = "Some text")
+        val options = Sort.values()
+        options.forEach { sort ->
+            // TODO: Add RadioOption for sort
         }
-        Spacer(modifier = Modifier.size(PADDING_NORMAL))
-        Button(onClick = { isOpenState.value = false }) {
-            Text(text = "Some other text")
-        }
-        Spacer(modifier = Modifier.size(PADDING_NORMAL))
-        Button(onClick = { isOpenState.value = false }) {
-            Text(text = "Some more text")
-        }
+        // TODO: Add reverse order switch
     }
+
 }
