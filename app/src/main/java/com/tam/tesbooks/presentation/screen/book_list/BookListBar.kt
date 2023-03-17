@@ -12,6 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.tam.tesbooks.R
 import com.tam.tesbooks.domain.model.listing_modifier.BookListSort
+import com.tam.tesbooks.presentation.dialog.SortListDialog
 import com.tam.tesbooks.presentation.reusable.BarRow
 import com.tam.tesbooks.presentation.reusable.SectionText
 import com.tam.tesbooks.util.CONTENT_GO_TO_PREVIOUS_SCREEN
@@ -31,7 +32,10 @@ fun BookListBar(
         backIconContentDescription = CONTENT_GO_TO_PREVIOUS_SCREEN,
         backgroundColor = MaterialTheme.colors.secondary
     ) {
-        SectionText(text = bookListName)
+        SectionText(
+            text = bookListName,
+            style = MaterialTheme.typography.h4
+        )
 
         Spacer(modifier = Modifier.weight(1f))
 
@@ -43,4 +47,6 @@ fun BookListBar(
                 .clickable { isSortDialogOpenState.value = true }
         )
     }
+
+    SortListDialog(isOpenState = isSortDialogOpenState)
 }
