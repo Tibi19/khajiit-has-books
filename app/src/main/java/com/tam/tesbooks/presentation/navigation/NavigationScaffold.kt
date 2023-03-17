@@ -32,7 +32,7 @@ fun NavigationScaffold() {
     ModalBottomSheetLayout(
         sheetState = bottomSheetState,
         scrimColor = scrimColor,
-        sheetContent = { BottomSheetDialogProvider.BottomSheetDialog(bottomSheetState) }
+        sheetContent = { BottomSheetDialogProvider.Content(bottomSheetState) }
     ) {
         Scaffold(
             scaffoldState = scaffoldState,

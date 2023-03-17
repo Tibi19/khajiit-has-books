@@ -33,7 +33,7 @@ object BottomSheetDialogProvider {
     }
 
     @Composable
-    fun BottomSheetDialog(bottomSheetState: ModalBottomSheetState) {
+    fun Content(bottomSheetState: ModalBottomSheetState) {
         setupBottomSheetState(bottomSheetState)
         coroutineScope = rememberCoroutineScope()
         val isBottomSheetVisible by remember {
