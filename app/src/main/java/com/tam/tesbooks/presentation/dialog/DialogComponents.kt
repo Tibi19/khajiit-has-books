@@ -8,7 +8,6 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
@@ -56,7 +55,6 @@ fun DefaultDialog(
 
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun DynamicDialog(
     isOpenState: MutableState<Boolean>,
