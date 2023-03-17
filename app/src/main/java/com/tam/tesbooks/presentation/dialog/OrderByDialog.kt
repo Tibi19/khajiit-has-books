@@ -35,56 +35,25 @@ fun OrderByDialog(
 
 @Composable
 fun OrderByDialogBody(newLibraryOrderState: MutableState<LibraryOrder>) {
-    val radioOptions = Order.values()
+    val options = Order.values()
     Column {
-        radioOptions.forEach { order ->
+        options.forEach { order ->
 
             val isOrderSelected = order == newLibraryOrderState.value.orderBy
-
-            Row(
-                modifier = Modifier.selectable(
-                    selected = isOrderSelected,
-                    onClick = { selectOrder(newLibraryOrderState, isOrderSelected, order) }
-                ),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                RadioButton(
-                    selected = isOrderSelected,
-                    onClick = { selectOrder(newLibraryOrderState, isOrderSelected, order) },
-                    colors = RadioButtonDefaults.colors(
-                        selectedColor = MaterialTheme.colors.primary
-                    )
-                )
-                Text(
-                    text = getOrderText(order),
-                    modifier = Dimens.PADDING_SMALL
-                )
-            }
+            RadioOption(
+                text = getOrderText(order),
+                isSelected = isOrderSelected,
+                onSelect = { selectOrder(newLibraryOrderState, isOrderSelected, order) }
+            )
 
         }
 
         val isOrderReversed = newLibraryOrderState.value.isReversed
-        Row(
-            modifier = Modifier.selectable(
-                selected = isOrderReversed,
-                onClick = { switchIsOrderReversed(newLibraryOrderState, isOrderReversed) }
-            ),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Switch(
-                checked = isOrderReversed,
-                onCheckedChange = { switchIsOrderReversed(newLibraryOrderState, isOrderReversed) },
-                colors = SwitchDefaults.colors(
-                    uncheckedThumbColor = MaterialTheme.colors.onSecondary,
-                    checkedThumbColor = MaterialTheme.colors.primary,
-                    checkedTrackColor = MaterialTheme.colors.primary
-                )
-            )
-            Text(
-                text = TEXT_REVERSE_ORDER,
-                modifier = Dimens.PADDING_SMALL
-            )
-        }
+        SwitchOption(
+            text = TEXT_REVERSE_ORDER,
+            isChecked = isOrderReversed,
+            onChange = { switchIsOrderReversed(newLibraryOrderState, isOrderReversed) }
+        )
     }
 }
 
