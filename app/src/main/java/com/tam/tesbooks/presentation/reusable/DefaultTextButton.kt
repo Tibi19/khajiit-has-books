@@ -9,6 +9,7 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.text.TextStyle
 import com.tam.tesbooks.util.PADDING_NORMAL
 import com.tam.tesbooks.util.SIZE_ICON_NORMAL
 
@@ -18,6 +19,7 @@ fun DefaultTextButton(
     iconContent: String?,
     text: String,
     modifier: Modifier = Modifier,
+    textStyle: TextStyle = MaterialTheme.typography.button,
     iconModifier: Modifier = Modifier
         .padding(end = PADDING_NORMAL)
         .size(SIZE_ICON_NORMAL),
@@ -34,7 +36,7 @@ fun DefaultTextButton(
         )
         Text(
             text = text,
-            style = MaterialTheme.typography.button
+            style = textStyle
         )
     }
 }

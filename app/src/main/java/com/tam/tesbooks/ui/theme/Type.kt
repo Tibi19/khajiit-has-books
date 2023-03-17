@@ -43,5 +43,9 @@ val Typography = Typography(
     button = TextStyle(
         fontSize = SIZE_TEXT_NORMAL,
         fontWeight = FontWeight.SemiBold,
+    ),
+    subtitle1 = TextStyle(
+        fontSize = SIZE_TEXT_SMALL,
+        fontWeight = FontWeight.SemiBold
     )
 )
