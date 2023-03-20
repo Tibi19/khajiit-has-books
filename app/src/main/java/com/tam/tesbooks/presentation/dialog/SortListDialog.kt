@@ -6,7 +6,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import com.tam.tesbooks.domain.model.listing_modifier.BookListSort
 import com.tam.tesbooks.domain.model.listing_modifier.Sort
+import com.tam.tesbooks.util.TEXT_REVERSE_SORT
 import com.tam.tesbooks.util.TEXT_SORT_LIST
+import com.tam.tesbooks.util.getSortText
 
 @Composable
 fun SortListDialog(
@@ -43,9 +45,36 @@ private fun SortListDialogContent(
     ) {
         val options = Sort.values()
         options.forEach { sort ->
-            // TODO: Add RadioOption for sort
+            val isSortSelected = sort == bookListSortState.value.sortBy
+            RadioOption(
+                text = getSortText(sort),
+                isSelected = isSortSelected,
+                onSelect = { selectSort(bookListSortState, sort) }
+            )
         }
-        // TODO: Add reverse order switch
+
+        val isSortReversed = bookListSortState.value.isReversed
+        SwitchOption(
+            text = TEXT_REVERSE_SORT,
+            isChecked = isSortReversed,
+            onChange = { switchIsSortReversed(bookListSortState, isSortReversed) }
+        )
     }
 
+}
+
+private fun selectSort(
+    sortState: MutableState<BookListSort>,
+    sort: Sort
+) {
+    val newSort = sortState.value.copy(sortBy = sort)
+    sortState.value = newSort
+}
+
+private fun switchIsSortReversed(
+    sortState: MutableState<BookListSort>,
+    isSortReversed: Boolean
+) {
+    val switchedSort = sortState.value.copy(isReversed = !isSortReversed)
+    sortState.value = switchedSort
 }

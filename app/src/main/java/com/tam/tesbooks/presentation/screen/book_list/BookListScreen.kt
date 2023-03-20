@@ -1,5 +1,6 @@
 package com.tam.tesbooks.presentation.screen.book_list
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -8,10 +9,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.tam.tesbooks.domain.model.listing_modifier.BookListSort
 import com.tam.tesbooks.presentation.reusable.BookCardItem
 import com.tam.tesbooks.presentation.reusable.OnErrorEffect
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun BookListScreen(
     bookListViewModel: BookListViewModel = hiltViewModel(),
@@ -27,11 +28,11 @@ fun BookListScreen(
             .background(MaterialTheme.colors.secondaryVariant)
             .fillMaxSize()
     ) {
-        item {
+        stickyHeader {
             BookListBar(
                 bookListName = state.bookList?.name ?: "",
                 bookListSort = state.listSort,
-                onSortChange = { listSort: BookListSort ->
+                onSortChange = { listSort ->
                     val sortChangeEvent = BookListEvent.OnSortChange(listSort)
                     bookListViewModel.onEvent(sortChangeEvent)
                 },
@@ -39,7 +40,10 @@ fun BookListScreen(
             )
         }
 
-        items(state.bookInfos) { bookInfo ->
+        items(
+            key = { bookInfo -> bookInfo.bookId },
+            items = state.bookInfos,
+        ) { bookInfo ->
             BookCardItem(
                 bookInfo = bookInfo,
                 bookLists = state.bookLists,
