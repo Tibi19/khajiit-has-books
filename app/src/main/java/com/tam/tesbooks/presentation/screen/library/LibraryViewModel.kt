@@ -43,7 +43,7 @@ class LibraryViewModel @Inject constructor(
         refreshDataObserver(
             viewModelScope = viewModelScope,
             repository = repository,
-            refreshBookSavedInLists = { bookInfo -> updateBookInfo(bookInfo) }
+            refreshBookSavedInLists = { bookInfoId -> updateBookInfo(bookInfoId) }
         )
     }
 
@@ -115,9 +115,9 @@ class LibraryViewModel @Inject constructor(
             }
         }
 
-    private fun updateBookInfo(bookInfo: BookInfo) =
+    private fun updateBookInfo(bookInfoId: Int) =
         viewModelScope.launch {
-            repository.getBookInfo(bookInfo.bookId)
+            repository.getBookInfo(bookInfoId)
                 .onResource(
                     { data ->
                         data ?: return@onResource

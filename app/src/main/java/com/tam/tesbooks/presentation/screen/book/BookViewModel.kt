@@ -55,7 +55,7 @@ class BookViewModel @Inject constructor(
         refreshDataObserver(
             viewModelScope = viewModelScope,
             repository = repository,
-            refreshBookSavedInLists = { bookInfo -> updateBookInfo(bookInfo) },
+            refreshBookSavedInLists = { bookInfoId -> updateBookInfo(bookInfoId) },
             refreshBookmarks = {
                 val currentBook = state.curentBook ?: return@refreshDataObserver
                 loadBookBookmarks(currentBook.bookInfo.bookId)
@@ -187,9 +187,9 @@ class BookViewModel @Inject constructor(
             }
         }
 
-    private fun updateBookInfo(bookInfo: BookInfo) =
+    private fun updateBookInfo(bookInfoId: Int) =
         viewModelScope.launch {
-            repository.getBookInfo(bookInfo.bookId)
+            repository.getBookInfo(bookInfoId)
                 .onResource(
                     { data ->
                         data ?: return@onResource

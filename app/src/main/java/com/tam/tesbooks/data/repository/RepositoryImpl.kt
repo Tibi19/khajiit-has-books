@@ -73,11 +73,11 @@ class RepositoryImpl @Inject constructor(
 
     override suspend fun addBookToList(bookInfo: BookInfo, bookList: BookList) =
         bookListRepository.addBookToList(bookInfo, bookList)
-            .also { dataChangeSharedFlow.emit(ChangingData.BookSavedInLists(bookInfo)) }
+            .also { dataChangeSharedFlow.emit(ChangingData.BookSavedInLists(bookInfo.bookId)) }
 
     override suspend fun removeBookFromList(bookInfo: BookInfo, bookList: BookList) =
         bookListRepository.removeBookFromList(bookInfo, bookList)
-            .also { dataChangeSharedFlow.emit(ChangingData.BookSavedInLists(bookInfo)) }
+            .also { dataChangeSharedFlow.emit(ChangingData.BookSavedInLists(bookInfo.bookId)) }
 
     override suspend fun getBookSavesCountInList(bookList: BookList): Resource<Int> =
         bookListRepository.getBookSavesCountInList(bookList)
