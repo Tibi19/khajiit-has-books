@@ -4,7 +4,8 @@ import androidx.compose.ui.graphics.Color
 
 class CustomColors(
     val onSurfaceVariant: Color,
-    val tagTextColor: Color
+    val tagTextColor: Color,
+    val unfocusedOptionColor: Color,
 ) {
 
     companion object {

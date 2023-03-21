@@ -1,14 +1,14 @@
 package com.tam.tesbooks.presentation.dialog
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Modifier
 import com.tam.tesbooks.domain.model.listing_modifier.BookListSort
 import com.tam.tesbooks.domain.model.listing_modifier.Sort
-import com.tam.tesbooks.util.TEXT_REVERSE_SORT
-import com.tam.tesbooks.util.TEXT_SORT_LIST
-import com.tam.tesbooks.util.getSortText
+import com.tam.tesbooks.util.*
 
 @Composable
 fun SortListDialog(
@@ -49,7 +49,8 @@ private fun SortListDialogContent(
             RadioOption(
                 text = getSortText(sort),
                 isSelected = isSortSelected,
-                onSelect = { selectSort(bookListSortState, sort) }
+                onSelect = { selectSort(bookListSortState, sort) },
+                modifier = Modifier.padding(bottom = PADDING_X_SMALL)
             )
         }
 

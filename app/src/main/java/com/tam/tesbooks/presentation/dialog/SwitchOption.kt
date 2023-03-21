@@ -10,7 +10,9 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import com.tam.tesbooks.presentation.reusable.SectionText
 import com.tam.tesbooks.util.Dimens
+import com.tam.tesbooks.util.PADDING_SMALL
 import com.tam.tesbooks.util.PADDING_X_SMALL
 import com.tam.tesbooks.util.TEXT_REVERSE_ORDER
 
@@ -35,9 +37,7 @@ fun SwitchOption(
                 checkedThumbColor = MaterialTheme.colors.primary,
                 checkedTrackColor = MaterialTheme.colors.primary
             ),
-            modifier = Modifier.padding(end = PADDING_X_SMALL)
+            modifier = Modifier.padding(end = PADDING_SMALL)
         )
-        Text(
-            text = text
-        )
+        SectionText(text = text)
     }

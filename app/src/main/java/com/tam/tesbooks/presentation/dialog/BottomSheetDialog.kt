@@ -35,7 +35,7 @@ fun BottomSheetDialog(
         Column(
             modifier = Modifier
                 .verticalScroll(scrollState)
-                .padding(vertical = PADDING_LARGE, horizontal = PADDING_NORMAL)
+                .padding(vertical = PADDING_NORMAL, horizontal = PADDING_SMALL)
         ) {
             content()
         }
