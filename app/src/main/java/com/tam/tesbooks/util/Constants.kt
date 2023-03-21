@@ -105,7 +105,8 @@ const val CONTENT_SAVE_TO_LIST = "Save this book to book list..."
 const val CONTENT_WRITTEN_BY = "This book was written by..."
 const val CONTENT_BANNER_IMAGE_START = "Banner image for "
 const val CONTENT_SORT_LIST = "Sort books in the current book list."
-const val CONTENT_RADIO_OPTION_START = "Exclusive option: "
+const val CONTENT_RADIO_OPTION_ON_START = "Exclusive option selected: "
+const val CONTENT_RADIO_OPTION_OFF_START = "Exclusive option not selected: "
 
 // UI Text
 const val TEXT_SEARCH = "Search..."

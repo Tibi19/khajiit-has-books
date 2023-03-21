@@ -18,10 +18,7 @@ import androidx.compose.ui.res.painterResource
 import com.tam.tesbooks.R
 import com.tam.tesbooks.presentation.reusable.SectionText
 import com.tam.tesbooks.ui.theme.CustomColors
-import com.tam.tesbooks.util.CONTENT_RADIO_OPTION_START
-import com.tam.tesbooks.util.PADDING_SMALL
-import com.tam.tesbooks.util.SCALE_RADIO_OPTION_CHECKED_INSIDE
-import com.tam.tesbooks.util.SIZE_ICON_LARGE
+import com.tam.tesbooks.util.*
 
 @Composable
 fun RadioOption(
@@ -37,7 +34,6 @@ fun RadioOption(
         ),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        val radioButtonDescription = "$CONTENT_RADIO_OPTION_START$text"
         val checkedInsideScale by animateFloatAsState(if (isSelected) SCALE_RADIO_OPTION_CHECKED_INSIDE else 0f)
         IconToggleButton(
             checked = isSelected,
@@ -45,16 +41,17 @@ fun RadioOption(
             modifier = Modifier.padding(end = PADDING_SMALL)
         ) {
             if(isSelected) {
+                val radioButtonOnDescription = "$CONTENT_RADIO_OPTION_ON_START$text"
                 Box(contentAlignment = Alignment.Center) {
                     Icon(
                         painter = painterResource(R.drawable.ic_radio),
-                        contentDescription = radioButtonDescription,
+                        contentDescription = radioButtonOnDescription,
                         tint = MaterialTheme.colors.primaryVariant,
                         modifier = Modifier.size(SIZE_ICON_LARGE)
                     )
                     Icon(
                         painter = painterResource(R.drawable.ic_radio_checked_inside),
-                        contentDescription = radioButtonDescription,
+                        contentDescription = radioButtonOnDescription,
                         tint = MaterialTheme.colors.primaryVariant,
                         modifier = Modifier
                             .size(SIZE_ICON_LARGE)
@@ -64,7 +61,7 @@ fun RadioOption(
             } else {
                 Icon(
                     painter = painterResource(R.drawable.ic_radio),
-                    contentDescription = radioButtonDescription,
+                    contentDescription = "$CONTENT_RADIO_OPTION_OFF_START$text",
                     tint = CustomColors.colors.unfocusedOptionColor,
                     modifier = Modifier.size(SIZE_ICON_LARGE)
                 )
