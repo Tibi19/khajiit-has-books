@@ -6,6 +6,7 @@ class CustomColors(
     val onSurfaceVariant: Color,
     val tagTextColor: Color,
     val unfocusedOptionColor: Color,
+    val disabledOptionColor: Color,
 ) {
 
     companion object {

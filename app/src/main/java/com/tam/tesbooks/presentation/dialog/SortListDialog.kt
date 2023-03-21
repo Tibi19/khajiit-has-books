@@ -56,7 +56,7 @@ private fun SortListDialogContent(
 
         val isSortReversed = bookListSortState.value.isReversed
         SwitchOption(
-            text = TEXT_REVERSE_SORT,
+            text = TEXT_REVERSE_ORDER,
             isChecked = isSortReversed,
             onChange = { switchIsSortReversed(bookListSortState, isSortReversed) }
         )

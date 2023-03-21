@@ -21,7 +21,8 @@ private val DarkColorPalette = darkColors(
 private val DarkCustomColorPalette = CustomColors(
     onSurfaceVariant = shadowGray,
     tagTextColor = Color.Black,
-    unfocusedOptionColor = unfocusedGray
+    unfocusedOptionColor = unfocusedGray,
+    disabledOptionColor = disabledGray
 )
 
 private val LightColorPalette = lightColors(

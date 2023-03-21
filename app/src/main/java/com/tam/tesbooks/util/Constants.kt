@@ -107,6 +107,8 @@ const val CONTENT_BANNER_IMAGE_START = "Banner image for "
 const val CONTENT_SORT_LIST = "Sort books in the current book list."
 const val CONTENT_RADIO_OPTION_ON_START = "Exclusive option selected: "
 const val CONTENT_RADIO_OPTION_OFF_START = "Exclusive option not selected: "
+const val CONTENT_SWITCH_OPTION_ON_START = "Option enabled: "
+const val CONTENT_SWITCH_OPTION_OFF_START = "Option disabled: "
 
 // UI Text
 const val TEXT_SEARCH = "Search..."
