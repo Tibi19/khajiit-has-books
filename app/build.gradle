@@ -41,11 +41,11 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion "1.4.2"
     }
-    packagingOptions {
-        resources {
-            excludes += '/META-INF/{AL2.0,LGPL2.1}'
-        }
-    }
+//    packagingOptions {
+//        resources {
+//            excludes += '/META-INF/{AL2.0,LGPL2.1}'
+//        }
+//    }
 
     // IDE indexing for compose nav destinations dependency
     applicationVariants.all { variant ->
