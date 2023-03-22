@@ -1,10 +1,10 @@
 package com.tam.tesbooks.presentation.dialog.filter
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.*
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
@@ -13,91 +13,73 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.google.accompanist.flowlayout.FlowRow
 import com.tam.tesbooks.domain.model.listing_modifier.LibraryFilter
-import com.tam.tesbooks.presentation.dialog.DefaultDialog
+import com.tam.tesbooks.presentation.dialog.BottomSheetDialog
+import com.tam.tesbooks.presentation.dialog.BottomSheetDialogProvider
+import com.tam.tesbooks.presentation.dialog.CheckboxOption
+import com.tam.tesbooks.presentation.dialog.SwitchOption
 import com.tam.tesbooks.util.*
 
-@Preview
 @Composable
 fun FilterByDialog(
-    isOpenState: MutableState<Boolean> = remember{ mutableStateOf(true) },
-    libraryFilter: LibraryFilter = LibraryFilter(),
-    onSubmitFilter: (newLibraryFilter: LibraryFilter) -> Unit = {}
+    isOpenState: MutableState<Boolean>,
+    libraryFilter: LibraryFilter,
+    onSubmitFilter: (newLibraryFilter: LibraryFilter) -> Unit
 ) {
     if(!isOpenState.value) return
 
-    val newLibraryFilterState = remember { mutableStateOf(libraryFilter) }
-    DefaultDialog(
+    BottomSheetDialogProvider.showDialog(
         isOpenState = isOpenState,
-        onSubmit = { onSubmitFilter(newLibraryFilterState.value) },
-        dialogTitle = TEXT_FILTER_BY_DIALOG_TITLE
-    ) {
-        FilterByDialogBody(newLibraryFilterState = newLibraryFilterState)
-    }
+        content = {
+            FilterByDialogContent(
+                isOpenState = isOpenState,
+                libraryFilter = libraryFilter,
+                onSubmitFilter = { newFilter -> onSubmitFilter(newFilter) }
+            )
+        }
+    )
 
 }
 
 @Composable
-fun FilterByDialogBody(
-    newLibraryFilterState: MutableState<LibraryFilter>,
+private fun FilterByDialogContent(
+    isOpenState: MutableState<Boolean>,
+    libraryFilter: LibraryFilter,
+    onSubmitFilter: (newLibraryFilter: LibraryFilter) -> Unit,
     filterViewModel: FilterViewModel = hiltViewModel()
 ) {
-    val radioOptions = filterViewModel.state.categories
-    Column {
-        TagFilterWarning(newLibraryFilterState = newLibraryFilterState)
-        
-        radioOptions.forEach { category ->
+    val filterState = remember { mutableStateOf(libraryFilter) }
+    val options = filterViewModel.state.categories
+    BottomSheetDialog(
+        title = TEXT_FILTER_BY_DIALOG_TITLE,
+        isOpenState = isOpenState,
+        onSubmit = { onSubmitFilter(filterState.value) }
+    ) {
+        Spacer(modifier = Modifier.size(PADDING_SMALL))
 
-            val isCategorySelected = newLibraryFilterState.value.categoryFilters.contains(category)
+        TagFilterWarning(newLibraryFilterState = filterState)
 
-            Row(
-                modifier = Modifier.selectable(
-                    selected = isCategorySelected,
-                    onClick = { selectCategory(newLibraryFilterState, isCategorySelected, category) }
-                ),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = isCategorySelected,
-                    onCheckedChange = { selectCategory(newLibraryFilterState, isCategorySelected, category) },
-                    colors = CheckboxDefaults.colors(
-                        checkedColor = MaterialTheme.colors.primary
-                    ),
-                )
-                Text(
-                    text = category,
-                    modifier = Dimens.PADDING_SMALL
-                )
+        options.forEach { category ->
+            val isCategorySelected = filterState.value.categoryFilters.contains(category)
+            CheckboxOption(
+                text = category,
+                isChecked = isCategorySelected,
+                onChange = { selectCategory(filterState, isCategorySelected, category) },
+                modifier = Modifier.padding(horizontal = PADDING_SMALL)
+            )
+            if (options.last() != category) {
+                Spacer(modifier = Modifier.size(PADDING_LARGE))
             }
-
         }
 
-        val isExcludingAnonymous = newLibraryFilterState.value.isExcludingAnonymous
-        Row(
-            modifier = Modifier.selectable(
-                selected = isExcludingAnonymous,
-                onClick = { switchIsExcludingAnonymous(newLibraryFilterState, isExcludingAnonymous) }
-            ),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Switch(
-                checked = isExcludingAnonymous,
-                onCheckedChange = { switchIsExcludingAnonymous(newLibraryFilterState, isExcludingAnonymous) },
-                colors = SwitchDefaults.colors(
-                    uncheckedThumbColor = MaterialTheme.colors.onSecondary,
-                    checkedThumbColor = MaterialTheme.colors.primary,
-                    checkedTrackColor = MaterialTheme.colors.primary
-                )
-            )
-            Text(
-                text = TEXT_EXCLUDE_ANONYMOUS,
-                modifier = Dimens.PADDING_SMALL
-            )
-        }
+        val isExcludingAnonymous = filterState.value.isExcludingAnonymous
+        SwitchOption(
+            text = TEXT_EXCLUDE_ANONYMOUS,
+            isChecked = isExcludingAnonymous,
+            onChange = { switchIsExcludingAnonymous(filterState, isExcludingAnonymous) },
+            modifier = Modifier.padding(top = PADDING_SMALL)
+        )
     }
 }
 

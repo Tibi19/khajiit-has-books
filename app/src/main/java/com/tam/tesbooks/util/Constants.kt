@@ -109,6 +109,8 @@ const val CONTENT_RADIO_OPTION_ON_START = "Exclusive option selected: "
 const val CONTENT_RADIO_OPTION_OFF_START = "Exclusive option not selected: "
 const val CONTENT_SWITCH_OPTION_ON_START = "Option enabled: "
 const val CONTENT_SWITCH_OPTION_OFF_START = "Option disabled: "
+const val CONTENT_CHECKBOX_OPTION_UNCHECKED_START = "Option not included: "
+const val CONTENT_CHECKBOX_OPTION_CHECKED_START = "Option included: "
 
 // UI Text
 const val TEXT_SEARCH = "Search..."
