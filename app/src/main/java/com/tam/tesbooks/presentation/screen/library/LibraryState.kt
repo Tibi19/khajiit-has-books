@@ -9,6 +9,7 @@ data class LibraryState(
     val bookInfos: List<BookInfo> = emptyList(),
     val bookLists: List<BookList> = emptyList(),
     val isLoading: Boolean = false,
+    val canLoadMore: Boolean = false,
     val searchQuery: String = "",
     val libraryOrder: LibraryOrder = LibraryOrder(),
     val libraryFilter: LibraryFilter = LibraryFilter()

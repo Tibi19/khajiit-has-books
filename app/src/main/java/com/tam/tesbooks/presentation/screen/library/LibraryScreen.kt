@@ -1,5 +1,6 @@
 package com.tam.tesbooks.presentation.screen.library
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,8 +11,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tam.tesbooks.presentation.reusable.BookCardItem
+import com.tam.tesbooks.presentation.reusable.LoadingMoreIndicator
 import com.tam.tesbooks.presentation.reusable.OnErrorEffect
 
+@OptIn(ExperimentalFoundationApi::class)
 @Preview
 @Composable
 fun LibraryScreen(
@@ -27,11 +30,14 @@ fun LibraryScreen(
             .background(MaterialTheme.colors.secondaryVariant)
             .fillMaxSize()
     ) {
-        item {
+        stickyHeader {
             LibrarySearchBar(libraryViewModel)
         }
 
-        items(state.bookInfos) { bookInfo ->
+        items(
+            key = { bookInfo -> bookInfo.bookId },
+            items = state.bookInfos
+        ) { bookInfo ->
             BookCardItem(
                 bookInfo = bookInfo,
                 bookLists = state.bookLists,
@@ -41,8 +47,27 @@ fun LibraryScreen(
                 },
                 onClick = { goToBookScreen(bookInfo.bookId) }
             )
+
+            if (state.bookInfos.last() == bookInfo) {
+                decideLoadingMoreBookInfos(state, libraryViewModel)
+            }
         }
 
+        item {
+            if (!state.isLoading) return@item
+            LoadingMoreIndicator()
+        }
     }
 
+}
+
+private fun decideLoadingMoreBookInfos(
+    state: LibraryState,
+    bookListViewModel: LibraryViewModel
+) {
+    val shouldLoadMore = state.canLoadMore && !state.isLoading
+    if(shouldLoadMore) {
+        val loadMoreEvent = LibraryEvent.OnLoadMoreBookInfos
+        bookListViewModel.onEvent(loadMoreEvent)
+    }
 }

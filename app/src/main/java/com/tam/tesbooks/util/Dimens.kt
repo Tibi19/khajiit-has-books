@@ -16,7 +16,6 @@ const val SCALE_DISMISSING_BOOKMARK_BACKGROUND = 0.9f
 const val SCALE_BOTTOM_SHEET_DIALOG_HEIGHT = 0.6f
 const val RATIO_BOOK_ITEM_BANNER_TO_CONTENT_HEIGHTS = 0.82f
 const val SCALE_RADIO_OPTION_CHECKED_INSIDE = 0.58f
-const val RATIO_THUMB_MAX_OFFSET_TO_SIZE = 0.35f
 val PADDING_XX_SMALL = 2.5.dp
 val PADDING_X_SMALL = 5.dp
 val PADDING_SMALL = 10.dp
@@ -53,15 +52,13 @@ val PADDING_BOTTOM_BOOK_DETAILS_TEXT = 8.dp
 val ELEVATION_DEFAULT = 10.dp
 val PADDING_SWITCH_ICON_END = 8.5.dp
 val SIZE_SWITCH_BOX = 51.dp
+val SIZE_ICON_ORDER_BY = 26.dp
 
 object Dimens {
     val PADDING_DEFAULT = Modifier.padding(10.dp)
     val PADDING_SMALL = Modifier.padding(5.dp)
-    val PADDING_BOTTOM_SMALL = Modifier.padding(bottom = 5.dp)
-    val RADIUS_DEFAULT = 15.dp
     val ELEVATION_DEFAULT = 10.dp
     val SIZE_BOTTOM_BAR_ICON = Modifier.size(30.dp)
-    val SIZE_SEARCH_BAR_ICON = Modifier.size(25.dp)
     val SIZE_BOTTOM_BAR_HEIGHT = Modifier.height(56.dp)
     val WIDTH_TAG_FILTER_WARNING_TEXT = Modifier.fillMaxWidth(0.85f)
     val SIZE_CANCEL_TAG_FILTER_ICON = Modifier.size(25.dp)
