@@ -10,7 +10,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tam.tesbooks.presentation.reusable.BookCardItem
+import com.tam.tesbooks.presentation.reusable.LoadingMoreIndicator
 import com.tam.tesbooks.presentation.reusable.OnErrorEffect
+import com.tam.tesbooks.presentation.screen.bookmarks.BookmarksEvent
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -53,7 +55,27 @@ fun BookListScreen(
                 },
                 onClick = { goToBookScreen(bookInfo.bookId) }
             )
+
+            if (state.bookInfos.last() == bookInfo) {
+                decideLoadingMoreBookInfos(state, bookListViewModel)
+            }
         }
 
+        item {
+            if (!state.isLoading) return@item
+            LoadingMoreIndicator()
+        }
+
+    }
+}
+
+private fun decideLoadingMoreBookInfos(
+    state: BookListState,
+    bookListViewModel: BookListViewModel
+) {
+    val shouldLoadMore = state.canLoadMore && !state.isLoading
+    if(shouldLoadMore) {
+        val loadMoreEvent = BookListEvent.OnLoadMoreBookInfos
+        bookListViewModel.onEvent(loadMoreEvent)
     }
 }

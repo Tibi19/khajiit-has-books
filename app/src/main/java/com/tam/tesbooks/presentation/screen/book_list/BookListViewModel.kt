@@ -11,12 +11,10 @@ import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.domain.model.listing_modifier.BookListSort
 import com.tam.tesbooks.domain.repository.Repository
 import com.tam.tesbooks.presentation.navigation.ARG_BOOK_LIST_ID
-import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOK_INFOS
-import com.tam.tesbooks.util.FALLBACK_ERROR_LOAD_BOOK_LISTS
-import com.tam.tesbooks.util.FALLBACK_ERROR_UPDATE_BOOK_INFO
-import com.tam.tesbooks.util.refreshDataObserver
+import com.tam.tesbooks.util.*
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -65,15 +63,29 @@ class BookListViewModel @Inject constructor(
                 onError = { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOK_LISTS)  }
             )
 
-    private suspend fun loadBookInfos() {
+    private suspend fun loadBookInfos(
+        alreadyLoadedInfos: List<BookInfo> = emptyList(),
+        shouldReset: Boolean = false
+    ) {
         val bookList = state.bookList ?: return
         repository
-            .getBookInfosFromList(bookList, state.listSort)
+            .getBookInfosFromList(
+                bookList = bookList,
+                bookListSort = state.listSort,
+                alreadyLoadedInfos = alreadyLoadedInfos
+            )
             .collect { result ->
                 result.onResource(
                     onSuccess = { bookInfos ->
                         bookInfos ?: return@onResource
-                        state = state.copy(bookInfos = bookInfos)
+                        val isBookInfosCountAtMax = bookInfos.size >= LIMIT_ROOM_QUERY_DEFAULT
+                        val newBookInfos = if (shouldReset) bookInfos else state.bookInfos + bookInfos
+                        val newPagesLoaded = state.pagesLoaded + 1
+                        state = state.copy(
+                            bookInfos = newBookInfos,
+                            canLoadMore = isBookInfosCountAtMax,
+                            pagesLoaded = newPagesLoaded
+                        )
                     },
                     onError = { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOK_INFOS) },
                     onLoading = { isLoading -> state = state.copy(isLoading = isLoading) }
@@ -89,7 +101,7 @@ class BookListViewModel @Inject constructor(
                         updatedBookInfo ?: return@onResource
 
                         if(didBookInfoChangeScreenList(updatedBookInfo)) {
-                            loadBookInfos()
+                            reloadBookInfos()
                             return@onResource
                         }
 
@@ -103,6 +115,34 @@ class BookListViewModel @Inject constructor(
                 )
         }
 
+    private fun reloadBookInfos() =
+        viewModelScope.launch {
+            val bookList = state.bookList ?: return@launch
+            val reloadedBookInfos = mutableListOf<BookInfo>()
+            repeat(state.pagesLoaded) {
+                repository
+                    .getBookInfosFromList(
+                        bookList = bookList,
+                        bookListSort = state.listSort,
+                        alreadyLoadedInfos = reloadedBookInfos
+                    )
+                    .collect { bookInfosResource ->
+                        bookInfosResource.onResource(
+                            onSuccess = { bookInfos ->
+                                bookInfos ?: return@collect
+                                reloadedBookInfos.addAll(bookInfos)
+                            },
+                            onError = { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOK_INFOS) }
+                        )
+                    }
+            }
+            val areAllPagesAtMaxBookInfos = reloadedBookInfos.size >= state.pagesLoaded * LIMIT_ROOM_QUERY_DEFAULT
+            state = state.copy(
+                bookInfos = reloadedBookInfos,
+                canLoadMore = areAllPagesAtMaxBookInfos
+            )
+        }
+
     private fun didBookInfoChangeScreenList(newBookInfo: BookInfo): Boolean {
         val screenList = state.bookList ?: return false
         val newBookInfoList = newBookInfo.savedInBookLists.find { it.id == screenList.id }
@@ -111,11 +151,18 @@ class BookListViewModel @Inject constructor(
 
     fun onEvent(event: BookListEvent) {
         when(event) {
-            is BookListEvent.OnLoadMoreBookInfos -> {}
+            is BookListEvent.OnLoadMoreBookInfos -> loadMoreBookInfos()
             is BookListEvent.OnChangeBookList -> changeBookList(event.bookInfo, event.bookList)
             is BookListEvent.OnSortChange -> changeSort(event.bookListSort)
         }
     }
+
+    private fun loadMoreBookInfos() =
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            delay(TIME_MINIMUM_FOR_LOADING_MORE_ELEMENTS)
+            loadBookInfos(alreadyLoadedInfos = state.bookInfos)
+        }
 
     private fun changeBookList(bookInfo: BookInfo, bookList: BookList) =
         viewModelScope.launch {
@@ -130,7 +177,7 @@ class BookListViewModel @Inject constructor(
 
     private fun changeSort(bookListSort: BookListSort) {
         state = state.copy(listSort = bookListSort)
-        viewModelScope.launch { loadBookInfos() }
+        viewModelScope.launch { loadBookInfos(shouldReset = true) }
     }
 
 }
