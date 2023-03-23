@@ -22,7 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import com.tam.tesbooks.R
 import com.tam.tesbooks.presentation.navigation.ARG_BOOK_LIST_ID
 import com.tam.tesbooks.presentation.navigation.Destination
-import com.tam.tesbooks.presentation.reusable.NewListButton
+import com.tam.tesbooks.presentation.reusable.NewListControl
 import com.tam.tesbooks.presentation.reusable.OnBackPressListener
 import com.tam.tesbooks.presentation.reusable.OnErrorEffect
 import com.tam.tesbooks.ui.theme.CustomColors
@@ -108,17 +108,24 @@ fun Drawer(
             )
         }
 
-        if(isCreatingNewListState.value) {
-            NewListRow(isCreatingNewListState = isCreatingNewListState) { newListName ->
-                val createListEvent = DrawerEvent.OnCreateNewList(newListName)
-                drawerViewModel.onEvent(createListEvent)
-            }
-        }
-
-        NewListButton(
+        NewListControl(
             isCreatingNewListState = isCreatingNewListState,
+            newListInsidePadding = PaddingValues(vertical = PADDING_LARGE / 2, horizontal = PADDING_X_LARGE),
+            newListLeadingContent = {
+                Icon(
+                    painter = painterResource(R.drawable.ic_list),
+                    contentDescription = CONTENT_LIST,
+                    tint = MaterialTheme.colors.primary,
+                    modifier = Modifier
+                        .padding(end = PADDING_NORMAL)
+                        .size(SIZE_ICON_NORMAL)
+                )
+            },
             modifier = Modifier.padding(horizontal = PADDING_NEW_LIST_IN_DRAWER)
-        )
+        ) { newListName ->
+            val createListEvent = DrawerEvent.OnCreateNewList(newListName)
+            drawerViewModel.onEvent(createListEvent)
+        }
 
         Spacer(modifier = Modifier.weight(1f))
 

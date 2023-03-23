@@ -1,11 +1,7 @@
 package com.tam.tesbooks.presentation.navigation.drawer
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.relocation.BringIntoViewRequester
 import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.runtime.Composable
@@ -13,8 +9,6 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
-import com.tam.tesbooks.R
 import com.tam.tesbooks.presentation.reusable.NewNameField
 import com.tam.tesbooks.util.*
 
@@ -22,24 +16,21 @@ import com.tam.tesbooks.util.*
 @Composable
 fun NewListRow(
     isCreatingNewListState: MutableState<Boolean>,
+    insidePadding: PaddingValues,
+    leadingContent: @Composable () -> Unit,
     onNewListName: (String) -> Unit
 ) {
+    if (!isCreatingNewListState.value) return
+
     val bringIntoViewOfNewListRequester = remember { BringIntoViewRequester() }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .fillMaxWidth()
             .bringIntoViewRequester(bringIntoViewOfNewListRequester)
-            .padding(vertical = PADDING_LARGE / 2)
-            .padding(horizontal = PADDING_X_LARGE)
+            .padding(insidePadding)
     ) {
-        Image(
-            painter = painterResource(R.drawable.ic_list),
-            contentDescription = CONTENT_LIST,
-            modifier = Modifier
-                .padding(end = PADDING_NORMAL)
-                .size(SIZE_ICON_NORMAL)
-        )
+        leadingContent()
 
         NewNameField(
             isActiveState = isCreatingNewListState,

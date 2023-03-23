@@ -1,6 +1,5 @@
 package com.tam.tesbooks.util
 
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
@@ -60,8 +59,4 @@ object Dimens {
     val ELEVATION_DEFAULT = 10.dp
     val SIZE_BOTTOM_BAR_ICON = Modifier.size(30.dp)
     val SIZE_BOTTOM_BAR_HEIGHT = Modifier.height(56.dp)
-    val WIDTH_TAG_FILTER_WARNING_TEXT = Modifier.fillMaxWidth(0.85f)
-    val SIZE_CANCEL_TAG_FILTER_ICON = Modifier.size(25.dp)
-    val PADDING_TAG_FILTER_WARNING = Modifier.padding(top = 5.dp, start = 15.dp, end = 10.dp)
-    val PADDING_START_NEW_LIST_IN_DIALOG = Modifier.padding(start = 4.dp)
 }

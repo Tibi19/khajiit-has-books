@@ -14,47 +14,58 @@ import com.tam.tesbooks.domain.model.listing_modifier.LibraryOrder
 import com.tam.tesbooks.domain.model.listing_modifier.Order
 import com.tam.tesbooks.util.*
 
-@Preview
 @Composable
 fun OrderByDialog(
-    isOpenState: MutableState<Boolean> = remember{ mutableStateOf(true) },
-    libraryOrder: LibraryOrder = LibraryOrder(),
-    onSubmitOrder: (newLibraryOrder: LibraryOrder) -> Unit = {}
+    isOpenState: MutableState<Boolean>,
+    libraryOrder: LibraryOrder,
+    onSubmitOrder: (newLibraryOrder: LibraryOrder) -> Unit
 ) {
     if(!isOpenState.value) return
 
-    val newLibraryOrderState = remember { mutableStateOf(libraryOrder) }
-    DefaultDialog(
+    BottomSheetDialogProvider.showDialog(
         isOpenState = isOpenState,
-        onSubmit = { onSubmitOrder(newLibraryOrderState.value) },
-        dialogTitle = TEXT_ORDER_BY_DIALOG_TITLE
-    ) {
-        OrderByDialogBody(newLibraryOrderState = newLibraryOrderState)
-    }
+        content = {
+            OrderByDialogContent(
+                isOpenState = isOpenState,
+                libraryOrder = libraryOrder,
+                onSubmitOrder = { newOrder -> onSubmitOrder(newOrder) }
+            )
+        }
+    )
+
 }
 
 @Composable
-fun OrderByDialogBody(newLibraryOrderState: MutableState<LibraryOrder>) {
-    val options = Order.values()
-    Column {
+private fun OrderByDialogContent(
+    isOpenState: MutableState<Boolean>,
+    libraryOrder: LibraryOrder,
+    onSubmitOrder: (newOrder: LibraryOrder) -> Unit
+) {
+    val libraryOrderState = remember { mutableStateOf(libraryOrder) }
+    BottomSheetDialog(
+        title = TEXT_ORDER_BY_DIALOG_TITLE,
+        isOpenState = isOpenState,
+        onSubmit = { onSubmitOrder(libraryOrderState.value) }
+    ) {
+        val options = Order.values()
         options.forEach { order ->
-
-            val isOrderSelected = order == newLibraryOrderState.value.orderBy
+            val isOrderSelected = order == libraryOrderState.value.orderBy
             RadioOption(
                 text = getOrderText(order),
                 isSelected = isOrderSelected,
-                onSelect = { selectOrder(newLibraryOrderState, isOrderSelected, order) }
+                onSelect = { selectOrder(libraryOrderState, isOrderSelected, order) },
+                modifier = Modifier.padding(bottom = PADDING_X_SMALL)
             )
-
         }
 
-        val isOrderReversed = newLibraryOrderState.value.isReversed
+        val isOrderReversed = libraryOrderState.value.isReversed
         SwitchOption(
             text = TEXT_REVERSE_ORDER,
             isChecked = isOrderReversed,
-            onChange = { switchIsOrderReversed(newLibraryOrderState, isOrderReversed) }
+            onChange = { switchIsOrderReversed(libraryOrderState, isOrderReversed) }
         )
     }
+
 }
 
 private fun selectOrder(

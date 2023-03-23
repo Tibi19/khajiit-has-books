@@ -1,124 +1,113 @@
 package com.tam.tesbooks.presentation.dialog.lists
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.selection.selectable
-import androidx.compose.material.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Delete
+import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tam.tesbooks.domain.model.book.BookInfo
 import com.tam.tesbooks.domain.model.book_list.BookList
-import com.tam.tesbooks.presentation.dialog.DynamicDialog
-import com.tam.tesbooks.presentation.reusable.NewListButton
-import com.tam.tesbooks.util.CONTENT_DELETE_LIST
-import com.tam.tesbooks.util.Dimens
-import com.tam.tesbooks.util.TEXT_ADD_TO_LISTS_DIALOG_TITLE
+import com.tam.tesbooks.presentation.dialog.BottomSheetDialog
+import com.tam.tesbooks.presentation.dialog.BottomSheetDialogProvider
+import com.tam.tesbooks.presentation.dialog.CheckboxOption
+import com.tam.tesbooks.presentation.reusable.NewListControl
+import com.tam.tesbooks.util.*
 
 @Composable
 fun AddBookToListDialog(
     isOpenState: MutableState<Boolean>,
     bookInfo: BookInfo,
-    onChangeBookList: (bookInfo: BookInfo, bookList: BookList) -> Unit,
-    listsViewModel: ListsViewModel = hiltViewModel()
+    onChangeBookList: (bookInfo: BookInfo, bookList: BookList) -> Unit
 ) {
     if (!isOpenState.value) return
 
     val originalSavedInLists = bookInfo.savedInBookLists
-    val newSavedInListsState = remember { mutableStateOf(originalSavedInLists) }
-    DynamicDialog(
+
+    BottomSheetDialogProvider.showDialog(
         isOpenState = isOpenState,
-        onSubmit = {
-            resolveChangedBookLists(
-                bookInfo = bookInfo,
-                newLists = newSavedInListsState.value,
-                originalLists = originalSavedInLists,
-                onChangeBookList = onChangeBookList
+        content = {
+
+            AddBookToListDialogContent(
+                isOpenState = isOpenState,
+                savedInBookLists = originalSavedInLists,
+                onSubmitLists = { newLists ->
+                    resolveChangedBookLists(
+                        bookInfo = bookInfo,
+                        newLists = newLists,
+                        originalLists = originalSavedInLists,
+                        onChangeBookList = onChangeBookList
+                    )
+                }
             )
-        },
-        dialogTitle = TEXT_ADD_TO_LISTS_DIALOG_TITLE
-    ) {
-        AddBookToListDialogBody(
-            newSavedInListsState = newSavedInListsState,
-            listsViewModel = listsViewModel
-        )
-    }
+
+        }
+    )
+
 }
 
 @Composable
-fun AddBookToListDialogBody(
-    newSavedInListsState: MutableState<List<BookList>>,
-    listsViewModel: ListsViewModel
+private fun AddBookToListDialogContent(
+    isOpenState: MutableState<Boolean>,
+    savedInBookLists: List<BookList>,
+    onSubmitLists: (newLists: List<BookList>) -> Unit,
+    listsViewModel: ListsViewModel = hiltViewModel()
 ) {
-    val bookLists = listsViewModel.state.bookLists
-    Column {
+    val savedInListsState = remember { mutableStateOf(savedInBookLists) }
+    BottomSheetDialog(
+        title = TEXT_ADD_TO_LISTS_DIALOG_TITLE,
+        isOpenState = isOpenState,
+        onSubmit = { onSubmitLists(savedInListsState.value) }
+    ) {
+        Spacer(modifier = Modifier.size(PADDING_SMALL))
 
+        val bookLists = listsViewModel.state.bookLists
         bookLists.forEach { bookList ->
-            val isListSelected = newSavedInListsState.value.contains(bookList)
-            val selectThisBookListLambda = {
-                selectBookList(
-                    newSavedInBookListsState = newSavedInListsState,
-                    bookList = bookList,
-                    isListAlreadySelected = isListSelected
-                )
-            }
-            Row(
-                modifier = Modifier.selectable(
-                    selected = isListSelected,
-                    onClick = selectThisBookListLambda
-                ),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Checkbox(
-                    checked = isListSelected,
-                    onCheckedChange = { selectThisBookListLambda() }
-                )
-                Text(text = bookList.name)
-                Spacer(modifier = Modifier.weight(1f))
+            val isListSelected = savedInListsState.value.contains(bookList)
 
-                if(!bookList.isDefault) {
-                    val deleteListLambda = {
-                        val deleteListEvent = ListsEvent.OnDeleteList(bookList)
-                        listsViewModel.onEvent(deleteListEvent)
-                    }
-                    IconButton(onClick = deleteListLambda) {
-                        Icon(
-                            imageVector = Icons.Default.Delete,
-                            contentDescription = CONTENT_DELETE_LIST,
-                            tint = MaterialTheme.colors.primary
-                        )
-                    }
-                }
+            CheckboxOption(
+                text = bookList.name,
+                isChecked = isListSelected,
+                onChange = {
+                    selectBookList(
+                        savedInBookListsState = savedInListsState,
+                        bookList = bookList,
+                        isListAlreadySelected = isListSelected
+                    )
+                },
+                modifier = Modifier.padding(horizontal = PADDING_SMALL)
+            )
+
+            if (bookLists.last() != bookList) {
+                Spacer(modifier = Modifier.size(PADDING_LARGE))
             }
         }
 
-        NewListButton(
+        NewListControl(
             isCreatingNewListState = remember { mutableStateOf(false) },
-            modifier = Dimens.PADDING_START_NEW_LIST_IN_DIALOG
-        )
-
+            newListInsidePadding = PaddingValues(start = PADDING_X_LARGE, top = PADDING_NORMAL, end = PADDING_X_LARGE, bottom = PADDING_SMALL),
+            newListLeadingContent = { Spacer(Modifier.width(SIZE_ICON_NORMAL)) },
+            modifier = Modifier.padding(start = PADDING_XX_SMALL, top = PADDING_SMALL)
+        ) { newListName ->
+            val createListEvent = ListsEvent.OnCreateNewList(newListName)
+            listsViewModel.onEvent(createListEvent)
+        }
     }
 }
 
 private fun selectBookList(
-    newSavedInBookListsState: MutableState<List<BookList>>,
+    savedInBookListsState: MutableState<List<BookList>>,
     bookList: BookList,
     isListAlreadySelected: Boolean
 ) {
-    val originalBookLists = newSavedInBookListsState.value
+    val originalBookLists = savedInBookListsState.value
     val newBookListsSelection =
         if (isListAlreadySelected)
             originalBookLists - bookList
         else
             originalBookLists + bookList
-    newSavedInBookListsState.value = newBookListsSelection
+    savedInBookListsState.value = newBookListsSelection
 }
 
 private fun resolveChangedBookLists(
