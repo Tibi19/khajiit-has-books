@@ -13,7 +13,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.tam.tesbooks.presentation.reusable.DialogControl
 import com.tam.tesbooks.util.*
 
 @Composable

@@ -194,6 +194,7 @@ class BookViewModel @Inject constructor(
                     { data ->
                         data ?: return@onResource
                         val updateAtIndex = state.booksStack.indexOfFirst { it.bookInfo.bookId == data.bookId }
+                        if (updateAtIndex < 0) return@onResource
                         val newBook = state.booksStack[updateAtIndex].copy(bookInfo = data)
                         val newBooksStack = state.booksStack.toMutableList()
                         newBooksStack[updateAtIndex] = newBook

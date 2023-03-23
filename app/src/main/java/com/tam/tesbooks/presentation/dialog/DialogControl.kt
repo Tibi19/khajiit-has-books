@@ -1,6 +1,5 @@
-package com.tam.tesbooks.presentation.reusable
+package com.tam.tesbooks.presentation.dialog
 
-import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
@@ -9,6 +8,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import com.tam.tesbooks.R
+import com.tam.tesbooks.presentation.reusable.DefaultTextButton
 import com.tam.tesbooks.util.*
 
 @Composable
