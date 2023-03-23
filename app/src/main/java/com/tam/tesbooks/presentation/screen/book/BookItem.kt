@@ -22,7 +22,7 @@ import com.google.accompanist.flowlayout.FlowRow
 import com.tam.tesbooks.domain.model.book.Book
 import com.tam.tesbooks.domain.model.bookmark.Bookmark
 import com.tam.tesbooks.domain.model.metadata.BookMetadata
-import com.tam.tesbooks.presentation.reusable.BookParagraphItem
+import com.tam.tesbooks.presentation.common.BookParagraphItem
 import com.tam.tesbooks.ui.theme.CustomColors
 import com.tam.tesbooks.ui.theme.EBGaramondFontFamily
 import com.tam.tesbooks.util.*

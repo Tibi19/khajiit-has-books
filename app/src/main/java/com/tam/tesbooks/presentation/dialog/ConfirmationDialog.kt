@@ -9,7 +9,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import com.tam.tesbooks.presentation.reusable.DefaultPreview
+import com.tam.tesbooks.presentation.common.DefaultPreview
 import com.tam.tesbooks.util.*
 
 @Composable

@@ -9,10 +9,9 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.tam.tesbooks.presentation.reusable.BookCardItem
-import com.tam.tesbooks.presentation.reusable.LoadingMoreIndicator
-import com.tam.tesbooks.presentation.reusable.OnErrorEffect
-import com.tam.tesbooks.presentation.screen.bookmarks.BookmarksEvent
+import com.tam.tesbooks.presentation.common.LoadingMoreIndicator
+import com.tam.tesbooks.presentation.common.OnErrorEffect
+import com.tam.tesbooks.presentation.common.item.BookCardItem
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

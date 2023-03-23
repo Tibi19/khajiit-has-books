@@ -12,10 +12,10 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.tam.tesbooks.presentation.reusable.BarRow
-import com.tam.tesbooks.presentation.reusable.LoadingMoreIndicator
-import com.tam.tesbooks.presentation.reusable.OnErrorEffect
-import com.tam.tesbooks.presentation.reusable.SectionText
+import com.tam.tesbooks.presentation.common.BarRow
+import com.tam.tesbooks.presentation.common.LoadingMoreIndicator
+import com.tam.tesbooks.presentation.common.OnErrorEffect
+import com.tam.tesbooks.presentation.common.SectionText
 import com.tam.tesbooks.ui.theme.CustomColors
 import com.tam.tesbooks.util.*
 

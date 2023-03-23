@@ -9,7 +9,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.tam.tesbooks.presentation.reusable.NewNameField
+import com.tam.tesbooks.presentation.common.NewNameField
 import com.tam.tesbooks.util.*
 
 @OptIn(ExperimentalFoundationApi::class)

@@ -11,7 +11,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.rememberPagerState
-import com.tam.tesbooks.presentation.reusable.OnErrorEffect
+import com.tam.tesbooks.presentation.common.OnErrorEffect
 import com.tam.tesbooks.util.*
 import kotlinx.coroutines.flow.collectLatest
 

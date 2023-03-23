@@ -12,8 +12,8 @@ import androidx.compose.ui.res.painterResource
 import com.tam.tesbooks.R
 import com.tam.tesbooks.domain.model.listing_modifier.BookListSort
 import com.tam.tesbooks.presentation.dialog.SortListDialog
-import com.tam.tesbooks.presentation.reusable.BarRow
-import com.tam.tesbooks.presentation.reusable.SectionText
+import com.tam.tesbooks.presentation.common.BarRow
+import com.tam.tesbooks.presentation.common.SectionText
 import com.tam.tesbooks.util.CONTENT_GO_TO_PREVIOUS_SCREEN
 import com.tam.tesbooks.util.CONTENT_SORT_LIST
 import com.tam.tesbooks.util.SIZE_ICON_LARGE

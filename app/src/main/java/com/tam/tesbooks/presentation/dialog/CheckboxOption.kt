@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.tam.tesbooks.R
-import com.tam.tesbooks.presentation.reusable.SectionText
+import com.tam.tesbooks.presentation.common.SectionText
 import com.tam.tesbooks.ui.theme.CustomColors
 import com.tam.tesbooks.util.CONTENT_CHECKBOX_OPTION_CHECKED_START
 import com.tam.tesbooks.util.CONTENT_CHECKBOX_OPTION_UNCHECKED_START

@@ -1,4 +1,4 @@
-package com.tam.tesbooks.presentation.reusable
+package com.tam.tesbooks.presentation.common.item
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -23,6 +23,8 @@ import coil.compose.AsyncImage
 import com.tam.tesbooks.R
 import com.tam.tesbooks.domain.model.book.BookInfo
 import com.tam.tesbooks.domain.model.book_list.BookList
+import com.tam.tesbooks.presentation.common.BookListOption
+import com.tam.tesbooks.presentation.common.BookListsControlRow
 import com.tam.tesbooks.presentation.dialog.lists.AddBookToListDialog
 import com.tam.tesbooks.util.*
 

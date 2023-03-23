@@ -10,8 +10,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
-import com.tam.tesbooks.presentation.reusable.BarRow
-import com.tam.tesbooks.presentation.reusable.SectionText
+import com.tam.tesbooks.presentation.common.BarRow
+import com.tam.tesbooks.presentation.common.SectionText
 import com.tam.tesbooks.util.*
 
 @Composable

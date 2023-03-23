@@ -1,4 +1,4 @@
-package com.tam.tesbooks.presentation.reusable
+package com.tam.tesbooks.presentation.common
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable

@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.tam.tesbooks.R
-import com.tam.tesbooks.presentation.reusable.BarRow
-import com.tam.tesbooks.presentation.reusable.SectionText
+import com.tam.tesbooks.presentation.common.BarRow
+import com.tam.tesbooks.presentation.common.SectionText
 import com.tam.tesbooks.util.*
 
 @Composable

@@ -8,9 +8,9 @@ import androidx.compose.ui.Modifier
 import com.tam.tesbooks.domain.model.book.BookInfo
 import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.presentation.dialog.lists.AddBookToListDialog
-import com.tam.tesbooks.presentation.reusable.BarRow
-import com.tam.tesbooks.presentation.reusable.BookListOption
-import com.tam.tesbooks.presentation.reusable.BookListsControlRow
+import com.tam.tesbooks.presentation.common.BarRow
+import com.tam.tesbooks.presentation.common.BookListOption
+import com.tam.tesbooks.presentation.common.BookListsControlRow
 import com.tam.tesbooks.util.CONTENT_GO_TO_PREVIOUS_SCREEN
 
 @Composable

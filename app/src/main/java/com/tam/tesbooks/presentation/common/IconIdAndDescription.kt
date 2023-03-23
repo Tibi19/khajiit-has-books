@@ -1,4 +1,4 @@
-package com.tam.tesbooks.presentation.reusable
+package com.tam.tesbooks.presentation.common
 
 import com.tam.tesbooks.R
 import com.tam.tesbooks.domain.model.book.BookInfo

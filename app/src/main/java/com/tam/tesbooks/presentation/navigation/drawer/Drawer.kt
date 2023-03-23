@@ -22,9 +22,9 @@ import androidx.navigation.compose.rememberNavController
 import com.tam.tesbooks.R
 import com.tam.tesbooks.presentation.navigation.ARG_BOOK_LIST_ID
 import com.tam.tesbooks.presentation.navigation.Destination
-import com.tam.tesbooks.presentation.reusable.NewListControl
-import com.tam.tesbooks.presentation.reusable.OnBackPressListener
-import com.tam.tesbooks.presentation.reusable.OnErrorEffect
+import com.tam.tesbooks.presentation.common.NewListControl
+import com.tam.tesbooks.presentation.common.OnBackPressListener
+import com.tam.tesbooks.presentation.common.OnErrorEffect
 import com.tam.tesbooks.ui.theme.CustomColors
 import com.tam.tesbooks.ui.theme.KhajiitHasBooksTheme
 import com.tam.tesbooks.util.*
