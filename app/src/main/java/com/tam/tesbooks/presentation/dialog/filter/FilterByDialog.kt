@@ -5,15 +5,15 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Clear
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import com.tam.tesbooks.R
 import com.tam.tesbooks.domain.model.listing_modifier.LibraryFilter
 import com.tam.tesbooks.presentation.dialog.BottomSheetDialog
 import com.tam.tesbooks.presentation.dialog.BottomSheetDialogProvider
@@ -86,26 +86,28 @@ private fun FilterByDialogContent(
 @Composable
 private fun TagFilterWarning(newLibraryFilterState: MutableState<LibraryFilter>) {
     val tagFilters = newLibraryFilterState.value.tagFilters
-    if (tagFilters.isNotEmpty()) {
-        val tagsGroupedString = tagFilters.joinToString(" ")
-        Row(
-            verticalAlignment = Alignment.Top,
-            modifier = Dimens.PADDING_TAG_FILTER_WARNING.fillMaxWidth()
-        ) {
-            Text(
-                text = "$TEXT_FILTER_TAG_WARNING$tagsGroupedString",
-                modifier = Dimens.WIDTH_TAG_FILTER_WARNING_TEXT
+    if (tagFilters.isEmpty()) return
+
+    val tagsGroupedString = remember { tagFilters.joinToString(TEXT_JOIN_TAGS_SEPARATOR) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .padding(horizontal = PADDING_SMALL)
+            .padding(bottom = PADDING_NORMAL)
+            .fillMaxWidth()
+    ) {
+        Text(
+            text = "$TEXT_FILTER_TAG_WARNING$tagsGroupedString",
+            style = MaterialTheme.typography.h5,
+            modifier = Modifier.weight(weight = 1f, fill = true)
+        )
+        IconButton(onClick = { newLibraryFilterState.value = newLibraryFilterState.value.copy(tagFilters = emptyList()) }) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_trash),
+                contentDescription = CONTENT_CLEAR_TAG_FILTER,
+                tint = MaterialTheme.colors.primary,
+                modifier = Modifier.size(SIZE_ICON_NORMAL)
             )
-            IconButton(onClick = {
-                newLibraryFilterState.value = newLibraryFilterState.value.copy(tagFilters = emptyList())
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Clear,
-                    contentDescription = CONTENT_CLEAR_TAG_FILTER,
-                    tint = MaterialTheme.colors.primary,
-                    modifier = Dimens.SIZE_CANCEL_TAG_FILTER_ICON
-                )
-            }
         }
     }
 
