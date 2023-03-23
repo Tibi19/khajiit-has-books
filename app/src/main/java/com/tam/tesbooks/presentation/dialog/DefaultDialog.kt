@@ -53,44 +53,6 @@ fun DefaultDialog(
 }
 
 @Composable
-fun DynamicDialog(
-    isOpenState: MutableState<Boolean>,
-    onSubmit: () -> Unit,
-    dialogTitle: String = "",
-    confirmationText: String = TEXT_SUBMIT,
-    declineText: String = TEXT_CANCEL,
-    dialogBody: @Composable () -> Unit
-) {
-    Dialog(
-        onDismissRequest = { isOpenState.value = false },
-        content = {
-
-            Card {
-                Column(
-                    modifier = Modifier
-                        .padding(horizontal = PADDING_LARGE, vertical = PADDING_SMALL)
-                        .width(IntrinsicSize.Max)
-                        .verticalScroll(rememberScrollState())
-                ) {
-                    if (dialogTitle.isNotEmpty()) {
-                        DialogTitle(title = dialogTitle)
-                    }
-                    dialogBody()
-                    DialogButtons(
-                        isDialogOpenState = isOpenState,
-                        confirmText = confirmationText,
-                        cancelText = declineText
-                    ) { onSubmit() }
-                }
-            }
-
-        },
-        properties = DialogProperties(usePlatformDefaultWidth = false)
-    )
-
-}
-
-@Composable
 fun DialogTitle(title: String) {
     Text(
         text = title,
