@@ -2,7 +2,9 @@ package com.tam.tesbooks.presentation.screen.library
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
@@ -13,6 +15,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.tam.tesbooks.presentation.common.LoadingMoreIndicator
 import com.tam.tesbooks.presentation.common.OnErrorEffect
 import com.tam.tesbooks.presentation.common.item.BookCardItem
+import com.tam.tesbooks.util.PADDING_NORMAL
 
 @OptIn(ExperimentalFoundationApi::class)
 @Preview
@@ -47,13 +50,12 @@ fun LibraryScreen(
                 },
                 onClick = { goToBookScreen(bookInfo.bookId) }
             )
-
-            if (state.bookInfos.last() == bookInfo) {
-                decideLoadingMoreBookInfos(state, libraryViewModel)
-            }
         }
 
         item {
+            Spacer(Modifier.height(PADDING_NORMAL))
+
+            decideLoadingMoreBookInfos(state, libraryViewModel)
             if (!state.isLoading) return@item
             LoadingMoreIndicator()
         }

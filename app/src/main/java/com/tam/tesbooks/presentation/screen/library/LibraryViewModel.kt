@@ -77,13 +77,17 @@ class LibraryViewModel @Inject constructor(
             getBookInfosFlow(shouldLoadMore)
                 .collect { result ->
                     result.onResource(
-                        { data ->
-                            data ?: return@onResource
-                            val newBookInfos = if(shouldLoadMore) state.bookInfos + data else data
-                            state = state.copy(bookInfos = newBookInfos)
+                        onSuccess = { bookInfos ->
+                            bookInfos ?: return@onResource
+                            val isBookInfosCountAtMax = bookInfos.size >= LIMIT_ROOM_QUERY_DEFAULT
+                            val newBookInfos = if(shouldLoadMore) state.bookInfos + bookInfos else bookInfos
+                            state = state.copy(
+                                bookInfos = newBookInfos,
+                                canLoadMore = isBookInfosCountAtMax
+                            )
                         },
-                        { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOK_INFOS) },
-                        { isLoading -> state = state.copy(isLoading = isLoading) }
+                        onError = { error -> errorChannel.send(error ?: FALLBACK_ERROR_LOAD_BOOK_INFOS) },
+                        onLoading = { isLoading -> state = state.copy(isLoading = isLoading) }
                     )
                 }
         }
@@ -96,13 +100,20 @@ class LibraryViewModel @Inject constructor(
 
     fun onEvent(event: LibraryEvent) {
         when (event) {
-            is LibraryEvent.OnLoadMoreBookInfos -> loadBookInfos(true)
+            is LibraryEvent.OnLoadMoreBookInfos -> loadMoreBookInfos()
             is LibraryEvent.OnChangeBookList -> changeBookList(event.bookInfo, event.bookList)
             is LibraryEvent.OnSearchQueryChange -> changeSearchQuery(event.query)
             is LibraryEvent.OnOrderChange -> changeOrder(event.newLibraryOrder)
             is LibraryEvent.OnFilterChange -> changeFilter(event.newLibraryFilter)
         }
     }
+
+    private fun loadMoreBookInfos() =
+        viewModelScope.launch {
+            state = state.copy(isLoading = true)
+            delay(TIME_MINIMUM_FOR_LOADING_MORE_ELEMENTS)
+            loadBookInfos(true)
+        }
 
     private fun changeBookList(bookInfo: BookInfo, bookList: BookList) =
         viewModelScope.launch {
