@@ -13,7 +13,7 @@ fun OnBackPressListener(
 ) {
     val currentOnBackPressed by rememberUpdatedState(newValue = onBackPressed)
 
-    val backPressedCalback = remember {
+    val backPressedCallback = remember {
         object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 currentOnBackPressed()
@@ -25,10 +25,10 @@ fun OnBackPressListener(
     }
 
     DisposableEffect(key1 = backPressedDispatcher) {
-        backPressedDispatcher?.addCallback(backPressedCalback)
+        backPressedDispatcher?.addCallback(backPressedCallback)
 
         onDispose {
-            backPressedCalback.remove()
+            backPressedCallback.remove()
         }
     }
 }

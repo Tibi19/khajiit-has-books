@@ -9,10 +9,13 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import com.tam.tesbooks.presentation.common.BarRow
 import com.tam.tesbooks.presentation.common.SectionText
+import com.tam.tesbooks.presentation.common.effect.OnBackPressListener
 import com.tam.tesbooks.util.*
+import kotlinx.coroutines.launch
 
 @Composable
 fun BottomSheetDialog(
@@ -22,6 +25,14 @@ fun BottomSheetDialog(
     content: @Composable ColumnScope.() -> Unit
 ) {
     val scrollState = rememberScrollState()
+    val coroutineScope = rememberCoroutineScope()
+
+    OnBackPressListener(isOneTimeListener = true) {
+        coroutineScope.launch {
+            isOpenState.value = false
+        }
+    }
+
     Column {
         Header(
             title = title,
