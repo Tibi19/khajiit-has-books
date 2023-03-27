@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.tam.tesbooks.presentation.common.LoadingMoreIndicator
-import com.tam.tesbooks.presentation.common.OnErrorEffect
+import com.tam.tesbooks.presentation.common.effect.OnErrorEffect
 import com.tam.tesbooks.presentation.common.item.BookCardItem
 import com.tam.tesbooks.util.PADDING_NORMAL
 

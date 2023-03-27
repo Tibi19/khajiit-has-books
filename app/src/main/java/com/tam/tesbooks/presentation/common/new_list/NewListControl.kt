@@ -1,4 +1,4 @@
-package com.tam.tesbooks.presentation.common
+package com.tam.tesbooks.presentation.common.new_list
 
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.runtime.Composable
@@ -6,7 +6,7 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import com.tam.tesbooks.R
-import com.tam.tesbooks.presentation.navigation.drawer.NewListRow
+import com.tam.tesbooks.presentation.common.DefaultTextButton
 import com.tam.tesbooks.util.CONTENT_CREATE_LIST
 import com.tam.tesbooks.util.TEXT_NEW_LIST
 

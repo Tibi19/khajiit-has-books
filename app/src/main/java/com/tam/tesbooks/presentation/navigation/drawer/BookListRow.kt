@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import com.tam.tesbooks.R
 import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.presentation.dialog.ConfirmationDialog
-import com.tam.tesbooks.presentation.common.NewNameField
+import com.tam.tesbooks.presentation.common.new_list.NewNameField
 import com.tam.tesbooks.presentation.common.SectionText
 import com.tam.tesbooks.util.*
 

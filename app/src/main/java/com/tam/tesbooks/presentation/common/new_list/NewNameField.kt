@@ -1,4 +1,4 @@
-package com.tam.tesbooks.presentation.common
+package com.tam.tesbooks.presentation.common.new_list
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,6 +23,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
+import com.tam.tesbooks.presentation.common.state.isKeyboardOpenAsState
 import com.tam.tesbooks.util.*
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.android.awaitFrame

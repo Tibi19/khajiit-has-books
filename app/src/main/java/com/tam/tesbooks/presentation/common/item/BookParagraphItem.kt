@@ -1,4 +1,4 @@
-package com.tam.tesbooks.presentation.common
+package com.tam.tesbooks.presentation.common.item
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures

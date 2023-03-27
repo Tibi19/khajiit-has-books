@@ -1,4 +1,4 @@
-package com.tam.tesbooks.presentation.common
+package com.tam.tesbooks.presentation.common.effect
 
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.OnBackPressedDispatcher

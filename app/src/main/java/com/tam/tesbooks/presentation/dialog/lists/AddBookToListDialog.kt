@@ -12,7 +12,7 @@ import com.tam.tesbooks.domain.model.book_list.BookList
 import com.tam.tesbooks.presentation.dialog.BottomSheetDialog
 import com.tam.tesbooks.presentation.dialog.BottomSheetDialogProvider
 import com.tam.tesbooks.presentation.dialog.CheckboxOption
-import com.tam.tesbooks.presentation.common.NewListControl
+import com.tam.tesbooks.presentation.common.new_list.NewListControl
 import com.tam.tesbooks.util.*
 
 @Composable

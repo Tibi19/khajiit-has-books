@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
 import com.tam.tesbooks.R
 import com.tam.tesbooks.domain.model.bookmark.Bookmark
-import com.tam.tesbooks.presentation.common.BookParagraphItem
+import com.tam.tesbooks.presentation.common.item.BookParagraphItem
 import com.tam.tesbooks.presentation.common.SectionText
 import com.tam.tesbooks.util.*
 
