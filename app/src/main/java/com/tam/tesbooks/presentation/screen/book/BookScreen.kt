@@ -26,7 +26,7 @@ fun BookScreen(
 
     OnErrorEffect(errorFlow = bookViewModel.errorFlow)
 
-    LaunchedEffect(key1 = true) {
+    LaunchedEffect(key1 = Unit) {
         bookViewModel.searchLibraryFlow.collect { (tag, category) ->
             goToLibraryWithSearch(tag, category)
         }
