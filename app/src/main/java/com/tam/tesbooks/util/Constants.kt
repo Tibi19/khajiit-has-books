@@ -148,3 +148,6 @@ const val TEXT_BETWEEN_AUTHOR_AND_CATEGORY = " in "
 const val TEXT_SORT_LIST = "Sort List"
 const val TEXT_DATE_ADDED = "Date Added"
 const val TEXT_JOIN_TAGS_SEPARATOR = " "
+
+// Temporary Text
+const val TEXT_TO_BE_ADDED = "To be added..."

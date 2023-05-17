@@ -13,6 +13,7 @@ import com.tam.tesbooks.presentation.screen.book.BookScreen
 import com.tam.tesbooks.presentation.screen.book_list.BookListScreen
 import com.tam.tesbooks.presentation.screen.bookmarks.BookmarksScreen
 import com.tam.tesbooks.presentation.screen.library.LibraryScreen
+import com.tam.tesbooks.presentation.screen.settings.Settings
 
 @Composable
 fun MainNavGraph(
@@ -72,6 +73,10 @@ fun MainNavGraph(
                 },
                 goToPreviousScreen = { navController.popBackStack() }
             )
+        }
+
+        composable(route = Destination.Settings.route) {
+            Settings()
         }
 
     }
